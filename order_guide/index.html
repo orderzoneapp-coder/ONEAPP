@@ -84,7 +84,7 @@
         }
         /* JS가 .card-animate를 추가하면 .flow-arrow도 보이게 */
         .card-animate + .flow-arrow {
-            opacity: 1;
+            /* 이 스타일은 JS에서 opacity: 1로 직접 제어하므로 제거해도 무방합니다. */
         }
         
 
@@ -131,26 +131,39 @@
         .product-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem;
+            gap: 0.5rem; /* gap 줄임 (기존 1rem) */
+            padding: 0.75rem; /* padding 줄임 (기존 1rem) */
             border-radius: 8px;
             background-color: #f8f9fa;
         }
+        @media (min-width: 768px) {
+            .product-info {
+                gap: 1rem;
+                padding: 1rem;
+            }
+        }
         .product-info-text {
             flex-grow: 1;
+            min-width: 0; /* 텍스트가 컨테이너를 넘어가지 않도록 함 */
         }
         .price {
-            font-size: 1.25rem;
+            /* 폰트 사이즈는 HTML 클래스에서 제어하도록 CSS 수정 */
             font-weight: bold;
             color: #28a745;
-        }
-        .delivery-date {
-            color: #dc3545;
-            font-size: 0.875rem;
         }
 
         .footer-bg-gradient {
             background-image: linear-gradient(to right, #2575fc, #4a11cb);
+        }
+
+        /* 숫자 입력창 기본 스핀 버튼 제거 (가운데 정렬 최적화) */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield; /* Firefox 호환 */
         }
     </style>
 </head>
@@ -164,71 +177,65 @@
 
         <section id="features" class="space-y-8 md:space-y-10">
             
-            <!-- 1. 첫 번째 카드 (data-delay="100") -->
-            <div class="step-card scroll-animation-trigger" data-delay="100">
+            <!-- 1. 첫 번째 카드 (data-delay="0"으로 변경 - 즉시 실행) -->
+            <div class="step-card scroll-animation-trigger" data-delay="0">
                 <div class="flex flex-col md:flex-row md:justify-center items-center gap-4 md:gap-6">
                     <div class="text-center md:text-left md:max-w-lg">
                         <h2 class="text-xl md:text-2xl font-bold">자주 쓰는 상품을 '체크'하여 <br class="md:hidden"> <span class="logo-green-color">빠른주문</span> 만들기!</h2>
                         <p class="mt-2 text-gray-700 leading-relaxed">전체 상품 목록에서 자주 쓰는 상품을 체크해두면,<br>'빠른주문'에서 바로 확인할 수 있습니다!</p>
                     </div>
                     <div class="p-4 list-example w-full md:w-auto text-center flex-shrink-0">
-                        <div class="product-info flex items-center justify-between p-4 bg-white rounded-lg shadow-sm w-full md:w-[400px]">
-                            <img src="https://oneapp2.godohosting.com/order_guide/%EB%AC%B4%EC%9A%B0.jpg" alt="무우 특박스" class="w-24 h-24 object-contain rounded-md">
-                            <div class="product-info-text text-left flex-grow ml-4">
-                                <p class="font-semibold text-lg">무우_특박스_10입</p>
-                                <p class="price">17,300원</p>
-                                <p class="delivery-date">10월 24일 배송</p>
+                        <!-- 모바일 최적화된 상품 카드 -->
+                        <div class="product-info flex items-center justify-between bg-white rounded-lg shadow-sm w-full md:w-[400px]">
+                            <!-- 이미지: 모바일 w-20, PC w-24 -->
+                            <img src="https://oneapp2.godohosting.com/order_guide/%EB%AC%B4%EC%9A%B0.jpg" alt="무우 특박스" class="w-20 h-20 md:w-24 md:h-24 object-contain rounded-md flex-shrink-0">
+                            
+                            <div class="product-info-text text-left ml-2 md:ml-4">
+                                <!-- break-keep: 단어 단위 줄바꿈 -->
+                                <p class="font-semibold text-base md:text-lg break-keep leading-tight">무우_특박스_10입</p>
+                                <p class="price text-lg md:text-xl mt-1">17,300원</p>
                             </div>
-                            <div class="flex flex-col items-center ml-4 flex-shrink-0">
-                                <p class="text-sm font-bold logo-green-color mb-1">클릭!</p>
+                            
+                            <div class="flex flex-col items-center ml-2 md:ml-4 flex-shrink-0">
+                                <p class="text-xs md:text-sm font-bold logo-green-color mb-1">클릭!</p>
                                 <div class="img-checkbox-container" onclick="this.classList.toggle('checked')">
                                     <div class="img-checkbox"></div>
                                 </div>
                             </div>
                         </div>
-                        <p class="font-semibold mt-4">자주 쓰는 상품을 '체크'하세요!</p>
+                        <p class="font-semibold mt-4 text-sm md:text-base">자주 쓰는 상품을 '체크'하세요!</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. 첫 번째 화살표 (data-delay="400") -->
-            <div class="flow-arrow scroll-animation-trigger" data-delay="400">
+            <!-- 2. 첫 번째 화살표 (data-delay="100"으로 변경) -->
+            <div class="flow-arrow scroll-animation-trigger" data-delay="100">
                 ⬇️
             </div>
 
-            <!-- 3. 두 번째 카드 (data-delay="700") -->
-            <div class="step-card scroll-animation-trigger" data-delay="700">
+            <!-- 3. 두 번째 카드 (data-delay="100"으로 변경 - 빠르게 등장) -->
+            <div class="step-card scroll-animation-trigger" data-delay="100">
                 <div class="flex flex-col md:flex-row md:justify-center items-center gap-4 md:gap-6">
                     <div class="p-4 list-example w-full md:w-auto text-center flex-shrink-0">
                         <span class="text-5xl">🏷️</span>
                         <p class="font-semibold mt-2">단골특가 상품</p>
                     </div>
                     <div class="text-center md:text-left md:max-w-lg">
-                        <h2 class="text-xl md:text-2xl font-bold">'빠른주문'의 첫페이지 <br class="md:hidden"> <span class="accent-color">'단골특가'</span></h2>
-                        <p class="mt-2 text-gray-700 leading-relaxed">찜한 상품 + 관련 행사 상품을 한눈에! <br> "더 저렴한 상품은 없을까?" 라는 <br class="md:hidden"> 고민을 해결합니다.</p>
+                        <!-- '빠른주문' 텍스트 삭제 및 '단골특가'만 남김 -->
+                        <h2 class="text-xl md:text-2xl font-bold"><span class="accent-color">'단골특가'</span></h2>
+                        <p class="mt-2 text-gray-700 leading-relaxed">
+                            찜한 상품 + 관련 행사 상품을 한눈에! <br> 
+                            <!-- 강조 효과 수정: font-extrabold 삭제하여 굵기 제거 -->
+                            <span class="bg-yellow-200 px-1 text-black shadow-sm" style="box-decoration-break: clone; -webkit-box-decoration-break: clone;">"더 저렴한 상품은 없을까?"</span> 라는 
+                            <br class="md:hidden"> 고민을 해결합니다.
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. 두 번째 화살표 (data-delay="1000") -->
-            <div class="flow-arrow scroll-animation-trigger" data-delay="1000">
+            <!-- 추가된 화살표 (단골특가 -> 나만의 리스트 연결) -->
+            <div class="flow-arrow scroll-animation-trigger" data-delay="200">
                 ⬇️
-            </div>
-
-            <!-- 5. 세 번째 카드 (data-delay="1300") -->
-            <div class="step-card scroll-animation-trigger" data-delay="1300">
-                <div class="flex flex-col md:flex-row md:justify-center items-center gap-4 md:gap-6">
-                     <div class="grid grid-cols-2 gap-3 w-full md:w-auto list-example flex-shrink-0">
-                        <div class="bg-green-100 text-green-800 p-4 rounded text-center font-semibold">🥦 채소</div>
-                        <div class="bg-yellow-100 text-yellow-800 p-4 rounded text-center font-semibold">🥫 소스</div>
-                        <div class="bg-purple-100 text-purple-800 p-4 rounded text-center font-semibold">🧺 잡화</div>
-                        <div class="bg-gray-200 text-gray-800 p-4 rounded text-center font-semibold">🔍 검색</div>
-                    </div>
-                     <div class="text-center md:text-left md:max-w-lg">
-                        <h2 class="text-xl md:text-2xl font-bold">복잡한 상품리스트를 <br class="md:hidden"> 쉽고 빠르게!</h2>
-                        <p class="mt-2 text-gray-700 leading-relaxed">검색으로 상품찾기, <br class="md:hidden"> 또는 카테고리로 나누어보면 <br> 단골특가와 함께 스마트하게 주문!</p>
-                    </div>
-                </div>
             </div>
 
         </section>
@@ -249,22 +256,40 @@
                     <h3 class="text-xl font-bold text-center">가게 발주 리스트 그대로!</h3>
                     <p class="text-center text-gray-600 mt-2 mb-6 leading-relaxed">실장님이 체크해 온 발주 리스트, <br> 순서대로 수량만 입력하면 주문 끝!</p>
                     <div class="list-example">
+                        <!-- 대파 -->
                         <div class="flex justify-between items-center py-2 border-b">
                             <span class="font-medium">대파 1단</span>
-                            <input type="number" value="5" class="w-16 text-center border rounded p-1">
+                            <div class="flex items-center">
+                                <button class="w-8 h-8 rounded-l bg-gray-200 text-gray-600 font-bold hover:bg-gray-300 focus:outline-none transition-colors" onclick="this.nextElementSibling.stepDown()">-</button>
+                                <!-- readonly 제거, p-0 추가, onfocus 추가 -->
+                                <input type="number" value="5" class="w-12 h-8 text-center border-t border-b border-gray-200 focus:outline-none bg-white p-0" onfocus="this.value=''">
+                                <button class="w-8 h-8 rounded-r bg-gray-200 text-gray-600 font-bold hover:bg-gray-300 focus:outline-none transition-colors" onclick="this.previousElementSibling.stepUp()">+</button>
+                            </div>
                         </div>
+                        <!-- 양파 -->
                         <div class="flex justify-between items-center py-2 border-b">
                             <span class="font-medium">양파 10kg</span>
-                            <input type="number" value="2" class="w-16 text-center border rounded p-1">
+                            <div class="flex items-center">
+                                <button class="w-8 h-8 rounded-l bg-gray-200 text-gray-600 font-bold hover:bg-gray-300 focus:outline-none transition-colors" onclick="this.nextElementSibling.stepDown()">-</button>
+                                <!-- readonly 제거, p-0 추가, onfocus 추가 -->
+                                <input type="number" value="2" class="w-12 h-8 text-center border-t border-b border-gray-200 focus:outline-none bg-white p-0" onfocus="this.value=''">
+                                <button class="w-8 h-8 rounded-r bg-gray-200 text-gray-600 font-bold hover:bg-gray-300 focus:outline-none transition-colors" onclick="this.previousElementSibling.stepUp()">+</button>
+                            </div>
                         </div>
+                        <!-- 식용유 -->
                         <div class="flex justify-between items-center py-2">
                             <span class="font-medium">식용유 18L</span>
-                             <input type="number" value="1" class="w-16 text-center border rounded p-1">
+                            <div class="flex items-center">
+                                <button class="w-8 h-8 rounded-l bg-gray-200 text-gray-600 font-bold hover:bg-gray-300 focus:outline-none transition-colors" onclick="this.nextElementSibling.stepDown()">-</button>
+                                <!-- readonly 제거, p-0 추가, onfocus 추가 -->
+                                <input type="number" value="1" class="w-12 h-8 text-center border-t border-b border-gray-200 focus:outline-none bg-white p-0" onfocus="this.value=''">
+                                <button class="w-8 h-8 rounded-r bg-gray-200 text-gray-600 font-bold hover:bg-gray-300 focus:outline-none transition-colors" onclick="this.previousElementSibling.stepUp()">+</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- 커스텀 리스트 카드 2 (data-delay="300") -->
-                <div class="step-card scroll-animation-trigger" data-delay="300">
+                <!-- 커스텀 리스트 카드 2 (data-delay="200") -->
+                <div class="step-card scroll-animation-trigger" data-delay="200">
                     <h3 class="text-xl font-bold text-center">공간별 상품 관리</h3>
                     <p class="text-center text-gray-600 mt-2 mb-6 leading-relaxed">주방, 홀, 창고 등 공간별로 <br class="md:hidden"> 상품 리스트를 분리하여 <br> 재고를 쉽게 파악하고 <br class="md:hidden"> 바로 주문할 수 있습니다.</p>
                     <div class="space-y-4">
@@ -301,7 +326,7 @@
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
-                threshold: 0.3 // 30%가 보일 때 애니메이션 시작
+                threshold: 0.1 // 30% -> 10%로 수정: 요소가 조금만 보여도 바로 애니메이션 시작
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
@@ -338,4 +363,3 @@
 
 </body>
 </html>
-
