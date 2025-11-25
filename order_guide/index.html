@@ -11,7 +11,7 @@
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #F7F8FA; /* 배경색 변경: 아주 연한 그레이 */
+            background-color: #F7F8FA;
             color: #1e293b;
             overflow-x: hidden;
         }
@@ -48,8 +48,8 @@
         .step-card {
             background-color: white;
             border-radius: 24px;
-            padding: 2.5rem;
-            /* 그림자 강화: 투명도 0.05 -> 0.1 (5% -> 10%로 증가) */
+            /* 모바일 최적화: 기본 패딩 1.5rem (24px) */
+            padding: 1.5rem;
             box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
             border: 1px solid #f1f5f9;
             width: 100%;
@@ -60,9 +60,15 @@
             flex-direction: column;
         }
         
+        /* 데스크탑(768px 이상)에서는 패딩을 2.5rem(40px)로 확대 */
+        @media (min-width: 768px) {
+            .step-card {
+                padding: 2.5rem;
+            }
+        }
+        
         .step-card:hover {
             transform: translateY(-5px);
-            /* 호버 그림자도 약간 강화: 투명도 0.1 -> 0.15 */
             box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.15);
             border-color: #dbeafe;
         }
@@ -88,8 +94,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 60px; /* 화살표 영역 확보 */
+            height: 40px; /* 모바일 높이 축소 */
             opacity: 0;
+        }
+        @media (min-width: 768px) {
+            .flow-arrow { height: 60px; }
         }
 
         /* List Styling */
@@ -97,8 +106,11 @@
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 16px;
-            padding: 1.5rem;
-            flex-grow: 1; /* 높이 채우기 */
+            padding: 1.25rem; /* 모바일 패딩 축소 */
+            flex-grow: 1;
+        }
+        @media (min-width: 768px) {
+            .list-container { padding: 1.5rem; }
         }
         
         .list-item {
@@ -111,7 +123,6 @@
         .list-item:last-child { border-bottom: none; }
 
         /* Custom Checkbox */
-        /* 이미지로 대체되었으므로 기존 CSS 스타일은 제거하거나 유지해도 무방하지만, 여기서는 일단 유지합니다. */
         .custom-checkbox {
             width: 24px;
             height: 24px;
@@ -176,23 +187,23 @@
         </div>
     </nav>
 
-    <header class="pt-16 pb-12 px-4 text-center bg-gradient-to-b from-blue-50 to-white">
+    <!-- 모바일: pt-12 pb-8 / 데스크탑: pt-16 pb-12 -->
+    <header class="pt-12 pb-8 md:pt-16 md:pb-12 px-4 text-center bg-gradient-to-b from-blue-50 to-white">
         <div class="scroll-animation-trigger" data-delay="0">
-            <!-- 1. 개선: leading-tight -> leading-snug로 변경하여 행간 넓힘 -->
-            <!-- 2. 추가: italic 클래스 추가로 속도감 부여 -->
-            <h1 class="text-4xl md:text-5xl font-black text-slate-900 leading-snug mb-4 tracking-tight italic">
+            <!-- 모바일: text-3xl / 데스크탑: text-5xl -->
+            <h1 class="text-3xl md:text-5xl font-black text-slate-900 leading-snug mb-4 tracking-tight italic">
                 새로워진 빠른주문,<br>
                 <span class="brand-color inline-block pulse-once">핵심만 빠르게 확인하세요.</span>
             </h1>
-            <!-- 1. 개선: 텍스트 색상 진하게(#333 계열), 문구 1줄로 축약 -->
-            <p class="text-slate-700 text-lg md:text-xl font-medium mt-4 max-w-2xl mx-auto">
+            <!-- 모바일: text-base / 데스크탑: text-xl -->
+            <p class="text-slate-700 text-base md:text-xl font-medium mt-4 max-w-2xl mx-auto break-keep">
                 사장님의 시간을 아끼기 위해 핵심 기능만 똑똑하게 정리했습니다.
             </p>
         </div>
     </header>
 
-    <!-- 3. 개선: 섹션 간격 gap-20 (80px) 명확하게 유지 -->
-    <main class="container mx-auto px-4 pb-28 max-w-5xl flex flex-col gap-20">
+    <!-- 모바일: gap-12 / 데스크탑: gap-20 (여백 조정) -->
+    <main class="container mx-auto px-4 pb-20 md:pb-28 max-w-5xl flex flex-col gap-12 md:gap-20">
 
         <!-- SECTION: STEP 1 & 2 -->
         <section class="flex flex-col gap-8">
@@ -203,9 +214,12 @@
                     
                     <div class="flex-1 text-center md:text-left">
                         <span class="step-badge">STEP 01</span>
-                        <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-3">자주 쓰는 상품 '체크'</h2>
-                        <p class="text-slate-600 leading-relaxed text-lg">
-                            전체 상품 목록에서 자주 쓰는 상품을 체크해두면,<br>
+                        <!-- 모바일: text-xl / 데스크탑: text-3xl -->
+                        <h2 class="text-xl md:text-3xl font-bold text-slate-800 mb-3">자주 쓰는 상품 '체크'</h2>
+                        <!-- 모바일: text-base / 데스크탑: text-lg -->
+                        <!-- 수정: 모바일에서도 줄바꿈 적용 (<br class="hidden md:block"> -> <br>) -->
+                        <p class="text-slate-600 leading-relaxed text-base md:text-lg break-keep">
+                            전체 상품 목록에서 자주 쓰는 상품을 체크해두면<br>
                             <span class="font-bold text-blue-600">'빠른주문' 탭</span>에서 바로 모아볼 수 있습니다.
                         </p>
                     </div>
@@ -219,15 +233,7 @@
                                     <div class="text-green-600 font-bold text-sm">17,300원</div>
                                 </div>
                                 
-                                <!-- 변경된 부분: 이미지 교체형 체크박스 -->
                                 <div class="flex flex-col items-center gap-1 cursor-pointer group" onclick="toggleCheckImage(this)">
-                                    <!-- 
-                                        [이미지 교체 가이드]
-                                        아래 img 태그의 속성을 준비하신 이미지 주소로 변경해주세요.
-                                        1. src: 처음에 보여질 이미지 주소 (기본: 체크된 상태)
-                                        2. data-on: 체크 '활성화' 되었을 때 보여줄 이미지 주소
-                                        3. data-off: 체크 '해제' 되었을 때 보여줄 이미지 주소
-                                    -->
                                     <img src="https://oneapp2.godohosting.com/order_guide/%EC%B2%B4%ED%81%AC%EC%A0%84.png" 
                                          data-on="https://oneapp2.godohosting.com/order_guide/%EC%B2%B4%ED%81%AC%EC%A0%84.png"
                                          data-off="https://oneapp2.godohosting.com/order_guide/%EC%B2%B4%ED%81%AC%ED%9B%84.png"
@@ -236,8 +242,6 @@
                                          class="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110 wishlist-btn">
                                     <span class="text-[10px] font-bold text-blue-500 transition-colors group-hover:text-blue-600">찜하기</span>
                                 </div>
-                                <!-- // 변경된 부분 끝 -->
-
                             </div>
                             <div class="mt-3 text-center text-xs text-slate-400 font-medium">
                                 👆 상품 우측 체크박스를 눌러보세요
@@ -255,20 +259,21 @@
                     
                     <div class="flex-1 text-center md:text-left">
                         <span class="step-badge">STEP 02</span>
-                        <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-3">똑똑한 단골특가 추천</h2>
-                        <p class="text-slate-600 leading-relaxed text-lg">
+                        <h2 class="text-xl md:text-3xl font-bold text-slate-800 mb-3">똑똑한 단골특가 추천</h2>
+                        <!-- 수정: 모바일에서도 줄바꿈 적용 -->
+                        <p class="text-slate-600 leading-relaxed text-base md:text-lg break-keep">
                             사장님이 찜한 상품과 관련된 행사 상품을<br>
                             자동으로 추천해드립니다.
-                            <!-- 2. 개선: 텍스트 강조는 컬러 대신 굵기(Bold)로 통일 -->
-                            <span class="block mt-2 font-bold text-slate-800">"더 저렴한 건 없을까?" 고민 끝!</span>
+                            <!-- 형광펜 효과 적용 (bg-yellow-200) -->
+                            <span class="block mt-2 font-bold text-slate-800">
+                                <span class="bg-yellow-200 px-1">"더 저렴한 건 없을까?"</span> 고민 끝!
+                            </span>
                         </p>
                     </div>
 
                     <div class="w-full md:w-auto flex-shrink-0 text-center">
-                        <!-- 2. 개선: STEP 02 아이콘 톤 다운 (Blue 계열로 변경하여 브랜드 톤 일치) -->
                         <div class="inline-block bg-blue-50 border border-blue-100 rounded-2xl p-6 relative">
                             <div class="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md animate-bounce">HOT</div>
-                            <!-- 아이콘 변경: 🎁 -> 🏷️ (할인/태그 느낌 강화) -->
                             <div class="text-4xl mb-2">🏷️</div>
                             <div class="font-bold text-slate-800 text-lg">단골 특가</div>
                             <div class="text-sm text-slate-500 mt-1">맞춤형 할인 상품</div>
@@ -283,39 +288,39 @@
 
         <!-- SECTION: CUSTOM LISTS -->
         <section>
-            <div class="text-center mb-12 scroll-animation-trigger" data-delay="0">
+            <div class="text-center mb-8 md:mb-12 scroll-animation-trigger" data-delay="0">
                 <span class="text-blue-600 font-bold tracking-wider text-sm uppercase mb-2 block">Custom List</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">나만의 리스트 만들기</h2>
-                <p class="text-lg text-slate-500">여러 개의 리스트를 만들어 상황별로 관리하세요.</p>
+                <h2 class="text-2xl md:text-4xl font-bold text-slate-900 mb-4">나만의 리스트 만들기</h2>
+                <p class="text-base md:text-lg text-slate-500 break-keep">여러 개의 리스트를 만들어 상황별로 관리하세요.</p>
                 
-                <!-- 4. 개선: 탭 UI 시인성 강화 + (LIST #) 보조 텍스트 추가 -->
-                <div class="flex flex-wrap justify-center gap-4 mt-8">
-                    <span class="custom-tab px-5 py-3 rounded-full bg-white border border-blue-200 text-blue-600 text-base font-semibold shadow-sm cursor-pointer flex items-center">
-                        <span class="mr-2">🍳</span> 주방용 <span class="text-sm text-blue-400 font-medium ml-2 bg-blue-50 px-2 py-0.5 rounded">(LIST 1)</span>
+                <!-- 탭: 모바일 패딩 축소 -->
+                <div class="flex flex-wrap justify-center gap-3 md:gap-4 mt-6 md:mt-8">
+                    <span class="custom-tab px-4 py-2 md:px-5 md:py-3 rounded-full bg-white border border-blue-200 text-blue-600 text-sm md:text-base font-semibold shadow-sm cursor-pointer flex items-center">
+                        <span class="mr-2">🍳</span> 주방용 <span class="text-xs md:text-sm text-blue-400 font-medium ml-2 bg-blue-50 px-2 py-0.5 rounded">(LIST 1)</span>
                     </span>
-                    <span class="custom-tab px-5 py-3 rounded-full bg-white border border-blue-200 text-blue-600 text-base font-semibold shadow-sm cursor-pointer flex items-center">
-                        <span class="mr-2">🍽️</span> 홀 서빙 <span class="text-sm text-blue-400 font-medium ml-2 bg-blue-50 px-2 py-0.5 rounded">(LIST 2)</span>
+                    <span class="custom-tab px-4 py-2 md:px-5 md:py-3 rounded-full bg-white border border-blue-200 text-blue-600 text-sm md:text-base font-semibold shadow-sm cursor-pointer flex items-center">
+                        <span class="mr-2">🍽️</span> 홀 서빙 <span class="text-xs md:text-sm text-blue-400 font-medium ml-2 bg-blue-50 px-2 py-0.5 rounded">(LIST 2)</span>
                     </span>
-                    <span class="custom-tab px-5 py-3 rounded-full bg-white border border-blue-200 text-blue-600 text-base font-semibold shadow-sm cursor-pointer flex items-center">
-                        <span class="mr-2">📦</span> 창고용 <span class="text-sm text-blue-400 font-medium ml-2 bg-blue-50 px-2 py-0.5 rounded">(LIST 3)</span>
+                    <span class="custom-tab px-4 py-2 md:px-5 md:py-3 rounded-full bg-white border border-blue-200 text-blue-600 text-sm md:text-base font-semibold shadow-sm cursor-pointer flex items-center">
+                        <span class="mr-2">📦</span> 창고용 <span class="text-xs md:text-sm text-blue-400 font-medium ml-2 bg-blue-50 px-2 py-0.5 rounded">(LIST 3)</span>
                     </span>
                 </div>
             </div>
 
-            <!-- 5. 개선: Grid items-stretch로 높이 강제 통일 -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
                 
                 <!-- Card 1 -->
                 <div class="step-card scroll-animation-trigger" data-delay="100">
                     <div class="mb-6 text-center">
                         <div class="inline-block p-3 rounded-full bg-blue-50 text-2xl mb-3">📝</div>
-                        <h3 class="text-xl font-bold text-slate-800">가게 발주 리스트 그대로</h3>
-                        <p class="text-slate-500 mt-2 text-sm">종이에 적던 순서대로<br>수량만 입력하면 끝!</p>
+                        <h3 class="text-lg md:text-xl font-bold text-slate-800">가게 발주 리스트 그대로</h3>
+                        <!-- 수정: <br> 앞에 공백 추가 -->
+                        <p class="text-slate-500 mt-2 text-sm break-keep">종이에 적던 순서대로 <br class="hidden md:block">수량만 입력하면 끝!</p>
                     </div>
                     
                     <div class="list-container flex flex-col justify-center">
                         <div class="flex justify-between items-center py-3 border-b border-slate-200">
-                            <span class="font-medium text-slate-700">깐대파 1단</span>
+                            <span class="font-medium text-slate-700 text-sm md:text-base">깐대파 1단</span>
                             <div class="flex items-center gap-1">
                                 <button class="qty-btn" onclick="this.nextElementSibling.stepDown()">-</button>
                                 <input type="number" value="5" class="qty-input" readonly>
@@ -323,7 +328,7 @@
                             </div>
                         </div>
                         <div class="flex justify-between items-center py-3 border-b border-slate-200">
-                            <span class="font-medium text-slate-700">양파 10kg</span>
+                            <span class="font-medium text-slate-700 text-sm md:text-base">양파 10kg</span>
                             <div class="flex items-center gap-1">
                                 <button class="qty-btn" onclick="this.nextElementSibling.stepDown()">-</button>
                                 <input type="number" value="2" class="qty-input" readonly>
@@ -331,7 +336,7 @@
                             </div>
                         </div>
                         <div class="flex justify-between items-center py-3">
-                            <span class="font-medium text-slate-700">식용유 18L</span>
+                            <span class="font-medium text-slate-700 text-sm md:text-base">식용유 18L</span>
                             <div class="flex items-center gap-1">
                                 <button class="qty-btn" onclick="this.nextElementSibling.stepDown()">-</button>
                                 <input type="number" value="1" class="qty-input" readonly>
@@ -345,22 +350,23 @@
                 <div class="step-card scroll-animation-trigger" data-delay="200">
                     <div class="mb-6 text-center">
                         <div class="inline-block p-3 rounded-full bg-blue-50 text-2xl mb-3">🏢</div>
-                        <h3 class="text-xl font-bold text-slate-800">공간별/용도별 분리</h3>
-                        <p class="text-slate-500 mt-2 text-sm">주방, 창고, 홀 등<br>필요한 곳마다 따로 관리하세요.</p>
+                        <h3 class="text-lg md:text-xl font-bold text-slate-800">공간별/용도별 분리</h3>
+                        <!-- 수정: <br> 앞에 공백 추가 -->
+                        <p class="text-slate-500 mt-2 text-sm break-keep">주방, 창고, 홀 등 <br class="hidden md:block">필요한 곳마다 따로 관리하세요.</p>
                     </div>
 
                     <div class="flex flex-col gap-3 flex-grow justify-center list-container bg-white border-0 p-0">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center gap-3 transition-colors hover:border-blue-300 hover:bg-blue-50 cursor-pointer">
+                        <div class="bg-slate-50 p-3 md:p-4 rounded-xl border border-slate-200 flex items-center gap-3 transition-colors hover:border-blue-300 hover:bg-blue-50 cursor-pointer">
                             <span class="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm text-lg">🍳</span>
-                            <div class="font-bold text-slate-700">주방 식자재 리스트</div>
+                            <div class="font-bold text-slate-700 text-sm md:text-base">주방 식자재 리스트</div>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center gap-3 transition-colors hover:border-blue-300 hover:bg-blue-50 cursor-pointer">
+                        <div class="bg-slate-50 p-3 md:p-4 rounded-xl border border-slate-200 flex items-center gap-3 transition-colors hover:border-blue-300 hover:bg-blue-50 cursor-pointer">
                             <span class="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm text-lg">🍽️</span>
-                            <div class="font-bold text-slate-700">홀 소모품 리스트</div>
+                            <div class="font-bold text-slate-700 text-sm md:text-base">홀 소모품 리스트</div>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center gap-3 transition-colors hover:border-blue-300 hover:bg-blue-50 cursor-pointer">
+                        <div class="bg-slate-50 p-3 md:p-4 rounded-xl border border-slate-200 flex items-center gap-3 transition-colors hover:border-blue-300 hover:bg-blue-50 cursor-pointer">
                             <span class="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm text-lg">📦</span>
-                            <div class="font-bold text-slate-700">창고 재고 리스트</div>
+                            <div class="font-bold text-slate-700 text-sm md:text-base">창고 재고 리스트</div>
                         </div>
                     </div>
                 </div>
@@ -369,43 +375,38 @@
 
     </main>
 
-    <!-- 7. 개선: 푸터 그라데이션 부드럽게 조정 및 상단 라운드 적용 -->
-    <footer class="mt-auto bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-center py-20 px-4 rounded-t-[40px] shadow-inner-lg">
+    <!-- 모바일: py-12 / 데스크탑: py-20 -->
+    <footer class="mt-auto bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-center py-12 md:py-20 px-4 rounded-t-[40px] shadow-inner-lg">
         <div class="max-w-2xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-black mb-6 leading-tight">
+            <h2 class="text-2xl md:text-4xl font-black mb-6 leading-tight">
                 내 방식대로 정리하는<br>가장 쉬운 발주
             </h2>
-            <p class="text-blue-50 mb-10 text-lg opacity-90">지금 바로 나만의 리스트를 만들어보세요.</p>
+            <p class="text-blue-50 mb-10 text-base md:text-lg opacity-90 break-keep">지금 바로 나만의 리스트를 만들어보세요.</p>
             
-            <!-- 6. 개선: CTA 문구 변경 (시작하기) -->
             <a href="https://orderz.kr/shop/wishlist.php" target="_blank" rel="noopener noreferrer" 
-               class="inline-block bg-white text-blue-700 font-extrabold text-lg py-5 px-12 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+               class="inline-block bg-white text-blue-700 font-extrabold text-base md:text-lg py-4 px-10 md:py-5 md:px-12 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
                 빠른주문 시작하기 🚀
             </a>
         </div>
     </footer>
 
     <script>
-        // 추가된 스크립트: 찜하기 이미지 토글 기능
         function toggleCheckImage(element) {
             const img = element.querySelector('.wishlist-btn');
             const status = img.getAttribute('data-status');
             const onSrc = img.getAttribute('data-on');
             const offSrc = img.getAttribute('data-off');
 
-            // 클릭 시 상태 반전 효과 (약간의 튕김 애니메이션)
             img.style.transform = 'scale(0.8)';
             setTimeout(() => {
                 if (status === 'on') {
-                    // 끄기 (OFF 상태로 변경)
                     img.src = offSrc;
                     img.setAttribute('data-status', 'off');
                 } else {
-                    // 켜기 (ON 상태로 변경)
                     img.src = onSrc;
                     img.setAttribute('data-status', 'on');
                 }
-                img.style.transform = 'scale(1)'; // 원래 크기로 복귀
+                img.style.transform = 'scale(1)';
             }, 100);
         }
 
