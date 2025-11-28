@@ -1,316 +1,346 @@
-import React, { useState, useEffect } from 'react';
-import { ShoppingCart, ArrowRight, Zap, Info, CheckCircle, Sparkles, X, Heart } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>단골특가 가이드</title>
+    <!-- Tailwind CSS (디자인 자동 적용) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide 아이콘 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- 폰트 설정 (Pretendard 등) -->
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; }
+        .break-keep { word-break: keep-all; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 pb-10">
 
-const App = () => {
-  const [activeTab, setActiveTab] = useState('guide'); // 'guide' or 'demo'
-
-  // --- 데모용 데이터 ---
-  // 사장님이 볼 수 있는 식자재 리스트
-  const [products, setProducts] = useState([
-    // 변경: 상품명(특) 및 가격(50,000원) 수정
-    { id: 1, name: '청양고추 10kg(특)', price: '50,000원', category: 'chili', isLiked: false, icon: '🌶️' }, 
-    { id: 2, name: '계란 30구', price: '6,800원', category: 'egg', isLiked: false, icon: '🥚' },
-    // 감자 왕특 (기존 유지)
-    { id: 3, name: '감자 왕특 20kg', price: '51,200원', category: 'potato', isLiked: false, icon: '🥔' },
-    // 당근 (이모지 🥕)
-    { id: 4, name: '국산 흙당근 10kg', price: '42,000원', category: 'carrot', isLiked: false, icon: '🥕' },
-  ]);
-
-  // 카테고리 매칭에 따라 노출될 특가 상품 리스트 (사장님 맞춤 멘트)
-  const specialDeals = [
-    // 변경: 고추 특가 (일반 상품 가격 인하에 맞춰 특가 가격도 조정)
-    { id: 101, name: '청양고추 10kg (실속형)', originPrice: '50,000원', salePrice: '32,000원', category: 'chili', discount: '36%', desc: '모양은 달라도 맛은 똑같아요! 다지기용 강력 추천.' },
-    { id: 102, name: '특란 30구 x 5판', originPrice: '34,000원', salePrice: '29,900원', category: 'egg', discount: '12%', desc: '계란을 자주 쓰시네요! 도매가로 드려요.' },
-    // 감자 특가 (동일 상품 경매가 적용)
-    { id: 103, name: '감자 왕특 20kg (오늘 경매)', originPrice: '51,200원', salePrice: '36,700원', category: 'potato', discount: '28%', desc: '찜하신 상품 맞죠? 오늘 경매 낙찰가가 대박이에요!' },
-    // 당근 특가 (국산 흙당근 -> 수입 세척당근 대체 제안)
-    { id: 104, name: '수입 세척당근 10kg (특가)', originPrice: '18,000원', salePrice: '13,500원', category: 'carrot', discount: '25%', desc: '국산 너무 비싸죠? 가성비 좋은 세척 당근 써보세요!' },
-  ];
-
-  // 찜 상태 토글 함수
-  const toggleLike = (id) => {
-    setProducts(products.map(p => 
-      p.id === id ? { ...p, isLiked: !p.isLiked } : p
-    ));
-  };
-
-  // 현재 찜한 카테고리 추출
-  const likedCategories = products.filter(p => p.isLiked).map(p => p.category);
-  
-  // 노출될 특가 상품 필터링 (중복 제거)
-  const visibleDeals = specialDeals.filter(deal => likedCategories.includes(deal.category));
-
-  const checkboxImage = "https://oneapp2.godohosting.com/order_guide/%EC%B2%B4%ED%81%AC%ED%9B%84.png";
-
-  // 하단 버튼 컴포넌트 (재사용)
-  const BottomActionButtons = () => (
-    <div className="space-y-3 mt-6">
-      <button className="w-full bg-white text-teal-700 font-bold py-4 rounded-xl border border-teal-200 shadow-sm hover:bg-teal-50 transition flex justify-center items-center gap-2">
-        <img src={checkboxImage} alt="체크박스" className="w-5 h-5" />
-        찜 하러가기
-      </button>
-      <button className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-gray-800 transition flex justify-center items-center gap-2">
-        단골특가 상품 보러가기
-      </button>
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-800 pb-10 break-keep">
-      
-      {/* --- 헤더 --- */}
-      <header className="bg-white sticky top-0 z-50 border-b border-gray-100 shadow-sm">
-        <div className="max-w-md mx-auto px-5 h-14 flex items-center justify-between">
-          <h1 className="text-lg font-bold text-teal-600 flex items-center gap-2">
-            <Sparkles size={20} className="text-yellow-400 fill-yellow-400" />
-            단골특가 가이드
-          </h1>
-          <button 
-            onClick={() => setActiveTab(activeTab === 'guide' ? 'demo' : 'guide')}
-            className="text-xs font-semibold bg-teal-50 text-teal-700 px-3 py-1.5 rounded-full border border-teal-100 hover:bg-teal-100 transition"
-          >
-            {activeTab === 'guide' ? '체험해보기 >' : '설명 다시보기'}
-          </button>
+    <!-- 헤더 -->
+    <header class="bg-white sticky top-0 z-50 border-b border-gray-100 shadow-sm">
+        <div class="max-w-md mx-auto px-5 h-14 flex items-center justify-between">
+            <h1 class="text-lg font-bold text-teal-600 flex items-center gap-2">
+                <i data-lucide="sparkles" class="text-yellow-400 fill-yellow-400 w-5 h-5"></i>
+                단골특가 가이드
+            </h1>
+            <button onclick="toggleTab()" id="tabButton"
+                class="text-xs font-semibold bg-teal-50 text-teal-700 px-3 py-1.5 rounded-full border border-teal-100 hover:bg-teal-100 transition">
+                체험해보기 >
+            </button>
         </div>
-      </header>
+    </header>
 
-      <main className="max-w-md mx-auto">
+    <main class="max-w-md mx-auto relative">
         
-        {activeTab === 'guide' ? (
-          /* --- 가이드 모드 --- */
-          <div className="animate-fade-in">
-            {/* 히어로 섹션 */}
-            <section className="bg-teal-600 text-white px-6 py-10 text-center relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent"></div>
-              <h2 className="text-2xl font-bold mb-3 relative z-10 break-keep">
-                사장님 찜한 식자재,<br />
-                필요한 행사만 쏙쏙!
-              </h2>
-              <p className="text-teal-100 text-sm leading-relaxed relative z-10 break-keep">
-                <span className="font-bold text-yellow-300">"더 저렴한 거 없을까?"</span> 라는<br/>
-                고민을 해결합니다.
-              </p>
+        <!-- 가이드 탭 (Guide Tab) -->
+        <div id="guideTab" class="animate-fade-in">
+            <!-- 히어로 섹션 -->
+            <section class="bg-teal-600 text-white px-6 py-10 text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent"></div>
+                <h2 class="text-2xl font-bold mb-3 relative z-10 break-keep">
+                    사장님 찜한 식자재,<br />
+                    필요한 행사만 쏙쏙!
+                </h2>
+                <p class="text-teal-100 text-sm leading-relaxed relative z-10 break-keep">
+                    <span class="font-bold text-yellow-300">"더 저렴한 거 없을까?"</span> 라는<br/>
+                    고민을 해결합니다.
+                </p>
             </section>
 
-            {/* 핵심 로직 설명 (카드형) */}
-            <section className="px-5 -mt-6 mb-10 relative z-20 space-y-4">
-              
-              {/* Step 1 */}
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
-                <div className="flex items-start gap-4">
-                  <div className="bg-teal-50 p-3 rounded-full shrink-0">
-                    <img src={checkboxImage} alt="체크박스" className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1">1. 관심 식자재 찜하기</h3>
-                    <p className="text-gray-500 text-sm leading-snug break-keep">
-                      가게에서 자주 사용하는 식자재(예: 고추)의 체크박스를 선택해주세요.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 2 (화살표 연결) */}
-              <div className="flex justify-center -my-2 opacity-30 text-gray-400">
-                <ArrowRight size={24} className="rotate-90" />
-              </div>
-
-              {/* Step 2 */}
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
-                <div className="flex items-start gap-4">
-                  <div className="bg-blue-50 p-3 rounded-full text-blue-500 shrink-0">
-                    <Zap size={24} className="fill-blue-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1">2. 최적의 행사 매칭</h3>
-                    <p className="text-gray-500 text-sm leading-snug break-keep">
-                      내가 찜한 상품과 관련된 행사가 시작되면, <span className="text-blue-600 font-bold">사장님께 꼭 필요한 행사만</span> 선별하여 보여드립니다.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-               {/* Step 3 (화살표 연결) */}
-               <div className="flex justify-center -my-2 opacity-30 text-gray-400">
-                <ArrowRight size={24} className="rotate-90" />
-              </div>
-
-              {/* Step 3 */}
-              <div className="bg-white rounded-2xl p-6 shadow-md border-2 border-teal-500 relative overflow-hidden">
-                <div className="absolute top-0 right-0 bg-teal-500 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">
-                  최종 결과
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-teal-50 p-3 rounded-full text-teal-600 shrink-0">
-                    <Sparkles size={24} className="fill-teal-100" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1 text-teal-700">3. 단골특가 노출</h3>
-                    <p className="text-gray-600 text-sm leading-snug break-keep">
-                      <span className="bg-gray-100 px-1 rounded font-medium text-gray-800">현재 진행중인 고추 행사</span>가
-                      사장님의 <strong>단골특가</strong> 목록에 짠! 하고 나타납니다.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 예시 상황 설명 */}
-            <section className="bg-white px-5 py-8 mb-8 border-t border-b border-gray-100">
-              <div className="flex items-center gap-2 mb-4">
-                <Info size={18} className="text-gray-400" />
-                <h3 className="font-bold text-gray-800">사장님, 이럴 때 유용해요!</h3>
-              </div>
-              
-              <div className="bg-gray-50 rounded-xl p-4 text-sm text-gray-600 space-y-3">
-                <div className="flex gap-3">
-                  <CheckCircle size={18} className="text-teal-500 shrink-0 mt-0.5" />
-                  <p className="break-keep">"<span className="font-bold text-gray-800">청양고추</span> 가격이 너무 올라서 부담이었는데, <span className="font-bold text-gray-800">대체 상품</span>을 추천받아 다지기용으로 싸게 잘 썼어요!"</p>
-                </div>
-                <div className="flex gap-3">
-                  <CheckCircle size={18} className="text-teal-500 shrink-0 mt-0.5" />
-                  <p className="break-keep">"감자가 필요했는데, 마침 <span className="font-bold text-gray-800">경매 행사</span>로 나온 좋은 상품을 저렴하게 추천받아 원가를 확 줄였어요."</p>
-                </div>
-                 <div className="flex gap-3">
-                  <CheckCircle size={18} className="text-teal-500 shrink-0 mt-0.5" />
-                  <p className="break-keep">"내가 관심 없는 물건 할인은 안 보고, <span className="font-bold text-gray-800">내 가게 메뉴에 필요한 재료</span> 행사만 쏙쏙 골라주니 편해요."</p>
-                </div>
-              </div>
-            </section>
-
-            {/* 하단 버튼 영역 */}
-            <div className="px-5 pb-10">
-              <BottomActionButtons />
-            </div>
-          </div>
-        ) : (
-          /* --- 체험 모드 (Demo) --- */
-          <div className="animate-fade-in bg-gray-100 min-h-[calc(100vh-56px)]">
-            
-            {/* 알림 메시지 */}
-            <div className="bg-teal-600 text-white px-5 py-3 text-sm flex items-start gap-2 shadow-md">
-              <Info size={18} className="shrink-0 mt-0.5 opacity-80" />
-              <p className="break-keep">아래 식자재의 <span className="font-bold inline-block align-middle mx-1">체크박스</span>를 눌러보세요.<br/>하단에 <span className="text-yellow-300">사장님 맞춤 특가</span>가 나타납니다!</p>
-            </div>
-
-            <div className="px-4 py-6 space-y-8">
-              
-              {/* 섹션 1: 일반 상품 리스트 */}
-              <div>
-                <h3 className="text-sm font-bold text-gray-500 mb-3 px-1 flex justify-between items-center">
-                  <span>일반 식자재 목록</span>
-                  <span className="text-xs font-normal text-gray-400">가게에서 쓰는 재료를 찜해보세요</span>
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {products.map((product) => (
-                    <div key={product.id} className="bg-white p-3 rounded-xl shadow-sm border border-gray-100 relative group flex flex-col justify-between">
-                      <div className="text-4xl mb-1 text-center py-2 flex items-center justify-center h-16 text-[40px]">
-                        {product.icon}
-                      </div>
-                      
-                      {/* 변경: 체크박스 위치를 상품명 오른쪽으로 이동 */}
-                      <div className="flex justify-between items-start mt-2 border-t pt-2 border-dashed border-gray-100">
-                        <div className="flex-1 min-w-0 pr-1">
-                            <div className="text-gray-800 font-bold truncate text-sm">{product.name}</div>
-                            <div className="text-gray-500 text-xs">{product.price}</div>
+            <!-- 핵심 로직 설명 -->
+            <section class="px-5 -mt-6 mb-10 relative z-20 space-y-4">
+                <!-- Step 1 -->
+                <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-teal-50 p-3 rounded-full shrink-0">
+                            <img src="https://oneapp2.godohosting.com/order_guide/%EC%B2%B4%ED%81%AC%ED%9B%84.png" alt="체크박스" class="w-6 h-6" />
                         </div>
-                        <button 
-                            onClick={() => toggleLike(product.id)}
-                            className="shrink-0"
-                        >
-                            <img 
-                            src={checkboxImage} 
-                            alt="체크박스" 
-                            className={`w-6 h-6 transition-opacity ${product.isLiked ? 'opacity-100' : 'opacity-30 grayscale'}`} 
-                            />
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">1. 관심 식자재 찜하기</h3>
+                            <p class="text-gray-500 text-sm leading-snug break-keep">
+                                가게에서 자주 사용하는 식자재(예: 고추)의 체크박스를 선택해주세요.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 화살표 -->
+                <div class="flex justify-center -my-2 opacity-30 text-gray-400">
+                    <i data-lucide="arrow-right" class="rotate-90 w-6 h-6"></i>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-blue-50 p-3 rounded-full text-blue-500 shrink-0">
+                            <i data-lucide="zap" class="fill-blue-500 w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">2. 최적의 행사 매칭</h3>
+                            <p class="text-gray-500 text-sm leading-snug break-keep">
+                                내가 찜한 상품과 관련된 행사가 시작되면, <span class="text-blue-600 font-bold">사장님께 꼭 필요한 행사만</span> 선별하여 보여드립니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 화살표 -->
+                <div class="flex justify-center -my-2 opacity-30 text-gray-400">
+                    <i data-lucide="arrow-right" class="rotate-90 w-6 h-6"></i>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-white rounded-2xl p-6 shadow-md border-2 border-teal-500 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-teal-500 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">
+                        최종 결과
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="bg-teal-50 p-3 rounded-full text-teal-600 shrink-0">
+                            <i data-lucide="sparkles" class="fill-teal-100 w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-1 text-teal-700">3. 단골특가 노출</h3>
+                            <p class="text-gray-600 text-sm leading-snug break-keep">
+                                <span class="bg-gray-100 px-1 rounded font-medium text-gray-800">현재 진행중인 고추 행사</span>가
+                                사장님의 <strong>단골특가</strong> 목록에 짠! 하고 나타납니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 예시 상황 설명 -->
+            <section class="bg-white px-5 py-8 mb-8 border-t border-b border-gray-100">
+                <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="info" class="text-gray-400 w-4 h-4"></i>
+                    <h3 class="font-bold text-gray-800">사장님, 이럴 때 유용해요!</h3>
+                </div>
+                
+                <div class="bg-gray-50 rounded-xl p-4 text-sm text-gray-600 space-y-3">
+                    <div class="flex gap-3">
+                        <i data-lucide="check-circle" class="text-teal-500 shrink-0 mt-0.5 w-4 h-4"></i>
+                        <p class="break-keep">"<span class="font-bold text-gray-800">청양고추</span> 가격이 너무 올라서 부담이었는데, <span class="font-bold text-gray-900">대체 상품</span>을 추천받아 다지기용으로 싸게 잘 썼어요!"</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <i data-lucide="check-circle" class="text-teal-500 shrink-0 mt-0.5 w-4 h-4"></i>
+                        <p class="break-keep">"감자가 필요했는데, 마침 <span class="font-bold text-gray-800">경매 행사</span>로 나온 좋은 상품을 저렴하게 추천받아 원가를 확 줄였어요."</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <i data-lucide="check-circle" class="text-teal-500 shrink-0 mt-0.5 w-4 h-4"></i>
+                        <p class="break-keep">"내가 관심 없는 물건 할인은 안 보고, <span class="font-bold text-gray-800">내 가게 메뉴에 필요한 재료</span> 행사만 쏙쏙 골라주니 편해요."</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="px-5 pb-10 space-y-3 mt-6">
+                <button onclick="toggleTab()" class="w-full bg-white text-teal-700 font-bold py-4 rounded-xl border border-teal-200 shadow-sm hover:bg-teal-50 transition flex justify-center items-center gap-2">
+                    <img src="https://oneapp2.godohosting.com/order_guide/%EC%B2%B4%ED%81%AC%ED%9B%84.png" alt="체크박스" class="w-5 h-5" />
+                    찜 하러가기
+                </button>
+                <button class="w-full bg-gray-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-gray-800 transition flex justify-center items-center gap-2">
+                    단골특가 상품 보러가기
+                </button>
+            </div>
+        </div>
+
+        <!-- 체험 탭 (Demo Tab) -->
+        <div id="demoTab" class="hidden animate-fade-in bg-gray-100 min-h-[calc(100vh-56px)]">
+            <!-- 알림 메시지 -->
+            <div class="bg-teal-600 text-white px-5 py-3 text-sm flex items-start gap-2 shadow-md">
+                <i data-lucide="info" class="shrink-0 mt-0.5 opacity-80 w-4 h-4"></i>
+                <p class="break-keep">아래 식자재의 <span class="font-bold inline-block align-middle mx-1">체크박스</span>를 눌러보세요.<br/>하단에 <span class="text-yellow-300">사장님 맞춤 특가</span>가 나타납니다!</p>
+            </div>
+
+            <div class="px-4 py-6 space-y-8">
+                <!-- 일반 상품 리스트 -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-500 mb-3 px-1 flex justify-between items-center">
+                        <span>일반 식자재 목록</span>
+                        <span class="text-xs font-normal text-gray-400">가게에서 쓰는 재료를 찜해보세요</span>
+                    </h3>
+                    <div id="productList" class="grid grid-cols-2 gap-3">
+                        <!-- 자바스크립트로 렌더링 됩니다 -->
+                    </div>
+                </div>
+
+                <!-- 화살표 애니메이션 -->
+                <div class="flex justify-center">
+                    <div id="arrowAnim" class="transition-all duration-500 text-gray-300">
+                        <i data-lucide="arrow-right" class="rotate-90 w-8 h-8"></i>
+                    </div>
+                </div>
+
+                <!-- 단골특가 결과 영역 -->
+                <div id="specialDealSection" class="transition-all duration-500 opacity-60 translate-y-4">
+                    <div class="flex items-center justify-between mb-3 px-1">
+                        <h3 class="text-lg font-bold text-teal-800 flex items-center gap-2">
+                            <i data-lucide="zap" class="fill-yellow-400 text-yellow-400 w-5 h-5"></i>
+                            사장님 단골특가
+                        </h3>
+                        <span id="dealCountBadge" class="hidden text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">
+                            0개 발견!
+                        </span>
+                    </div>
+
+                    <div id="dealList" class="space-y-3">
+                        <!-- 자바스크립트로 렌더링 됩니다 -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-5 pb-10">
+                <button onclick="resetDemo()" class="w-full py-3 text-sm text-gray-400 underline decoration-gray-300 mb-2">
+                    초기화 하기
+                </button>
+                <div class="space-y-3 mt-6">
+                    <button class="w-full bg-white text-teal-700 font-bold py-4 rounded-xl border border-teal-200 shadow-sm hover:bg-teal-50 transition flex justify-center items-center gap-2">
+                        <img src="https://oneapp2.godohosting.com/order_guide/%EC%B2%B4%ED%81%AC%ED%9B%84.png" alt="체크박스" class="w-5 h-5" />
+                        찜 하러가기
+                    </button>
+                    <button class="w-full bg-gray-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-gray-800 transition flex justify-center items-center gap-2">
+                        단골특가 상품 보러가기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 스크립트 (로직) -->
+    <script>
+        // SVG 아이콘 데이터
+        const greenOnionSvg = `<svg viewBox="0 0 100 100" class="w-10 h-10 mx-auto drop-shadow-sm filter hover:brightness-110 transition"><path d="M45 90 L 35 20 Q 35 10 45 10 L 55 10 Q 65 10 65 20 L 55 90 Z" fill="#4ade80" stroke="#166534" stroke-width="2" stroke-linejoin="round" /><path d="M60 85 L 65 30 Q 65 20 75 20 L 75 30 Q 75 80 60 85 Z" fill="#22c55e" stroke="#14532d" stroke-width="2" stroke-linejoin="round" /><defs><linearGradient id="onionWhite" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#f3f4f6" /><stop offset="100%" stop-color="#ffffff" /></linearGradient></defs><rect x="35" y="60" width="40" height="32" rx="5" fill="url(#onionWhite)" stroke="#9ca3af" stroke-width="2" /><path d="M45 92 L 45 98" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" /><path d="M50 92 L 50 100" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" /><path d="M55 92 L 55 98" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" /></svg>`;
+        
+        const radishSvg = `<svg viewBox="0 0 100 100" class="w-10 h-10 mx-auto drop-shadow-sm filter hover:brightness-110 transition"><defs><linearGradient id="koreanRadish" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#86efac" /><stop offset="40%" stop-color="#ffffff" /></linearGradient></defs><path d="M30 20 Q 20 5 35 5 Q 40 15 50 20" fill="#dcfce7" stroke="#16a34a" stroke-width="3" stroke-linecap="round" /><path d="M70 20 Q 80 5 65 5 Q 60 15 50 20" fill="#dcfce7" stroke="#16a34a" stroke-width="3" stroke-linecap="round" /><path d="M50 20 L 50 5" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round" /><path d="M30 25 Q 20 30 25 60 Q 30 95 50 98 Q 70 95 75 60 Q 80 30 70 25 Q 50 20 30 25 Z" fill="url(#koreanRadish)" stroke="#9ca3af" stroke-width="2" stroke-linejoin="round" /></svg>`;
+
+        // 데이터
+        let products = [
+            { id: 1, name: '청양고추 10kg(특)', price: '50,000원', category: 'chili', isLiked: false, icon: '🌶️' },
+            { id: 2, name: '계란 30구', price: '6,800원', category: 'egg', isLiked: false, icon: '🥚' },
+            { id: 3, name: '감자 왕특 20kg', price: '51,200원', category: 'potato', isLiked: false, icon: '🥔' },
+            { id: 4, name: '국산 흙당근 10kg', price: '42,000원', category: 'carrot', isLiked: false, icon: '🥕' }
+        ];
+
+        const specialDeals = [
+            { id: 101, name: '청양고추 10kg (실속형)', originPrice: '50,000원', salePrice: '32,000원', category: 'chili', discount: '36%', desc: '모양은 달라도 맛은 똑같아요! 다지기용 강력 추천.' },
+            { id: 102, name: '특란 30구 x 5판', originPrice: '34,000원', salePrice: '29,900원', category: 'egg', discount: '12%', desc: '계란을 자주 쓰시네요! 도매가로 드려요.' },
+            { id: 103, name: '감자 왕특 20kg (오늘 경매)', originPrice: '51,200원', salePrice: '36,700원', category: 'potato', discount: '28%', desc: '찜하신 상품 맞죠? 오늘 경매 낙찰가가 대박이에요!' },
+            { id: 104, name: '수입 세척당근 10kg (특가)', originPrice: '18,000원', salePrice: '13,500원', category: 'carrot', discount: '25%', desc: '국산 너무 비싸죠? 가성비 좋은 세척 당근 써보세요!' }
+        ];
+
+        const checkboxImage = "https://oneapp2.godohosting.com/order_guide/%EC%B2%B4%ED%81%AC%ED%9B%84.png";
+        let activeTab = 'guide';
+
+        // 탭 전환 함수
+        function toggleTab() {
+            activeTab = activeTab === 'guide' ? 'demo' : 'guide';
+            document.getElementById('guideTab').classList.toggle('hidden');
+            document.getElementById('demoTab').classList.toggle('hidden');
+            
+            const btn = document.getElementById('tabButton');
+            btn.innerText = activeTab === 'guide' ? '체험해보기 >' : '설명 다시보기';
+            window.scrollTo(0, 0);
+        }
+
+        // 찜 토글 함수
+        function toggleLike(id) {
+            products = products.map(p => p.id === id ? { ...p, isLiked: !p.isLiked } : p);
+            render();
+        }
+
+        // 초기화 함수
+        function resetDemo() {
+            products = products.map(p => ({ ...p, isLiked: false }));
+            render();
+        }
+
+        // 화면 렌더링 함수
+        function render() {
+            const productList = document.getElementById('productList');
+            const dealList = document.getElementById('dealList');
+            const specialDealSection = document.getElementById('specialDealSection');
+            const arrowAnim = document.getElementById('arrowAnim');
+            const dealCountBadge = document.getElementById('dealCountBadge');
+
+            // 1. 일반 상품 렌더링
+            productList.innerHTML = products.map(p => `
+                <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 relative group flex flex-col justify-between">
+                    <div class="text-4xl mb-1 text-center py-2 flex items-center justify-center h-16 text-[40px]">
+                        ${p.icon}
+                    </div>
+                    <div class="flex justify-between items-start mt-2 border-t pt-2 border-dashed border-gray-100">
+                        <div class="flex-1 min-w-0 pr-1">
+                            <div class="text-gray-800 font-bold truncate text-sm break-keep">${p.name}</div>
+                            <div class="text-gray-500 text-xs">${p.price}</div>
+                        </div>
+                        <button onclick="toggleLike(${p.id})" class="shrink-0">
+                            <img src="${checkboxImage}" class="w-6 h-6 transition-opacity ${p.isLiked ? 'opacity-100' : 'opacity-30 grayscale'}" />
                         </button>
-                      </div>
                     </div>
-                  ))}
                 </div>
-              </div>
+            `).join('');
 
-              {/* 화살표 애니메이션 */}
-              <div className="flex justify-center">
-                <div className={`transition-all duration-500 ${likedCategories.length > 0 ? 'text-teal-500 scale-125' : 'text-gray-300'}`}>
-                  <ArrowRight size={32} className="rotate-90" />
-                </div>
-              </div>
+            // 2. 찜한 카테고리 확인
+            const likedCategories = products.filter(p => p.isLiked).map(p => p.category);
+            const visibleDeals = specialDeals.filter(deal => likedCategories.includes(deal.category));
 
-              {/* 섹션 2: 단골특가 결과 영역 */}
-              <div className={`transition-all duration-500 ${likedCategories.length > 0 ? 'opacity-100 translate-y-0' : 'opacity-60 translate-y-4'}`}>
-                <div className="flex items-center justify-between mb-3 px-1">
-                  <h3 className="text-lg font-bold text-teal-800 flex items-center gap-2">
-                    <Zap size={20} className="fill-yellow-400 text-yellow-400" />
-                    사장님 단골특가
-                  </h3>
-                  {visibleDeals.length > 0 && (
-                     <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">
-                       {visibleDeals.length}개 발견!
-                     </span>
-                  )}
-                </div>
+            // 3. 애니메이션 및 상태 처리
+            if (likedCategories.length > 0) {
+                arrowAnim.classList.add('text-teal-500', 'scale-125');
+                arrowAnim.classList.remove('text-gray-300');
+                specialDealSection.classList.remove('opacity-60', 'translate-y-4');
+                specialDealSection.classList.add('opacity-100', 'translate-y-0');
+                dealCountBadge.classList.remove('hidden');
+                dealCountBadge.innerText = `${visibleDeals.length}개 발견!`;
+            } else {
+                arrowAnim.classList.remove('text-teal-500', 'scale-125');
+                arrowAnim.classList.add('text-gray-300');
+                specialDealSection.classList.add('opacity-60', 'translate-y-4');
+                specialDealSection.classList.remove('opacity-100', 'translate-y-0');
+                dealCountBadge.classList.add('hidden');
+            }
 
-                {visibleDeals.length === 0 ? (
-                  // 찜한 상품이 없을 때 빈 상태 화면
-                  <div className="bg-white rounded-xl p-8 text-center border-2 border-dashed border-gray-200">
-                    <div className="inline-block bg-gray-50 p-4 rounded-full mb-3">
-                      <ShoppingCart size={32} className="text-gray-300" />
-                    </div>
-                    <p className="text-gray-400 font-medium break-keep">
-                      위에서 식자재를 찜하면<br/>
-                      여기에 <span className="text-teal-600">숨겨진 행사</span>가 나타납니다.
-                    </p>
-                  </div>
-                ) : (
-                  // 특가 리스트 노출
-                  <div className="space-y-3">
-                    {visibleDeals.map((deal) => (
-                      <div key={deal.id} className="bg-white rounded-xl p-4 shadow-md border-l-4 border-l-teal-500 relative overflow-hidden animate-slide-up">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <span className="inline-block px-2 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] font-bold rounded-sm mb-1">
-                              한정수량
-                            </span>
-                            <h4 className="font-bold text-gray-800 text-lg break-keep">{deal.name}</h4>
-                          </div>
+            // 4. 단골특가 렌더링
+            if (visibleDeals.length === 0) {
+                dealList.innerHTML = `
+                    <div class="bg-white rounded-xl p-8 text-center border-2 border-dashed border-gray-200">
+                        <div class="inline-block bg-gray-50 p-4 rounded-full mb-3">
+                            <i data-lucide="shopping-cart" class="text-gray-300 w-8 h-8"></i>
                         </div>
-                        
-                        <p className="text-xs text-teal-600 mb-3 bg-teal-50 inline-block px-2 py-1 rounded break-keep">
-                          💡 {deal.desc}
+                        <p class="text-gray-400 font-medium break-keep">
+                            위에서 식자재를 찜하면<br/>
+                            여기에 <span class="text-teal-600">숨겨진 행사</span>가 나타납니다.
                         </p>
-
-                        <div className="flex items-end justify-between border-t pt-3 border-gray-100">
-                           <div className="text-gray-400 text-xs line-through">{deal.originPrice}</div>
-                           <div className="text-gray-900 font-extrabold text-lg">{deal.salePrice}</div>
+                    </div>
+                `;
+            } else {
+                dealList.innerHTML = visibleDeals.map(deal => `
+                    <div class="bg-white rounded-xl p-4 shadow-md border-l-4 border-l-teal-500 relative overflow-hidden animate-slide-up">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <span class="inline-block px-2 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] font-bold rounded-sm mb-1">한정수량</span>
+                                <h4 class="font-bold text-gray-800 text-lg break-keep">${deal.name}</h4>
+                            </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-            
-            <div className="px-5 pb-10">
-                 <button 
-                  onClick={() => {
-                    setProducts(products.map(p => ({...p, isLiked: false})));
-                  }}
-                  className="w-full py-3 text-sm text-gray-400 underline decoration-gray-300 mb-2"
-                 >
-                   초기화 하기
-                 </button>
-                 {/* 체험 탭 하단에도 이동 버튼 추가 */}
-                 <BottomActionButtons />
-            </div>
-          </div>
-        )}
-      </main>
-      
-      {/* 고정 하단 버튼 제거됨 */}
+                        <p class="text-xs text-teal-600 mb-3 bg-teal-50 inline-block px-2 py-1 rounded break-keep">
+                            💡 ${deal.desc}
+                        </p>
+                        <div class="flex items-end justify-between border-t pt-3 border-gray-100">
+                            <div class="text-gray-400 text-xs line-through">${deal.originPrice}</div>
+                            <div class="text-gray-900 font-extrabold text-lg">${deal.salePrice}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
 
-    </div>
-  );
-};
+            // 아이콘 리로딩 (DOM 변경 후 필요)
+            lucide.createIcons();
+        }
 
-export default App;
+        // 초기 실행
+        render();
+        lucide.createIcons();
+    </script>
+</body>
+</html>
