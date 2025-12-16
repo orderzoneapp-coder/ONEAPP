@@ -457,7 +457,7 @@
         ];
 
         // --- 2. State Management ---
-        // MODIFIED: List 1, 2, 3 items pre-populated with quantity 0
+        // List 1, 2, 3 items pre-populated with quantity 0
         let carts = {
             'special': {}, 
             'main': {},
@@ -625,7 +625,7 @@
             const currentCart = carts[listKey] || {};
             const cartKeys = Object.keys(currentCart);
 
-            // MODIFIED FILTERING: Include items if the ID exists as a key in the cart, regardless of quantity (0 or more)
+            // Include items if the ID exists as a key in the cart
             let cartItems = allItems.filter(item => cartKeys.includes(String(item.id)));
 
             if (cartItems.length === 0) {
@@ -819,7 +819,8 @@
 
             if (totalCount > 0) {
                 orderBtn.classList.add('active');
-                orderBtn.innerHTML = `총 <span style="color:#fff">${totalCount}</span>개 <span style="color:#fff">${totalPrice.toLocaleString()}원</span> 주문하기`;
+                // MODIFIED: Update button message format
+                orderBtn.innerHTML = `[<span style="color:#fff">${totalCount}</span>개] 담은 상품 확인하기`;
             } else {
                 orderBtn.classList.remove('active');
                 orderBtn.innerText = '주문할 상품을 담아주세요';
