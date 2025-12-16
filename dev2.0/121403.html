@@ -292,9 +292,9 @@
             position: absolute; bottom: 30px; left: 0; right: 0; padding: 0 20px; text-align: center; pointer-events: none;
         }
         .modal-confirm-btn {
-            background: var(--primary); color: #fff; border: none; padding: 16px; width: 100%; border-radius: 30px;
+            background: #b0b8c1; color: #fff; border: none; padding: 16px; width: 100%; border-radius: 30px;
             font-size: 16px; font-weight: 700; box-shadow: 0 5px 15px rgba(0, 143, 62, 0.4); 
-            cursor: pointer; pointer-events: auto; transform: translateY(100px); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; pointer-events: auto; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .modal-confirm-btn.visible { transform: translateY(0); }
 
@@ -474,6 +474,23 @@
             { id: 105, name: "삶은무청시래기_1kgX10 BOX", unit: "BOX", price: 27800, img: "🥘", tag: null, targetCat: 'veg' }
         ];
 
+        // NEW: Simulate custom, personalized order for the entire catalog (LIST 1 / Special)
+        const myListOrder = [
+            // Custom high priority items (Example)
+            22, // 백설_하얀설탕
+            201, // [행사] 햇 양파 
+            203, // [이벤트] 신라면
+            10, // 오뚜기_진라면
+            3,  // 양파_왕20kg망
+            5,  // 대파/ (단)
+            20, // 몽고_진간장
+            11, // 코카콜라
+            101, // 무우_특박스
+            // Low priority/less frequent items
+            2, 21, 23, 24, 102, 103, 104, 105, 202
+        ];
+
+
         // --- 2. State Management ---
         // List 1, 2, 3 items pre-populated with quantity 0
         let carts = {
@@ -486,7 +503,7 @@
         let selectedGlobalIds = new Set();
         let searchQuery = "";
         let currentTab = 'list1'; 
-        let currentSort = 'newest'; // Default sort set to 'newest'
+        let currentSort = 'mylist'; // Default sort set to 'mylist'
         
         const INITIAL_LIMIT = 3; 
         const LOAD_STEP = 3;
@@ -525,11 +542,14 @@
         // --- 4. Content Rendering Logic ---
         
         function getSortControlHTML() {
+            // MODIFIED: Sort order changed to MY LIST | 최신순 | 카테고리순
             return `
                 <div class="sort-control">
-                    <span class="sort-option ${currentSort === 'category' ? 'active' : ''}" onclick="setSort(event, 'category')">카테고리순</span>
+                    <span class="sort-option ${currentSort === 'mylist' ? 'active' : ''}" onclick="setSort(event, 'mylist')">MY LIST</span>
                     <span class="sort-divider">|</span>
                     <span class="sort-option ${currentSort === 'newest' ? 'active' : ''}" onclick="setSort(event, 'newest')">최신순</span>
+                    <span class="sort-divider">|</span>
+                    <span class="sort-option ${currentSort === 'category' ? 'active' : ''}" onclick="setSort(event, 'category')">카테고리순</span>
                 </div>
             `;
         }
@@ -568,17 +588,17 @@
                         const specialCategoryWrapper = [{ id: 'special', title: '단골 특가 상품', items: specialData, isOpen: true }];
                         renderCategoryView(specialCategoryWrapper);
                     } else {
-                        // Flat list view (default for Special when newest is selected)
-                        renderAllItemsFlat(specialData, 'newest'); 
+                        // Flat list view (newest/mylist)
+                        renderAllItemsFlat(specialData, currentSort); 
                     }
                 } else if (currentTab === 'list1') {
                     if (currentSort === 'category') {
                         // FIX: Pass categoryData (array of category objects) directly.
                         renderCategoryView(categoryData);
                     } else {
-                        // Flat list view (default for LIST 1 when newest is selected)
+                        // Flat list view (newest/mylist)
                         // Pass categoryData array to renderAllItemsFlat (which handles merging with specialData internally)
-                        renderAllItemsFlat(categoryData, 'newest'); 
+                        renderAllItemsFlat(categoryData, currentSort); 
                     }
                 }
             } else if (['list2', 'list3'].includes(currentTab)) {
@@ -623,20 +643,32 @@
             suggestionBox.style.display = 'none';
         }
 
-        // Modified to handle data input (used for flat view of LIST 1 and Special)
+        // Modified to handle data input and 'mylist' sort
         function renderAllItemsFlat(initialData = categoryData, sortMode) {
             let allItems = [];
-            // LIST 1 (catalog) combines main categories and special deals in flat view
+            
             if (initialData === categoryData) {
+                // LIST 1 (catalog): combines main categories and special deals
                 categoryData.forEach(cat => allItems.push(...cat.items));
                 allItems = [...allItems, ...specialData]; 
             } else {
-                allItems = initialData; // If running for 'specialData' directly
+                // SpecialData
+                allItems = initialData; 
             }
 
-
+            // Apply Sorting
             if (sortMode === 'newest') {
                 allItems.sort((a, b) => b.id - a.id);
+            } else if (sortMode === 'mylist') {
+                // Sort based on myListOrder array
+                allItems.sort((a, b) => {
+                    const indexA = myListOrder.indexOf(a.id);
+                    const indexB = myListOrder.indexOf(b.id);
+                    // Items not in myListOrder go to the end (Infinity)
+                    const indexValueA = indexA === -1 ? Infinity : indexA;
+                    const indexValueB = indexB === -1 ? Infinity : indexB;
+                    return indexValueA - indexValueB;
+                });
             }
 
             const container = document.createElement('div');
@@ -735,6 +767,22 @@
                         mainContentArea.appendChild(section);
                     }
                 });
+            } else if (currentSort === 'mylist') {
+                // MY LIST sort for saved lists (LIST 2/3)
+                 cartItems.sort((a, b) => {
+                    const indexA = myListOrder.indexOf(a.id);
+                    const indexB = myListOrder.indexOf(b.id);
+                    const indexValueA = indexA === -1 ? Infinity : indexA;
+                    const indexValueB = indexB === -1 ? Infinity : indexB;
+                    return indexValueA - indexValueB;
+                });
+
+                const container = document.createElement('div');
+                cartItems.forEach(item => {
+                    container.appendChild(createProductElement(item));
+                });
+                mainContentArea.appendChild(container);
+
             } else {
                 // Default: Newest sort (Flat list)
                 cartItems.sort((a, b) => b.id - a.id); 
@@ -772,10 +820,8 @@
         }
 
         function toggleCategory(catId) {
-            // For LIST 1 and Special tabs, when sorted by category
+            // This logic is for the accordion functionality in LIST 1 / Special
             if (catId === 'special') {
-                // If special is grouped by its own list (which isn't really a categoryData list)
-                // We use the first category's state for a simple toggle across all categories
                 const firstCat = categoryData[0]; 
                 firstCat.isOpen = !firstCat.isOpen;
                 categoryData.forEach(c => c.isOpen = firstCat.isOpen); 
@@ -813,8 +859,8 @@
                 searchArea.style.display = 'none';
             }
 
-            // Always reset to 'newest' sort when switching tabs, unless we are preserving state.
-            currentSort = 'newest'; // Reset sort to default 'newest'
+            // Always reset to 'mylist' sort when switching tabs
+            currentSort = 'mylist'; 
             
             scrollContainer.scrollTop = 0;
             
