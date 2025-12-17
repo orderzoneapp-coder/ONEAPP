@@ -35,6 +35,12 @@
         .card-container {
             margin-left: 60px;
         }
+        /* 모바일 대응 */
+        @media (max-width: 640px) {
+            .card-container { margin-left: 50px; }
+            .timeline-dot { width: 36px; height: 36px; font-size: 0.9rem; }
+            .timeline-line { left: 17px; }
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800">
@@ -60,7 +66,7 @@
 
         <!-- Phase 0: Pre-school -->
         <section class="mb-12 relative">
-            <div class="bg-white rounded-2xl p-6 border-l-8 border-red-500 shadow-md">
+            <div class="bg-white rounded-2xl p-6 border-l-8 border-red-500 shadow-md transform hover:-translate-y-1 transition duration-300">
                 <div class="flex items-start">
                     <div class="bg-red-100 text-red-600 rounded-full p-3 mr-4 shrink-0">
                         <i class="fa-solid fa-fire text-xl"></i>
@@ -73,7 +79,7 @@
                             <h3 class="font-bold text-red-800 text-sm mb-2"><i class="fa-solid fa-check mr-2"></i>[필수] C언어 기초 끝내기</h3>
                             <p class="text-sm text-gray-700 leading-relaxed">
                                 파이썬보다 <strong>C언어가 훨씬 중요함.</strong> 3학년 때 배울 '펌웨어'의 기초.<br>
-                                <span class="text-xs bg-white px-2 py-1 rounded border border-red-200 mt-1 inline-block">Action: '혼자 공부하는 C언어' 책 1권 떼기 (포인터 개념 필수)</span>
+                                <span class="text-xs bg-white px-2 py-1 rounded border border-red-200 mt-1 inline-block font-bold text-red-500">Action: '혼자 공부하는 C언어' 책 1권 떼기 (포인터 개념 필수)</span>
                             </p>
                         </div>
                         
@@ -103,17 +109,17 @@
                         </div>
                         <ul class="space-y-3">
                             <li class="flex items-start">
-                                <i class="fa-solid fa-graduation-cap text-blue-400 mt-1 mr-3 text-sm"></i>
+                                <i class="fa-solid fa-graduation-cap text-blue-400 mt-1 mr-3 text-sm w-4"></i>
                                 <div>
                                     <span class="block font-bold text-sm text-gray-800">학점 관리 (GPA)</span>
-                                    <span class="text-xs text-gray-600">파이썬, C언어, 수학(선형대수학)은 무조건 A+ 목표. 코딩은 벼락치기가 안 된다.</span>
+                                    <span class="text-xs text-gray-600 block mt-1">파이썬, C언어, 수학(선형대수학)은 무조건 A+ 목표. 코딩은 벼락치기가 안 된다.</span>
                                 </div>
                             </li>
                             <li class="flex items-start">
-                                <i class="fa-solid fa-users text-blue-400 mt-1 mr-3 text-sm"></i>
+                                <i class="fa-solid fa-users text-blue-400 mt-1 mr-3 text-sm w-4"></i>
                                 <div>
                                     <span class="block font-bold text-sm text-gray-800">동아리 & 네트워킹</span>
-                                    <span class="text-xs text-gray-600">선배가 없다면 동기들과 <strong>'ROS 스터디'</strong> 만들기. 삼성/KAIST 출신 교수님 연구실 찾아가서 눈도장 찍기.</span>
+                                    <span class="text-xs text-gray-600 block mt-1">선배가 없다면 동기들과 <strong>'ROS 스터디'</strong> 만들기. 삼성/KAIST 출신 교수님 연구실 찾아가서 눈도장 찍기.</span>
                                 </div>
                             </li>
                         </ul>
@@ -133,17 +139,17 @@
                         <p class="text-sm text-indigo-600 font-medium mb-3">"내 코드로 바퀴를 굴리고 날개를 돌린다"</p>
                         <ul class="space-y-3">
                             <li class="flex items-start">
-                                <i class="fa-solid fa-car-side text-indigo-400 mt-1 mr-3 text-sm"></i>
+                                <i class="fa-solid fa-car-side text-indigo-400 mt-1 mr-3 text-sm w-4"></i>
                                 <div>
                                     <span class="block font-bold text-sm text-gray-800">자율주행 자동차 제작 수업</span>
-                                    <span class="text-xs text-gray-600">이론보다 실습! 센서(Lidar, Camera) 데이터 처리 원리 파악. <strong>리눅스(Linux)</strong> 운영체제 익숙해지기.</span>
+                                    <span class="text-xs text-gray-600 block mt-1">이론보다 실습! 센서(Lidar, Camera) 데이터 처리 원리 파악. <strong>리눅스(Linux)</strong> 운영체제 익숙해지기.</span>
                                 </div>
                             </li>
                             <li class="flex items-start">
-                                <i class="fa-solid fa-plane-up text-indigo-400 mt-1 mr-3 text-sm"></i>
+                                <i class="fa-solid fa-plane-up text-indigo-400 mt-1 mr-3 text-sm w-4"></i>
                                 <div>
                                     <span class="block font-bold text-sm text-gray-800">한서대만의 필살기</span>
-                                    <span class="text-xs text-gray-600">태안 비행장에서 <strong>드론 조종 자격증</strong> 따기. LINC 3.0 사업단 해외 연수(CES) 적극 지원.</span>
+                                    <span class="text-xs text-gray-600 block mt-1">태안 비행장에서 <strong>드론 조종 자격증</strong> 따기. LINC 3.0 사업단 해외 연수(CES) 적극 지원.</span>
                                 </div>
                             </li>
                         </ul>
@@ -163,24 +169,24 @@
                         </div>
                         <ul class="space-y-3">
                             <li class="flex items-start">
-                                <i class="fa-solid fa-microchip text-purple-400 mt-1 mr-3 text-sm"></i>
+                                <i class="fa-solid fa-microchip text-purple-400 mt-1 mr-3 text-sm w-4"></i>
                                 <div>
                                     <span class="block font-bold text-sm text-gray-800">MCU 펌웨어 / VHDL</span>
-                                    <span class="text-xs text-gray-600">어렵다고 피하면 안 됨. <strong>차량용 반도체 설계</strong>의 핵심이자 남들과 차별화되는 무기.</span>
+                                    <span class="text-xs text-gray-600 block mt-1">어렵다고 피하면 안 됨. <strong>차량용 반도체 설계</strong>의 핵심이자 남들과 차별화되는 무기.</span>
                                 </div>
                             </li>
                             <li class="flex items-start">
-                                <i class="fa-solid fa-shield-halved text-purple-400 mt-1 mr-3 text-sm"></i>
+                                <i class="fa-solid fa-shield-halved text-purple-400 mt-1 mr-3 text-sm w-4"></i>
                                 <div>
                                     <span class="block font-bold text-sm text-gray-800">네트워크 보안</span>
-                                    <span class="text-xs text-gray-600">'해킹 당하지 않는 자율주행차' 기술 배우기 (블루오션).</span>
+                                    <span class="text-xs text-gray-600 block mt-1">'해킹 당하지 않는 자율주행차' 기술 배우기 (블루오션).</span>
                                 </div>
                             </li>
                             <li class="flex items-start">
-                                <i class="fa-solid fa-flask text-purple-400 mt-1 mr-3 text-sm"></i>
+                                <i class="fa-solid fa-flask text-purple-400 mt-1 mr-3 text-sm w-4"></i>
                                 <div>
                                     <span class="block font-bold text-sm text-gray-800">학부 연구생 & 인턴</span>
-                                    <span class="text-xs text-gray-600">교수님 랩(Lab) 들어가서 프로젝트 보조. 방학 땐 협력 기업(보스반도체 등) 인턴 도전.</span>
+                                    <span class="text-xs text-gray-600 block mt-1">교수님 랩(Lab) 들어가서 프로젝트 보조. 방학 땐 협력 기업(보스반도체 등) 인턴 도전.</span>
                                 </div>
                             </li>
                         </ul>
@@ -199,17 +205,17 @@
                         </div>
                         <ul class="space-y-3">
                             <li class="flex items-start">
-                                <i class="fa-solid fa-trophy text-slate-400 mt-1 mr-3 text-sm"></i>
+                                <i class="fa-solid fa-trophy text-slate-400 mt-1 mr-3 text-sm w-4"></i>
                                 <div>
                                     <span class="block font-bold text-sm text-gray-800">캡스톤 디자인 (졸업작품)</span>
-                                    <span class="text-xs text-gray-600">단순 RC카 X. <strong>융합 주제</strong> 선정하기.<br>(예: 불법 드론 탐지 시스템, 악천후 UAM 제어 알고리즘)</span>
+                                    <span class="text-xs text-gray-600 block mt-1">단순 RC카 X. <strong>융합 주제</strong> 선정하기.<br>(예: 불법 드론 탐지 시스템, 악천후 UAM 제어 알고리즘)</span>
                                 </div>
                             </li>
                             <li class="flex items-start">
-                                <i class="fa-solid fa-briefcase text-slate-400 mt-1 mr-3 text-sm"></i>
+                                <i class="fa-solid fa-briefcase text-slate-400 mt-1 mr-3 text-sm w-4"></i>
                                 <div>
                                     <span class="block font-bold text-sm text-gray-800">취업 타겟 설정</span>
-                                    <span class="text-xs text-gray-600">현대차/기아 R&D, KAI(한국항공우주), LIG넥스원(방산), 차량용 반도체 기업.</span>
+                                    <span class="text-xs text-gray-600 block mt-1">현대차/기아 R&D, KAI(한국항공우주), LIG넥스원(방산), 차량용 반도체 기업.</span>
                                 </div>
                             </li>
                         </ul>
