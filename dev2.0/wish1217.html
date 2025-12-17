@@ -2,912 +2,282 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>빠른 주문 시뮬레이션</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한서대 AI모빌리티 합격 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- Reset & Base Styles --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #f5f5f5; display: flex; justify-content: center; min-height: 100vh; color: #333; }
-        
-        /* --- Mobile Container Layout --- */
-        .app-container {
-            width: 100%; max-width: 480px; background-color: #fff; position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; height: 100vh;
-        }
-
-        /* --- Colors & Vars --- */
-        :root { 
-            --primary: #008f3e; 
-            --primary-dark: #007a35;
-            --gray-text: #666; 
-            --border: #eef1f4; 
-            --bg-gray: #f9f9f9; 
-            --blue-btn: #eef6ff; 
-            --blue-text: #2d70f3; 
-            --red-point: #ff4b4b;
-        }
-
-        /* --- Icons (SVG) --- */
-        .icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-        /* --- Header --- */
-        header { height: 56px; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; background: #fff; z-index: 10; }
-        .header-title { font-size: 20px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
-        .header-btn { background: none; border: none; padding: 8px; margin: -8px; cursor: pointer; color: #333; }
-        
-        /* NEW: Header Link Button Style */
-        .header-link-btn {
-            display: flex;
-            align-items: center;
-            background: none;
-            border: none;
-            padding: 8px;
-            margin: -8px;
-            cursor: pointer;
-            color: #333;
-            text-decoration: none; /* For anchor tag behavior */
-        }
-        .header-link-text {
-            margin-left: 6px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #333;
-        }
-
-        /* --- Tab Bar Wrapper (Fixed Segment Layout) */
-        .tab-nav-wrapper {
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            background: #fff;
-            width: 100%;
-            height: 48px; /* Fixed height */
-        }
-
-        /* Fixed Width Container for Tabs */
-        .tab-fixed-container {
-            flex: 1; /* Take up all remaining space */
-            display: flex;
-            height: 100%;
-        }
-
-        /* Equal Width Tabs */
-        .tab { 
-            flex: 1; /* Equal distribution 1/N */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px; /* Slightly reduced for fit */
-            color: #999; 
-            cursor: pointer; 
-            font-weight: 500; 
-            transition: all 0.2s;
-            position: relative;
-            white-space: nowrap;
-            letter-spacing: -0.5px; /* Tighten text */
-            padding: 0 2px; /* Minimal padding */
-        }
-        
-        /* Active Indicator */
-        .tab.active { 
-            color: var(--primary); 
-            font-weight: 800; 
-            /* Full width bottom border for active tab */
-        }
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: var(--primary);
-        }
-
-        /* Fixed Edit Button */
-        .tab-fixed-btn { 
-            width: 44px; /* Fixed width for button */
-            height: 100%;
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border-left: 1px solid var(--border); 
-            color: #aaa; 
-            background: #fff; 
-            cursor: pointer;
-            flex-shrink: 0; /* Prevent shrinking */
-        }
-
-        /* --- Sort Control (Inline Style) --- */
-        .sort-control {
-            display: flex; align-items: center; font-size: 13px; color: #888; font-weight: 400; margin-right: 8px;
-        }
-        .sort-option { cursor: pointer; }
-        .sort-option.active { color: #333; font-weight: 700; }
-        .sort-divider { color: #ddd; margin: 0 6px; font-size: 10px; }
-
-        /* --- Search Area (Toggle) --- */
-        .search-area { padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--border); display: none; animation: slideDown 0.2s ease-out; }
-        @keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .search-box-wrapper { display: flex; align-items: center; gap: 10px; }
-        .search-input-box { flex: 1; display: flex; align-items: center; border: 2px solid var(--primary); border-radius: 8px; padding: 8px 12px; height: 44px; }
-        .search-input-box input { flex: 1; border: none; outline: none; font-size: 16px; margin-left: 8px; }
-        .search-cancel { font-size: 15px; color: #666; cursor: pointer; padding: 5px; white-space: nowrap; }
-
-        /* --- Content Area --- */
-        .content-scroll { flex: 1; overflow-y: auto; background: #fff; padding-bottom: 140px; /* nav(60) + footer(72) + buffer */ }
-        
-        /* Category Styles */
-        .category-section { border-bottom: 8px solid #f5f5f5; }
-        .category-section:last-child { border-bottom: none; }
-        
-        .category-header { 
-            padding: 16px; font-size: 15px; color: #333; font-weight: 700; 
-            border-bottom: 1px solid var(--border); background: #fff; 
-            display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; /* Restore pointer */
-            user-select: none;
-        }
-        .category-header span { color: #888; font-weight: 400; margin-left: 4px; }
-        
-        /* Arrow Rotation Logic */
-        .category-arrow { transition: transform 0.3s; color: #aaa; }
-        .category-arrow { transform: rotate(0deg); } 
-        .category-header.open .category-arrow { transform: rotate(180deg); }
-
-        .category-header-right { display: flex; align-items: center; }
-
-        .category-items { display: none; }
-        .category-items.open { display: block; animation: expandList 0.3s ease-out; }
-        
-        @keyframes expandList {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- Product List Item --- */
-        .product-item { display: flex; padding: 16px; border-bottom: 1px solid var(--border); }
-        
-        .prod-img { width: 70px; height: 70px; background: #f0f0f0; border-radius: 8px; margin-right: 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; position: relative; overflow: hidden;}
-        .prod-img img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .prod-info { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-        .prod-name { font-size: 16px; font-weight: 600; margin-bottom: 6px; color: #222; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .prod-unit { font-size: 13px; color: #999; margin-bottom: 6px; }
-        .prod-price { font-size: 16px; font-weight: 800; color: var(--primary); }
-        .prod-tag { display: inline-block; font-size: 11px; color: #ff6b6b; border: 1px solid #ff6b6b; padding: 1px 4px; border-radius: 3px; margin-bottom: 4px; width: fit-content;}
-
-        /* --- Quantity Control --- */
-        .qty-control { display: flex; align-items: center; border: 1px solid #e0e0e0; border-radius: 6px; height: 36px; margin-left: 10px; background: #fff; overflow: hidden; }
-        .qty-btn { width: 32px; height: 100%; border: none; background: #f8f9fa; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #555; font-size: 18px; transition: background 0.1s; }
-        .qty-btn:active { background: #e9ecef; }
-        .qty-val { width: 36px; text-align: center; font-size: 15px; font-weight: 600; color: #333; }
-
-        /* --- Search Section Headers --- */
-        .search-section-header {
-            padding: 12px 16px; background: #f0f2f5; color: #555; font-size: 14px; font-weight: 700; border-bottom: 1px solid #e0e0e0;
-        }
-        
-        /* Load More Button Style */
-        .search-more-btn {
-            display: flex; justify-content: center; align-items: center; width: 100%; padding: 16px; 
-            background: #fff; color: #555; border: none; border-bottom: 1px solid #f0f0f0;
-            font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s;
-        }
-        .search-more-btn:active { background: #f9f9f9; }
-        .search-more-btn::after {
-            content: ''; display: inline-block; margin-left: 6px; width: 8px; height: 8px;
-            border-right: 2px solid #aaa; border-bottom: 2px solid #aaa; transform: rotate(45deg); margin-top: -4px;
-        }
-
-        /* --- Toast Message --- */
-        .toast-msg {
-            position: fixed; bottom: 140px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px; border-radius: 20px;
-            font-size: 14px; z-index: 2000; opacity: 0; transition: opacity 0.3s; pointer-events: none;
-        }
-        .toast-msg.show { opacity: 1; }
-
-        /* --- Footer (Order Bar) - Adjusted for Bottom Nav --- */
-        .footer-bar {
-            position: absolute; bottom: 60px; /* Above Bottom Nav */
-            left: 0; right: 0; background: #fff; border-top: 1px solid #e0e0e0; 
-            padding: 12px 16px; display: flex; align-items: center; height: 72px; z-index: 50; 
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
-        }
-        .delivery-info { margin-right: auto; line-height: 1.3; }
-        .delivery-label { font-size: 12px; color: #666; }
-        .delivery-date { font-size: 15px; color: var(--blue-text); font-weight: 700; }
-        
-        .order-btn {
-            background: #b0b8c1; color: #fff; border: none; padding: 0 24px; height: 48px; border-radius: 8px; 
-            font-weight: 700; font-size: 16px; cursor: not-allowed; min-width: 200px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: background 0.2s;
-        }
-        .order-btn.active { background: #50555c; cursor: pointer; } 
-
-        /* --- Bottom Navigation Bar (Text Removed) --- */
-        .bottom-nav {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
-            background: #fff; border-top: 1px solid #eee; display: flex;
-            justify-content: space-around; align-items: center; z-index: 60;
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            width: 100%; height: 100%; color: #999; cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .nav-item.active { color: var(--primary); }
-        .nav-item svg { width: 24px; height: 24px; stroke-width: 2; }
-        /* Removed .nav-item span styles */
-        
-        /* Kakao Icon Color Override */
-        .nav-item.kakao svg { fill: #3c1e1e; stroke: none; }
-        .nav-item.kakao.active { color: #3c1e1e; }
-
-
-        /* --- SPA Modal (Full Screen) --- */
-        .modal-spa {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f5f5f5; z-index: 2000;
-            display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .modal-spa.open { transform: translateX(0); }
-        
-        .modal-header { height: 56px; padding: 0 16px; background: #fff; display: flex; align-items: center; border-bottom: 1px solid #eee; }
-        .modal-back-btn { background: none; border: none; padding: 8px; margin-left: -8px; margin-right: 8px; cursor: pointer; }
-        .modal-title { font-size: 18px; font-weight: 700; flex: 1; }
-        .modal-action { font-size: 14px; color: #666; font-weight: 500; cursor: pointer; }
-
-        .modal-content { flex: 1; overflow-y: auto; padding-bottom: 80px; }
-        
-        .modal-item { background: #fff; padding: 16px; margin-bottom: 1px; display: flex; align-items: center; cursor: pointer; }
-        .modal-item:active { background: #f9f9f9; }
-        .modal-checkbox { 
-            width: 24px; height: 24px; border: 2px solid #ddd; border-radius: 4px; margin-left: auto; 
-            display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-        }
-        .modal-checkbox.checked { background: var(--primary); border-color: var(--primary); }
-        .modal-checkbox.checked::after { content: ''; width: 6px; height: 10px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg) translateY(-1px); }
-
-        .modal-confirm-container {
-            position: absolute; bottom: 30px; left: 0; right: 0; padding: 0 20px; text-align: center; pointer-events: none;
-        }
-        .modal-confirm-btn {
-            background: var(--primary); color: #fff; border: none; padding: 16px; width: 100%; border-radius: 30px;
-            font-size: 16px; font-weight: 700; box-shadow: 0 5px 15px rgba(0, 143, 62, 0.4); 
-            cursor: pointer; pointer-events: auto; transform: translateY(100px); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .modal-confirm-btn.visible { transform: translateY(0); }
-
-        /* Empty State */
-        .empty-state { text-align: center; padding: 60px 20px; color: #999; font-size: 15px; }
-
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .scroll-hidden::-webkit-scrollbar { display: none; }
+        .scroll-hidden { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800">
 
-    <div class="app-container">
-        <!-- Main Header -->
-        <header>
-            <button class="header-link-btn" onclick="window.location.href='https://nhline.co.kr/'">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"></path></svg>
-                <span class="header-link-text">NH라인</span>
+    <!-- Header -->
+    <header class="gradient-bg text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <span class="text-xs opacity-80 block mb-1">2025 신입생 가이드</span>
+                <h1 class="text-xl font-bold"><i class="fa-solid fa-plane-departure mr-2"></i>한서대 AI모빌리티</h1>
+            </div>
+            <button onclick="scrollToSection('start')" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full text-sm font-medium transition">
+                필독사항
             </button>
-            <div class="header-title">오더즈</div>
-            <div class="header-btn" style="font-size: 14px; font-weight: bold; color: #666;">OP</div>
-        </header>
+        </div>
+    </header>
 
-        <!-- Search Bar (Initially Hidden) -->
-        <div class="search-area" id="searchArea">
-            <div class="search-box-wrapper">
-                <div class="search-input-box">
-                    <svg class="icon" style="width:20px; height:20px; color:#aaa;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" id="localSearchInput" placeholder="상품명 검색 (예: 무)" autocomplete="off">
+    <!-- Hero Section -->
+    <section class="max-w-4xl mx-auto px-6 py-10 text-center">
+        <div class="inline-block bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-sm font-bold mb-4">
+            🎉 합격을 진심으로 축하합니다!
+        </div>
+        <h2 class="text-3xl md:text-4xl font-black mb-6 leading-tight">
+            미래를 움직이는 힘,<br>
+            <span class="text-blue-700">AI 모빌리티</span>의 세계로
+        </h2>
+        <p class="text-gray-600 mb-8 leading-relaxed">
+            이제 단순한 '이동'이 아닌 '스마트한 이동'의 시대입니다.<br>
+            아드님이 걷게 될 길은 4차 산업혁명의 가장 핵심적인 분야입니다.
+        </p>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <i class="fa-solid fa-brain text-4xl text-purple-500 mb-3"></i>
+                <h3 class="font-bold text-lg">AI (두뇌)</h3>
+                <p class="text-xs text-gray-500 mt-1">판단, 인식, 제어</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <i class="fa-solid fa-car-side text-4xl text-blue-500 mb-3"></i>
+                <h3 class="font-bold text-lg">모빌리티 (몸통)</h3>
+                <p class="text-xs text-gray-500 mt-1">자동차, 드론, UAM</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Concept -->
+    <section id="concept" class="bg-white py-12 border-y border-gray-200">
+        <div class="max-w-4xl mx-auto px-6">
+            <h3 class="text-2xl font-bold mb-6 text-gray-900"><i class="fa-regular fa-lightbulb text-yellow-500 mr-2"></i>쉽게 이해하는 AI 모빌리티</h3>
+            <div class="bg-blue-50 p-6 rounded-xl mb-6">
+                <p class="text-lg font-medium text-blue-900 mb-2">"자동차가 눈을 뜨고, 드론이 스스로 길을 찾습니다."</p>
+                <p class="text-gray-700 leading-relaxed">
+                    기존의 기계공학이 '잘 달리는 차'를 만드는 것이었다면, 
+                    <strong>AI 모빌리티</strong>는 카메라와 센서로 세상을 보고(Computer Vision), 
+                    어디로 갈지 스스로 판단하는(AI) 기술을 배우는 것입니다.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="p-4 border rounded-lg">
+                    <div class="font-bold text-blue-600 mb-1">자율주행차</div>
+                    <span class="text-xs text-gray-500">운전자 없는 택시</span>
                 </div>
-                <div class="search-cancel" onclick="toggleSearch()">취소</div>
+                <div class="p-4 border rounded-lg">
+                    <div class="font-bold text-blue-600 mb-1">UAM (도심항공)</div>
+                    <span class="text-xs text-gray-500">하늘을 나는 택시</span>
+                </div>
+                <div class="p-4 border rounded-lg">
+                    <div class="font-bold text-blue-600 mb-1">배송 로봇</div>
+                    <span class="text-xs text-gray-500">스마트 물류</span>
+                </div>
             </div>
         </div>
+    </section>
 
-        <!-- NEW Tab Bar Structure: FIXED SEGMENT LAYOUT -->
-        <div class="tab-nav-wrapper">
-            <div class="tab-fixed-container">
-                <div class="tab" id="tab-special" onclick="switchTab('special')">단골특가</div>
-                <div class="tab active" id="tab-main" onclick="switchTab('main')">전체</div>
-                <div class="tab" id="tab-list1" onclick="switchTab('list1')">LIST 1</div>
-                <div class="tab" id="tab-list2" onclick="switchTab('list2')">LIST 2</div>
-                <div class="tab" id="tab-list3" onclick="switchTab('list3')">LIST 3</div>
-            </div>
-            
-            <!-- Fixed Edit Button -->
-            <div class="tab-fixed-btn" onclick="alert('편집/설정 화면으로 이동합니다.')">
-                <svg class="icon" style="width:18px; height:18px;" viewBox="0 0 24 24">
-                    <line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line>
-                    <line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line>
-                    <line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line>
-                    <line x1="17" y1="16" x2="23" y2="16"></line>
-                </svg>
-            </div>
-        </div>
-
-        <!-- Main Content Scroll Area -->
-        <div class="content-scroll" id="scrollContainer">
-            <div id="mainContentArea"></div>
-
-            <div class="global-search-suggestion" id="globalSearchSuggestion">
-                <div class="global-search-text">찾으시는 상품이 리스트에 없나요?</div>
-                <button class="global-search-btn" id="globalSearchBtn" onclick="openGlobalSearch()">
-                    전체 상품에서 검색하기
-                </button>
-            </div>
-        </div>
-
-        <!-- Order Action Bar -->
-        <div class="footer-bar">
-            <div class="delivery-info">
-                <div class="delivery-label">배송예정일</div>
-                <div class="delivery-date">2025-10-20 (월)</div>
-            </div>
-            <button class="order-btn" id="mainOrderBtn" onclick="processOrder()">주문할 상품을 담아주세요</button>
-        </div>
-
-        <!-- Bottom Navigation Bar -->
-        <nav class="bottom-nav">
-            <div class="nav-item active" onclick="handleNavClick('home')">
-                <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-            </div>
-            <div class="nav-item" onclick="handleNavClick('search')">
-                <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-            </div>
-            <div class="nav-item" onclick="handleNavClick('check')">
-                <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor">
-                    <polyline points="9 11 12 14 22 4"></polyline>
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                </svg>
-            </div>
-            <div class="nav-item kakao" onclick="handleNavClick('kakao')">
-                <svg viewBox="0 0 24 24" class="icon">
-                    <path d="M12 3c-5.52 0-10 3.58-10 8 0 2.86 1.89 5.4 4.85 6.86-.21.78-.77 2.82-.88 3.23a.62.62 0 0 0 .89.72c.36-.26 3.65-2.48 4.26-2.91.29.04.59.06.88.06 5.52 0 10-3.58 10-8s-4.48-8-10-8z" fill="#3c1e1e"></path>
-                </svg>
-            </div>
-        </nav>
+    <!-- Section 2: Comparison -->
+    <section class="max-w-4xl mx-auto px-6 py-12">
+        <h3 class="text-2xl font-bold mb-2 text-gray-900"><i class="fa-solid fa-scale-balanced text-indigo-500 mr-2"></i>전국 학과 비교 분석</h3>
+        <p class="text-sm text-gray-500 mb-6">학교별로 주력하는 '탈것'의 종류가 다릅니다.</p>
         
-        <!-- Toast Message -->
-        <div id="toast" class="toast-msg"></div>
-    </div>
+        <div class="overflow-x-auto scroll-hidden">
+            <div class="inline-flex md:grid md:grid-cols-4 gap-4 w-full min-w-[600px] pb-4">
+                <!-- KAIST -->
+                <div class="bg-gray-100 p-5 rounded-xl border border-gray-200 flex-1">
+                    <h4 class="font-bold text-gray-700 mb-2">KAIST</h4>
+                    <span class="bg-gray-200 text-xs px-2 py-1 rounded mb-3 inline-block">연구 중심</span>
+                    <p class="text-sm text-gray-600">이론과 원천 기술 연구.<br>알고리즘 개발에 집중.</p>
+                </div>
+                <!-- Hanyang -->
+                <div class="bg-gray-100 p-5 rounded-xl border border-gray-200 flex-1">
+                    <h4 class="font-bold text-gray-700 mb-2">한양대</h4>
+                    <span class="bg-gray-200 text-xs px-2 py-1 rounded mb-3 inline-block">미래 자동차</span>
+                    <p class="text-sm text-gray-600">현대차 등 자동차 산업과 강한 연계.<br>지상 모빌리티 중심.</p>
+                </div>
+                <!-- Inha -->
+                <div class="bg-gray-100 p-5 rounded-xl border border-gray-200 flex-1">
+                    <h4 class="font-bold text-gray-700 mb-2">인하대</h4>
+                    <span class="bg-gray-200 text-xs px-2 py-1 rounded mb-3 inline-block">물류/시스템</span>
+                    <p class="text-sm text-gray-600">스마트 모빌리티 엔지니어링.<br>제조 및 물류 시스템 강점.</p>
+                </div>
+                <!-- Hanseo -->
+                <div class="bg-blue-600 text-white p-5 rounded-xl shadow-lg transform scale-105 flex-1 ring-4 ring-blue-100 relative">
+                    <div class="absolute -top-3 -right-3 bg-yellow-400 text-blue-900 text-xs font-bold px-2 py-1 rounded-full shadow">OUR CHOICE</div>
+                    <h4 class="font-bold text-xl mb-2">한서대</h4>
+                    <span class="bg-blue-500 text-xs px-2 py-1 rounded mb-3 inline-block">항공/드론 특화</span>
+                    <p class="text-sm opacity-90">아시아 최대 대학 비행장 보유.<br>드론, UAM 실증 테스트 최적화.</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded text-sm text-yellow-800">
+            <strong>💡 한서대의 경쟁력:</strong> 다른 대학이 컴퓨터 앞에서의 '시뮬레이션'에 강하다면, 한서대는 태안 비행장에서 <strong>실제 드론과 비행체를 띄워보는 '현장성'</strong>이 압도적입니다.
+        </div>
+    </section>
 
-    <!-- SPA Modal: Global Search -->
-    <div class="modal-spa" id="globalSearchModal">
-        <div class="modal-header">
-            <button class="modal-back-btn" onclick="closeGlobalSearch()">
-                <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <div class="modal-title"><span style="color:#ff4b4b" id="modalSearchQuery"></span> 검색 결과</div>
-            <div class="modal-action">정지상품보기</div>
-        </div>
-        
-        <div class="modal-content" id="modalList">
-            <!-- Modal Items -->
-        </div>
+    <!-- Section 3: 7 Must Check Points -->
+    <section id="start" class="bg-gray-100 py-12">
+        <div class="max-w-4xl mx-auto px-6">
+            <h3 class="text-2xl font-bold mb-6 text-gray-900">✅ 반드시 확인해야 할 7가지</h3>
+            <div class="space-y-4">
+                
+                <!-- Item 1 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition" onclick="toggleDetail('detail1')">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-lg text-blue-800">1. 교육 목표 & 비전</h4>
+                        <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div id="detail1" class="hidden mt-3 pt-3 border-t border-gray-100 text-gray-600 text-sm leading-relaxed">
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>한서대는 <strong>'항공·공항·디자인'</strong> 특성화 대학입니다.</li>
+                            <li>단순 코딩 개발자가 아닌, <strong>항공 모빌리티(드론, UAM) 제어 전문가</strong>를 양성하는 것이 목표인지 확인해야 합니다.</li>
+                            <li>키워드: 항공특성화, SDV(소프트웨어 중심 자동차), 무인이동체</li>
+                        </ul>
+                    </div>
+                </div>
 
-        <div class="modal-confirm-container">
-            <button class="modal-confirm-btn" id="modalConfirmBtn" onclick="confirmGlobalSelection()">
-                선택 상품 리스트에 추가
-            </button>
+                <!-- Item 2 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition" onclick="toggleDetail('detail2')">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-lg text-blue-800">2. 커리큘럼 분석</h4>
+                        <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div id="detail2" class="hidden mt-3 pt-3 border-t border-gray-100 text-gray-600 text-sm leading-relaxed">
+                        <div class="grid grid-cols-2 gap-2 mb-2">
+                            <div class="bg-blue-50 p-2 rounded">
+                                <span class="block font-bold text-blue-600">AI 필수</span>
+                                파이썬, 딥러닝, 컴퓨터비전(카메라 센서)
+                            </div>
+                            <div class="bg-green-50 p-2 rounded">
+                                <span class="block font-bold text-green-600">모빌리티 필수</span>
+                                드론공학, ROS(로봇운영체제), 자율주행제어
+                            </div>
+                        </div>
+                        <p>★ 특히 <strong>ROS(Robot Operating System)</strong> 수업이 있는지 꼭 확인하세요. 현업에서 가장 우대받는 기술입니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition" onclick="toggleDetail('detail3')">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-lg text-blue-800">3. 교수진 전문성</h4>
+                        <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div id="detail3" class="hidden mt-3 pt-3 border-t border-gray-100 text-gray-600 text-sm leading-relaxed">
+                        <p>신설 학과는 교수진 구성이 중요합니다.</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li><strong>산업체 출신 교수님</strong>이 계신가? (삼성전자, 현대차, KAI 등)</li>
+                            <li>전공이 <strong>'제어계측'</strong>이나 <strong>'컴퓨터공학'</strong> 베이스인지 확인.</li>
+                            <li>교수님 숫자가 최소 4~5명 이상 확보되었는지 학과 홈페이지에서 확인 필요.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition" onclick="toggleDetail('detail4')">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-lg text-blue-800">4. 시설 및 장비 (강점)</h4>
+                        <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div id="detail4" class="hidden mt-3 pt-3 border-t border-gray-100 text-gray-600 text-sm leading-relaxed">
+                        <p class="font-bold text-blue-600">한서대의 가장 큰 무기입니다.</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li><strong>태안 UV랜드/비행장:</strong> 국내 대학 중 유일하게 자체 활주로와 관제 시설 보유.</li>
+                            <li>드론 테스트베드가 교내에 있는지, 고성능 AI 연산 서버(GPU)가 학생들에게 개방되는지 확인하세요.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition" onclick="toggleDetail('detail5')">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-lg text-blue-800">5. 산학협력 (MOU)</h4>
+                        <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div id="detail5" class="hidden mt-3 pt-3 border-t border-gray-100 text-gray-600 text-sm leading-relaxed">
+                        <p>기업과 연계된 프로젝트가 곧 취업입니다.</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li>관련 기업: <strong>파블로항공, 대한항공, KAI(한국항공우주산업)</strong> 등 항공/드론 관련 기업과의 협약 여부.</li>
+                            <li>최근 한서대는 <strong>'무인이동체'</strong> 관련 기업들과 활발히 협약 중입니다.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition" onclick="toggleDetail('detail6')">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-lg text-blue-800">6. 신설학과의 득과 실</h4>
+                        <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div id="detail6" class="hidden mt-3 pt-3 border-t border-gray-100 text-gray-600 text-sm leading-relaxed">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <div class="bg-red-50 p-3 rounded">
+                                <span class="font-bold text-red-600 block mb-1">단점: 선배가 없다</span>
+                                <p>시험 족보나 멘토링이 부족할 수 있습니다. <br>→ <strong>교수님과 직접 소통</strong>하며 극복해야 합니다.</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded">
+                                <span class="font-bold text-blue-600 block mb-1">장점: 1기 프리미엄</span>
+                                <p>학교의 예산 지원이 집중됩니다. 또한 기업에서도 첫 졸업생에게 관심을 갖는 <strong>'특별 채용'</strong> 기회가 많습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 7 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition" onclick="toggleDetail('detail7')">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-lg text-blue-800">7. 학생이 준비해야 할 태도</h4>
+                        <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div id="detail7" class="hidden mt-3 pt-3 border-t border-gray-100 text-gray-600 text-sm leading-relaxed">
+                        <p class="font-bold">"능동적인 개척자 정신"</p>
+                        <p class="mt-2">커리큘럼이 고정되어 있지 않고 매년 바뀔 수 있습니다. 학교에서 주는 것만 기다리지 말고, <strong>'드론 축구 동아리', '자율주행 경진대회'</strong> 등에 나가서 직접 포트폴리오를 만들어야 합니다.</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Footer Advice -->
+    <section class="max-w-4xl mx-auto px-6 py-10 mb-10">
+        <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-8 text-white text-center">
+            <h3 class="text-2xl font-bold mb-4">아드님을 위한 한마디</h3>
+            <p class="mb-6 opacity-90 leading-relaxed">
+                "AI 모빌리티는 이제 막 시작된 태동기입니다.<br>
+                남들이 닦아놓은 길을 가는 것이 아니라,<br>
+                <strong>네가 가는 길이 곧 표준이 되는 기회</strong>를 잡은 것입니다.<br>
+                한서대의 넓은 활주로처럼 너의 꿈을 마음껏 펼치길 응원한다!"
+            </p>
+            <div class="inline-block border border-white/30 rounded-lg px-4 py-2 text-sm text-blue-200">
+                추천 활동: 학과 내 'ROS 스터디' 만들기 / 드론 자격증 취득
+            </div>
+        </div>
+    </section>
 
     <script>
-        // --- 1. Data Mockup ---
-        const categoryData = [
-            {
-                id: 'veg',
-                title: '대분류 채소/과일',
-                isOpen: true, 
-                items: [
-                    { id: 2, name: "양배추(대)42망(3입) BOX", unit: "BOX", price: 10900, img: "🥦", tag: null },
-                    { id: 3, name: "양파_왕20kg망 BOX", unit: "BOX", price: 22000, img: "🧅", tag: null },
-                    { id: 5, name: "대파/ (단) EA", unit: "EA", price: 3200, img: "🎋", tag: null },
-                ]
-            },
-            {
-                id: 'food',
-                title: '식품,음료',
-                isOpen: true, 
-                items: [
-                    { id: 10, name: "오뚜기_진라면_매운맛 30입", unit: "BOX", price: 24500, img: "🍜", tag: null },
-                    { id: 11, name: "코카콜라_업소용 1.25L", unit: "EA", price: 2100, img: "🥤", tag: "인기" },
-                ]
-            },
-            {
-                id: 'sauce',
-                title: '양념,소스',
-                isOpen: true, 
-                items: [
-                    { id: 20, name: "몽고_진간장_13L", unit: "CAN", price: 48000, img: "🏺", tag: null },
-                    { id: 21, name: "CJ_해찬들_고추장 14kg", unit: "CAN", price: 52000, img: "🌶️", tag: null },
-                    { id: 22, name: "백설_하얀설탕 15kg", unit: "包", price: 19800, img: "🧂", tag: null },
-                    { id: 23, name: "오뚜기_옛날참기름", unit: "CAN", price: 32000, img: "🧈", tag: null },
-                    { id: 24, name: "미원_2kg", unit: "EA", price: 9500, img: "🧂", tag: null },
-                ]
-            }
-        ];
-
-        // Special Event Products for '단골특가'
-        const specialData = [
-            { id: 201, name: "[행사] 햇 양파 15kg", unit: "망", price: 12000, img: "🧅", tag: "초특가" },
-            { id: 202, name: "[행사] 다발무 1단", unit: "단", price: 4500, img: "🥬", tag: "한정수량" },
-            { id: 203, name: "[이벤트] 신라면 30입", unit: "BOX", price: 21000, img: "🍜", tag: "특가" }
-        ];
-
-        // Mocking a larger database for simulation
-        const globalDatabase = [
-            { id: 101, name: "무우_특박스_10입 BOX", unit: "BOX", price: 22800, img: "📦", tag: "행사", targetCat: 'veg' },
-            { id: 102, name: "무우_상박스 BOX", unit: "BOX", price: 17000, img: "📦", tag: null, targetCat: 'veg' },
-            { id: 103, name: "무우(낱개)", unit: "EA", price: 2800, img: "🥣", tag: null, targetCat: 'veg' },
-            { id: 104, name: "무순소_60g팩 EA", unit: "EA", price: 500, img: "🌱", tag: null, targetCat: 'veg' },
-            { id: 105, name: "삶은무청시래기_1kgX10 BOX", unit: "BOX", price: 27800, img: "🥘", tag: null, targetCat: 'veg' }
-        ];
-
-        // --- 2. State Management ---
-        // List 1, 2, 3 items pre-populated with quantity 0
-        let carts = {
-            'special': {}, 
-            'main': {},
-            // LIST 1: Veggies + Sauce (Qty 0)
-            'list1': { 2: 0, 3: 0, 5: 0, 20: 0 }, 
-            // LIST 2: Food + Special (Qty 0)
-            'list2': { 10: 0, 11: 0, 203: 0, 21: 0 }, 
-            // LIST 3: Sauce + Global (Qty 0)
-            'list3': { 22: 0, 23: 0, 24: 0, 101: 0 } 
-        };
-        
-        let selectedGlobalIds = new Set();
-        let searchQuery = "";
-        let currentTab = 'main'; // 'special', 'main', 'list1', 'list2', 'list3'
-        let currentSort = 'category'; 
-        
-        const INITIAL_LIMIT = 3; 
-        const LOAD_STEP = 3;
-        let currentSearchLimit = INITIAL_LIMIT;
-
-        // --- 3. DOM Elements ---
-        const mainContentArea = document.getElementById('mainContentArea');
-        const searchArea = document.getElementById('searchArea');
-        const localInput = document.getElementById('localSearchInput');
-        const suggestionBox = document.getElementById('globalSearchSuggestion');
-        const modalEl = document.getElementById('globalSearchModal');
-        const modalListEl = document.getElementById('modalList');
-        const orderBtn = document.getElementById('mainOrderBtn');
-        const scrollContainer = document.getElementById('scrollContainer');
-        const toastEl = document.getElementById('toast');
-
-        // Helper: Get Current Cart Key
-        function getCurrentCartKey() {
-            if (currentTab === 'special') return 'special'; // Special has its own cart
-            if (currentTab === 'main') return 'main';
-            return currentTab; // 'list1', 'list2', 'list3'
-        }
-
-        // --- 4. Content Rendering Logic ---
-        
-        function getSortControlHTML() {
-            return `
-                <div class="sort-control">
-                    <span class="sort-option ${currentSort === 'category' ? 'active' : ''}" onclick="setSort(event, 'category')">카테고리순</span>
-                    <span class="sort-divider">|</span>
-                    <span class="sort-option ${currentSort === 'newest' ? 'active' : ''}" onclick="setSort(event, 'newest')">최신순</span>
-                </div>
-            `;
-        }
-
-        function setSort(e, mode) {
-            e.stopPropagation();
-            currentSort = mode;
-            renderContent();
-        }
-
-        function renderContent() {
-            mainContentArea.innerHTML = '';
-
-            // 1. Search Mode Priority
-            if (searchQuery) {
-                renderSearchResults();
-                return;
-            }
-
-            // 2. Tab Logic
-            if (currentTab === 'special') {
-                // RENDER SPECIAL TAB CONTENT
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'category-header';
-                headerDiv.style.cursor = 'default';
-                headerDiv.style.justifyContent = 'flex-end'; 
-                headerDiv.style.borderBottom = '1px solid #eef1f4';
-                headerDiv.innerHTML = getSortControlHTML();
-                mainContentArea.appendChild(headerDiv);
-
-                renderSpecialItems();
-
-            } else if (currentTab === 'main') {
-                // RENDER MAIN TAB CONTENT
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'category-header';
-                headerDiv.style.cursor = 'default';
-                headerDiv.style.justifyContent = 'flex-end'; 
-                headerDiv.style.borderBottom = '1px solid #eef1f4';
-                headerDiv.innerHTML = getSortControlHTML();
-                mainContentArea.appendChild(headerDiv);
-
-                if (currentSort === 'category') {
-                    renderCategoryView();
-                } else {
-                    renderAllItemsFlat('newest'); 
-                }
-            } else if (['list1', 'list2', 'list3'].includes(currentTab)) {
-                renderFlatCartView(currentTab);
-            }
-        }
-
-        // Render function for Special Items
-        function renderSpecialItems() {
-            const container = document.createElement('div');
-            // Reuse product creation logic. Data comes from specialData
-            specialData.forEach(item => {
-                container.appendChild(createProductElement(item));
-            });
-            mainContentArea.appendChild(container);
-            suggestionBox.style.display = 'none';
-        }
-
-        function renderCategoryView() {
-            categoryData.forEach(cat => {
-                const section = document.createElement('div');
-                section.className = 'category-section';
-                
-                const header = document.createElement('div');
-                header.className = `category-header ${cat.isOpen ? 'open' : ''}`;
-                header.onclick = () => toggleCategory(cat.id);
-                
-                let leftContent = `<div>${cat.title} <span>(${cat.items.length})</span></div>`;
-                let rightContent = `<div class="category-header-right">
-                    <svg class="icon category-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>`; 
-                
-                header.innerHTML = leftContent + rightContent;
-                
-                const itemContainer = document.createElement('div');
-                itemContainer.className = `category-items ${cat.isOpen ? 'open' : ''}`;
-                
-                cat.items.forEach(item => {
-                    itemContainer.appendChild(createProductElement(item));
-                });
-
-                section.appendChild(header);
-                section.appendChild(itemContainer);
-                mainContentArea.appendChild(section);
-            });
-            suggestionBox.style.display = 'none';
-        }
-
-        function renderAllItemsFlat(sortMode) {
-            let allItems = [];
-            categoryData.forEach(cat => allItems.push(...cat.items));
-            
-            if (sortMode === 'newest') {
-                allItems.sort((a, b) => b.id - a.id);
-            }
-
-            const container = document.createElement('div');
-            allItems.forEach(item => {
-                container.appendChild(createProductElement(item));
-            });
-            
-            mainContentArea.appendChild(container);
-            suggestionBox.style.display = 'none';
-        }
-
-        function renderFlatCartView(listKey) {
-            suggestionBox.style.display = 'none';
-
-            let allItems = [];
-            categoryData.forEach(cat => allItems.push(...cat.items));
-            allItems.push(...globalDatabase); 
-            allItems.push(...specialData); 
-
-            const currentCart = carts[listKey] || {};
-            const cartKeys = Object.keys(currentCart);
-
-            // Include items if the ID exists as a key in the cart
-            let cartItems = allItems.filter(item => cartKeys.includes(String(item.id)));
-
-            if (cartItems.length === 0) {
-                mainContentArea.innerHTML = `
-                    <div class="empty-state">
-                        <svg class="icon" style="width:48px; height:48px; margin-bottom:12px; color:#ccc;" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-                        <br>리스트에 담긴 상품이 없습니다.
-                    </div>
-                `;
-                return;
-            }
-
-            if (currentSort === 'newest') {
-                cartItems.sort((a, b) => b.id - a.id);
-            }
-
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'category-header inbox-header'; 
-            headerDiv.style.borderBottom = '1px solid #eee';
-            headerDiv.style.cursor = 'default';
-            let listName = listKey === 'list1' ? 'LIST 1' : listKey === 'list2' ? 'LIST 2' : 'LIST 3';
-
-            headerDiv.innerHTML = `
-                <div>${listName} 상품 <span>(${cartItems.length})</span></div>
-                <div class="category-header-right">
-                    ${getSortControlHTML()}
-                </div>
-            `;
-            mainContentArea.appendChild(headerDiv);
-
-            cartItems.forEach(item => {
-                mainContentArea.appendChild(createProductElement(item));
-            });
-        }
-
-        // --- Search View ---
-        function renderSearchResults() {
-            let localItems = [];
-            categoryData.forEach(cat => {
-                localItems = [...localItems, ...cat.items];
-            });
-            // Add Special Data to local items for search
-            localItems = [...localItems, ...specialData];
-
-            const localResults = localItems.filter(p => p.name.includes(searchQuery));
-            const globalResults = globalDatabase.filter(p => p.name.includes(searchQuery));
-            
-            const section1 = document.createElement('div');
-            section1.innerHTML = `<div class="search-section-header">담아둔 상품 (${localResults.length})</div>`;
-            if (localResults.length === 0) {
-                section1.innerHTML += `<div style="padding:20px; text-align:center; color:#999; font-size:14px;">내 리스트에 검색 결과가 없습니다.</div>`;
+        function toggleDetail(id) {
+            const element = document.getElementById(id);
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
             } else {
-                localResults.forEach(item => {
-                    section1.appendChild(createProductElement(item));
-                });
-            }
-            mainContentArea.appendChild(section1);
-            
-            const section2 = document.createElement('div');
-            section2.innerHTML = `<div class="search-section-header">전체 상품 검색 결과 (${globalResults.length})</div>`;
-            
-            if (globalResults.length === 0) {
-                section2.innerHTML += `<div style="padding:20px; text-align:center; color:#999; font-size:14px;">검색 결과가 없습니다.</div>`;
-            } else {
-                const displayItems = globalResults.slice(0, currentSearchLimit);
-                displayItems.forEach(item => {
-                    section2.appendChild(createProductElement(item));
-                });
-                
-                if (globalResults.length > currentSearchLimit) {
-                    const moreBtn = document.createElement('button');
-                    moreBtn.className = 'search-more-btn';
-                    moreBtn.innerHTML = `검색 결과 더보기`;
-                    moreBtn.onclick = () => {
-                        currentSearchLimit += LOAD_STEP;
-                        renderContent(); 
-                    };
-                    section2.appendChild(moreBtn);
-                }
-            }
-            mainContentArea.appendChild(section2);
-
-            suggestionBox.style.display = 'none';
-        }
-
-        // Helper: Create Product Row
-        function createProductElement(item) {
-            const currentCart = carts[getCurrentCartKey()] || {};
-            const qty = currentCart[item.id] || 0;
-            
-            const div = document.createElement('div');
-            div.className = 'product-item';
-            div.innerHTML = `
-                <div class="prod-img">${item.img}</div>
-                <div class="prod-info">
-                    ${item.tag ? `<div class="prod-tag">${item.tag}</div>` : ''}
-                    <div class="prod-name">${item.name}</div>
-                    <div class="prod-unit">${item.unit}</div>
-                    <div class="prod-price">${item.price.toLocaleString()}원</div>
-                </div>
-                <div class="qty-control">
-                    <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
-                    <div class="qty-val" id="qty-${item.id}">${qty}</div>
-                    <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
-                </div>
-            `;
-            return div;
-        }
-
-        function toggleCategory(catId) {
-            const cat = categoryData.find(c => c.id === catId);
-            if(cat) {
-                cat.isOpen = !cat.isOpen;
-                renderContent();
+                element.classList.add('hidden');
             }
         }
 
-        // --- 5. Tab Logic ---
-        function switchTab(tabName) {
-            currentTab = tabName;
-            
-            const tabElements = {
-                special: document.getElementById('tab-special'),
-                main: document.getElementById('tab-main'),
-                list1: document.getElementById('tab-list1'),
-                list2: document.getElementById('tab-list2'),
-                list3: document.getElementById('tab-list3')
-            };
-
-            Object.values(tabElements).forEach(el => {
-                if(el) el.classList.remove('active');
-            });
-
-            if (tabElements[tabName]) {
-                tabElements[tabName].classList.add('active');
-            }
-
-            if(searchQuery) {
-                searchQuery = "";
-                localInput.value = "";
-                searchArea.style.display = 'none';
-            }
-
-            scrollContainer.scrollTop = 0;
-            
-            // Re-render and update footer for the new tab's cart
-            renderContent();
-            updateOrderButton();
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
-
-        // --- 6. Interaction Logic ---
-
-        function updateQty(id, delta) {
-            const cartKey = getCurrentCartKey();
-            if(!carts[cartKey]) carts[cartKey] = {};
-            
-            if (!carts[cartKey][id]) carts[cartKey][id] = 0;
-            
-            carts[cartKey][id] += delta;
-            if(carts[cartKey][id] < 0) carts[cartKey][id] = 0;
-
-            const qtyEls = document.querySelectorAll(`#qty-${id}`);
-            qtyEls.forEach(el => el.innerText = carts[cartKey][id]);
-
-            updateOrderButton();
-        }
-
-        function updateOrderButton() {
-            let totalCount = 0;
-            let totalPrice = 0;
-            
-            // Collect ALL product info to look up prices
-            let allItems = [];
-            categoryData.forEach(cat => allItems.push(...cat.items));
-            allItems = [...allItems, ...globalDatabase, ...specialData];
-            
-            // Sum up quantities from ALL carts (tabs)
-            Object.values(carts).forEach(cart => {
-                Object.keys(cart).forEach(key => {
-                    const pid = parseInt(key);
-                    const qty = cart[pid];
-                    if(qty > 0) {
-                        const product = allItems.find(p => p.id === pid);
-                        if(product) {
-                            totalCount += qty;
-                            totalPrice += product.price * qty;
-                        }
-                    }
-                });
-            });
-
-            if (totalCount > 0) {
-                orderBtn.classList.add('active');
-                // MODIFIED: Update button message format
-                orderBtn.innerHTML = `[<span style="color:#fff">${totalCount}</span>개] 담은 상품 확인하기`;
-            } else {
-                orderBtn.classList.remove('active');
-                orderBtn.innerText = '주문할 상품을 담아주세요';
-            }
-        }
-
-        function processOrder() {
-            if (!orderBtn.classList.contains('active')) return;
-            
-            // Clear ALL Carts since order is global
-            Object.keys(carts).forEach(key => {
-                carts[key] = {};
-            });
-            
-            // Update UI
-            renderContent(); 
-            updateOrderButton();
-            
-            showToast("모든 탭의 상품이 통합 주문되었습니다.");
-        }
-
-        // --- 7. Search Logic ---
-        function toggleSearch() {
-            const isHidden = window.getComputedStyle(searchArea).display === 'none';
-            if (isHidden) {
-                searchArea.style.display = 'block';
-                localInput.focus();
-            } else {
-                searchArea.style.display = 'none';
-                localInput.value = '';
-                handleLocalSearch(); 
-            }
-        }
-
-        localInput.addEventListener('keyup', handleLocalSearch);
-
-        function handleLocalSearch() {
-            const query = localInput.value.trim();
-            if (query !== searchQuery) {
-                currentSearchLimit = INITIAL_LIMIT;
-            }
-            searchQuery = query;
-            renderContent(); 
-        }
-
-        // --- 8. Global Search Modal ---
-        function openGlobalSearch() {
-            modalEl.classList.add('open');
-            document.getElementById('modalSearchQuery').innerText = searchQuery || '전체';
-        }
-
-        function closeGlobalSearch() {
-            modalEl.classList.remove('open');
-            selectedGlobalIds.clear();
-        }
-
-        function showToast(msg) {
-            toastEl.innerText = msg;
-            toastEl.classList.add('show');
-            setTimeout(() => {
-                toastEl.classList.remove('show');
-            }, 3000);
-        }
-
-        function handleNavClick(type) {
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-            
-            if (type === 'home') {
-                navItems[0].classList.add('active');
-                switchTab('main');
-            } else if (type === 'search') {
-                navItems[1].classList.add('active');
-                toggleSearch();
-            } else if (type === 'check') {
-                navItems[2].classList.add('active');
-                switchTab('list1');
-            } else if (type === 'kakao') {
-                navItems[3].classList.add('active');
-                alert('카카오톡 상담창을 엽니다.');
-            }
-        }
-
-        // --- Init ---
-        updateOrderButton();
-        renderContent();
-
     </script>
 </body>
 </html>
