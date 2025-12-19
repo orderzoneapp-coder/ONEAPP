@@ -3,335 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>인제대학교 AI소프트웨어학과 심층 분석</title>
+    <title>인제대 AI소프트웨어학과 분석 리포트</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; word-break: keep-all; }
-        .scrolled-nav { background-color: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .hero-gradient { background: linear-gradient(to bottom, rgba(30, 58, 138, 0.6), rgba(15, 23, 42, 0.8), #0f172a); }
-        .step-card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+        body { font-family: 'Noto Sans KR', sans-serif; word-break: keep-all; line-height: 1.6; }
+        .gradient-text { background: linear-gradient(135deg, #1e40af, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .content-card { transition: transform 0.3s ease, border-color 0.3s ease; }
+        .content-card:hover { border-color: #3b82f6; transform: translateY(-2px); }
+        .step-number { font-family: 'Georgia', serif; font-style: italic; }
     </style>
 </head>
-<body class="bg-white text-slate-900 overflow-x-hidden">
+<body class="bg-slate-50 text-slate-800">
 
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-5 px-6">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-2 cursor-pointer">
-                <div class="p-2 rounded-lg bg-blue-600 text-white" id="logo-icon">
-                    <i data-lucide="cpu"></i>
-                </div>
-                <span id="logo-text" class="text-xl font-bold tracking-tight text-white transition-colors">
-                    INJE <span class="text-blue-300">AI SW</span>
-                </span>
+    <!-- Top Progress Bar (Visual indicator) -->
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-slate-200 z-[60]">
+        <div id="progress" class="h-full bg-blue-600 w-0 transition-all duration-100"></div>
+    </div>
+
+    <!-- Navigation (Simple & Professional) -->
+    <nav class="sticky top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 py-4 px-6">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-black tracking-tighter text-blue-900">INJE <span class="text-blue-500 font-bold">AI SW ANALYSIS</span></span>
             </div>
-
-            <!-- Desktop Nav -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#vision" class="nav-link text-sm font-semibold text-white/80 hover:text-blue-400 transition-colors">교육철학</a>
-                <a href="#curriculum" class="nav-link text-sm font-semibold text-white/80 hover:text-blue-400 transition-colors">커리큘럼</a>
-                <a href="#research" class="nav-link text-sm font-semibold text-white/80 hover:text-blue-400 transition-colors">연구역량</a>
-                <a href="#facility" class="nav-link text-sm font-semibold text-white/80 hover:text-blue-400 transition-colors">교육환경</a>
-                <a href="#career" class="nav-link text-sm font-semibold text-white/80 hover:text-blue-400 transition-colors">취업지원</a>
-                <button class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-bold shadow-lg shadow-blue-500/20 transition-transform hover:scale-105">
-                    상담 신청
-                </button>
-            </div>
-
-            <!-- Mobile Nav Toggle -->
-            <button class="md:hidden text-white" id="menu-toggle">
-                <i data-lucide="menu" id="menu-icon"></i>
-            </button>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 py-6 px-6">
-            <div class="flex flex-col space-y-4 text-slate-800 font-medium">
-                <a href="#vision" onclick="closeMenu()">교육철학</a>
-                <a href="#curriculum" onclick="closeMenu()">커리큘럼</a>
-                <a href="#research" onclick="closeMenu()">연구역량</a>
-                <a href="#facility" onclick="closeMenu()">교육환경</a>
-                <a href="#career" onclick="closeMenu()">취업지원</a>
-                <button class="w-full py-4 bg-blue-600 text-white rounded-xl font-bold">상담 신청하기</button>
+            <div class="hidden md:flex space-x-6 text-sm font-bold text-slate-500">
+                <a href="#intro" class="hover:text-blue-600 transition-colors">서론</a>
+                <a href="#curriculum" class="hover:text-blue-600 transition-colors">교육과정</a>
+                <a href="#research" class="hover:text-blue-600 transition-colors">교수/연구</a>
+                <a href="#infrastructure" class="hover:text-blue-600 transition-colors">인프라</a>
+                <a href="#career" class="hover:text-blue-600 transition-colors">성과</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative h-[85vh] md:h-[90vh] flex items-center justify-center bg-slate-900">
-        <div class="absolute inset-0">
-            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover opacity-40" alt="AI 배경">
-            <div class="absolute inset-0 hero-gradient"></div>
-        </div>
-        
-        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
-            <div class="inline-flex items-center space-x-2 bg-blue-500/20 border border-blue-400/30 px-4 py-2 rounded-full mb-8 backdrop-blur-sm animate-bounce">
-                <span class="flex h-2 w-2 rounded-full bg-blue-400"></span>
-                <span class="text-blue-100 text-xs md:text-sm font-bold tracking-wider uppercase">Glocal University 30 Selected</span>
-            </div>
-            <h1 class="text-5xl md:text-8xl font-black text-white mb-8 leading-[1.1] tracking-tight">
-                THE FUTURE OF <br />
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">AI SOFTWARE</span>
+    <!-- Header Section -->
+    <header id="intro" class="bg-white pt-20 pb-16 px-6 border-b border-slate-100">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded text-xs font-bold mb-6">심층 분석 및 평가 리포트</div>
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">
+                지역 혁신을 선도하는 <br>
+                <span class="gradient-text text-5xl md:text-6xl italic uppercase">Glocal AI Leader</span>
             </h1>
-            <p class="text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto mb-12">
-                인제대학교 AI소프트웨어학과는 "All-City Campus" 비전을 통해 <br class="hidden md:block" />
-                지역과 세계를 잇는 창의적 인공지능 리더를 배출합니다.
+            <p class="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed font-light">
+                인제대학교 AI소프트웨어학과는 4차 산업혁명 시대를 견인할 <br>
+                창의적 소프트웨어 융합 인재 양성을 최상위 비전으로 설정하고 있습니다.
             </p>
-            <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-                <button class="w-full md:w-auto px-10 py-5 bg-white text-blue-900 rounded-full font-black text-lg hover:bg-blue-50 transition-all flex items-center justify-center shadow-xl group">
-                    학과 소개서 다운로드 <i data-lucide="arrow-right" class="ml-2 group-hover:translate-x-1 transition-transform"></i>
-                </button>
-                <button class="w-full md:w-auto px-10 py-5 bg-transparent border-2 border-white/30 text-white rounded-full font-black text-lg hover:bg-white/10 transition-all">
-                    캠퍼스 투어
-                </button>
-            </div>
         </div>
-    </section>
+    </header>
 
-    <!-- Vision Section -->
-    <section id="vision" class="py-24 bg-white px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20">
-                <h2 class="text-blue-600 font-bold tracking-widest uppercase mb-4 text-sm">Vision & Philosophy</h2>
-                <h3 class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">교육 철학의 세 가지 기둥</h3>
+    <main class="max-w-4xl mx-auto px-6 py-20 space-y-24">
+
+        <!-- 1. Philosophy & Vision -->
+        <section class="space-y-10">
+            <div class="flex items-center space-x-4">
+                <span class="text-blue-600 font-black text-xl">01.</span>
+                <h2 class="text-3xl font-bold tracking-tight">교육 목표와 비전 철학</h2>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Pillar 1 -->
-                <div class="p-10 rounded-[2.5rem] bg-slate-50 border border-transparent hover:border-slate-200 hover:shadow-2xl transition-all duration-500 group">
-                    <div class="bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center mb-8 transform group-hover:rotate-6 transition-transform">
-                        <i data-lucide="graduation-cap" size="32"></i>
-                    </div>
-                    <h4 class="text-2xl font-black text-slate-900 mb-4">실무 역량 강화</h4>
-                    <p class="text-slate-600 leading-relaxed font-medium">산업 현장의 요구를 즉각 반영하여 소프트웨어 중심의 대학 교육 체계를 혁신합니다.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <p class="text-slate-600 leading-relaxed">
+                        인제대학교의 교육 철학은 <strong>'현장 중심의 실무 역량 강화'</strong>와 <strong>'지역 산업과의 동반 성장'</strong>이라는 두 축으로 요약됩니다. 특히 경남 지역 최초의 SW중심대학으로서 김해 제조 산업의 디지털 전환을 이끌 인재 양성에 집중합니다.
+                    </p>
                 </div>
-                <!-- Pillar 2 -->
-                <div class="p-10 rounded-[2.5rem] bg-slate-50 border border-transparent hover:border-slate-200 hover:shadow-2xl transition-all duration-500 group">
-                    <div class="bg-indigo-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center mb-8 transform group-hover:rotate-6 transition-transform">
-                        <i data-lucide="building-2" size="32"></i>
-                    </div>
-                    <h4 class="text-2xl font-black text-slate-900 mb-4">지역 동반 성장</h4>
-                    <p class="text-slate-600 leading-relaxed font-medium">경남 최초 SW중심대학으로서 김해 제조 산업을 혁신할 엔지니어를 양성합니다.</p>
-                </div>
-                <!-- Pillar 3 -->
-                <div class="p-10 rounded-[2.5rem] bg-slate-50 border border-transparent hover:border-slate-200 hover:shadow-2xl transition-all duration-500 group">
-                    <div class="bg-slate-900 text-white w-16 h-16 rounded-2xl flex items-center justify-center mb-8 transform group-hover:rotate-6 transition-transform">
-                        <i data-lucide="network" size="32"></i>
-                    </div>
-                    <h4 class="text-2xl font-black text-slate-900 mb-4">올 시티 캠퍼스</h4>
-                    <p class="text-slate-600 leading-relaxed font-medium">도시 전체를 학습 공간으로 활용하여 실제 문제를 해결하는 실용주의 교육을 실현합니다.</p>
+                <div class="bg-blue-900 rounded-3xl p-8 text-white shadow-xl shadow-blue-900/20">
+                    <h4 class="text-blue-300 font-bold mb-2 italic">All-City Campus</h4>
+                    <p class="text-lg font-medium leading-relaxed">
+                        "도시 대전환, 올 시티 캠퍼스" 슬로건 아래, 대학과 지역 사회가 하나로 융합되어 김해시 전역의 산업 현장을 학습 공간으로 활용합니다.
+                    </p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Curriculum Section -->
-    <section id="curriculum" class="py-24 bg-slate-900 text-white px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col lg:flex-row gap-20 items-center">
-                <div class="lg:w-1/3">
-                    <span class="text-blue-400 font-bold tracking-widest uppercase mb-4 block">10-Week Intensive</span>
-                    <h2 class="text-4xl md:text-5xl font-black mb-8 leading-tight">압도적인 <br />성장 속도, <br />단계별 설계</h2>
-                    <p class="text-slate-400 text-lg mb-10">기초부터 심화 알고리즘까지, 실무에 즉시 투입 가능한 전문가로 거듭나는 6단계 로드맵입니다.</p>
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-3 text-blue-400 font-bold italic">
-                            <i data-lucide="check-circle-2" size="20"></i> <span>OpenAI Gym 기반 강화학습 실습</span>
-                        </div>
-                        <div class="flex items-center space-x-3 text-blue-400 font-bold italic">
-                            <i data-lucide="check-circle-2" size="20"></i> <span>AI 윤리 및 공정성 심화 교육</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- 2. Curriculum Analysis -->
+        <section id="curriculum" class="space-y-12">
+            <div class="flex items-center space-x-4">
+                <span class="text-blue-600 font-black text-xl">02.</span>
+                <h2 class="text-3xl font-bold tracking-tight">단계별 역량 강화 커리큘럼</h2>
+            </div>
+            
+            <div class="space-y-4">
+                <p class="text-slate-600 mb-8">인제대학교는 10주 단위의 집중 교육 과정을 통해 기초부터 실무 배포까지 총 6단계의 정교한 로드맵을 제공합니다.</p>
                 
-                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="p-8 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all group">
-                        <span class="text-4xl font-black text-blue-500/30 mb-4 block group-hover:text-blue-500/60 transition-colors">STEP 01</span>
-                        <h4 class="text-xl font-bold mb-2">기초 및 데이터 이해</h4>
-                        <p class="text-blue-400 text-sm font-semibold mb-3">Python, 데이터 전처리</p>
-                        <p class="text-slate-400 text-sm">데이터 품질 향상을 위한 정제 기법 실습</p>
+                <div class="grid gap-4">
+                    <!-- Step Item -->
+                    <div class="content-card bg-white p-6 rounded-2xl border border-slate-200 flex items-start space-x-6">
+                        <span class="step-number text-3xl font-black text-blue-100 italic">01</span>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">기초 및 데이터 이해</h4>
+                            <p class="text-slate-500 text-sm italic mb-2">Python 기초, 데이터 전처리 기법</p>
+                            <p class="text-slate-600 text-sm">데이터 품질 향상을 위한 정제 실습과 파이썬 기본기를 다집니다.</p>
+                        </div>
                     </div>
-                    <div class="p-8 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all group">
-                        <span class="text-4xl font-black text-blue-500/30 mb-4 block group-hover:text-blue-500/60 transition-colors">STEP 02</span>
-                        <h4 class="text-xl font-bold mb-2">기계 학습(ML)</h4>
-                        <p class="text-blue-400 text-sm font-semibold mb-3">Scikit-learn, 알고리즘</p>
-                        <p class="text-slate-400 text-sm">머신러닝 알고리즘 기반 예측 모델 구축</p>
+                    <!-- Step Item -->
+                    <div class="content-card bg-white p-6 rounded-2xl border border-slate-200 flex items-start space-x-6">
+                        <span class="step-number text-3xl font-black text-blue-100 italic">02</span>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">기계 학습 (ML)</h4>
+                            <p class="text-slate-500 text-sm italic mb-2">Scikit-learn, 예측 모델링</p>
+                            <p class="text-slate-600 text-sm">지도/비지도 학습 알고리즘을 활용하여 실제 데이터 기반의 예측 모델을 구축합니다.</p>
+                        </div>
                     </div>
-                    <div class="p-8 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all group">
-                        <span class="text-4xl font-black text-blue-500/30 mb-4 block group-hover:text-blue-500/60 transition-colors">STEP 03</span>
-                        <h4 class="text-xl font-bold mb-2">신경망 및 딥러닝</h4>
-                        <p class="text-blue-400 text-sm font-semibold mb-3">TensorFlow, CNN/RNN</p>
-                        <p class="text-slate-400 text-sm">이미지/시퀀스 데이터 처리 및 AI 윤리</p>
+                    <!-- Step Item -->
+                    <div class="content-card bg-white p-6 rounded-2xl border border-slate-200 flex items-start space-x-6">
+                        <span class="step-number text-3xl font-black text-blue-100 italic">03</span>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">신경망 및 딥러닝</h4>
+                            <p class="text-slate-500 text-sm italic mb-2">TensorFlow/PyTorch, CNN/RNN</p>
+                            <p class="text-slate-600 text-sm">딥러닝 프레임워크를 기반으로 이미지 분류 및 시퀀스 데이터 분석을 수행합니다.</p>
+                        </div>
                     </div>
-                    <div class="p-8 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all group">
-                        <span class="text-4xl font-black text-blue-500/30 mb-4 block group-hover:text-blue-500/60 transition-colors">STEP 04</span>
-                        <h4 class="text-xl font-bold mb-2">심화 심층 학습</h4>
-                        <p class="text-blue-400 text-sm font-semibold mb-3">GAN, DRL, 최신논문</p>
-                        <p class="text-slate-400 text-sm">최신 논문 구현 및 모델 성능 고도화</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Research Section -->
-    <section id="research" class="py-24 px-6 bg-white">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-                <div class="max-w-2xl">
-                    <h2 class="text-blue-600 font-bold tracking-widest uppercase mb-4 text-sm">Research Power</h2>
-                    <h3 class="text-3xl md:text-5xl font-black text-slate-900 leading-tight">세계적 수준의 교수진과 <br />글로벌 연구 환경</h3>
-                </div>
-                <div class="bg-blue-50 p-6 rounded-2xl flex items-center space-x-6">
-                    <div class="text-center px-4 border-r border-blue-200">
-                        <p class="text-sm text-slate-500 font-bold">국책 사업</p>
-                        <p class="text-2xl font-black text-blue-600">88억+</p>
-                    </div>
-                    <div class="text-center px-4">
-                        <p class="text-sm text-slate-500 font-bold">BK21 선정</p>
-                        <p class="text-2xl font-black text-blue-600">4단계</p>
+                    <!-- Step Item -->
+                    <div class="content-card bg-white p-6 rounded-2xl border border-slate-200 flex items-start space-x-6">
+                        <span class="step-number text-3xl font-black text-blue-100 italic">04</span>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">실전 프로젝트 (One-Team)</h4>
+                            <p class="text-slate-500 text-sm italic mb-2">기업 애로 기술 해결, 모델 배포</p>
+                            <p class="text-slate-600 text-sm">기업의 실제 문제를 교수와 학생이 팀을 이루어 해결하며 실무 역량을 완성합니다.</p>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div class="relative group overflow-hidden rounded-[3.5rem] h-[500px]">
-                   <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="연구실">
-                   <div class="absolute inset-0 bg-gradient-to-t from-blue-900/90 to-transparent p-12 flex flex-col justify-end text-white">
-                      <h4 class="text-3xl font-black mb-4 italic underline decoration-blue-400 underline-offset-8 uppercase tracking-tighter">Undergraduate Researcher</h4>
-                      <p class="text-blue-100 text-lg">2~3학년부터 교수 연구실에 합류하여 실제 프로젝트를 수행하며 연구비를 지원받습니다.</p>
-                   </div>
-                </div>
-                
-                <div class="space-y-4">
-                    <h4 class="text-xl font-black text-slate-900 mb-6 flex items-center">
-                        <i data-lucide="microscope" class="mr-3 text-blue-600"></i> 핵심 연구 분야 (Core Labs)
-                    </h4>
-                    <div class="grid gap-3">
-                        <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center group hover:bg-blue-600 hover:text-white transition-all">
-                            <div><p class="font-bold text-lg mb-1">지능형 드론 연구실</p><p class="text-sm opacity-60">자율 비행 제어 및 군집 지능 알고리즘</p></div>
-                            <i data-lucide="chevron-right" class="opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                        </div>
-                        <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center group hover:bg-blue-600 hover:text-white transition-all">
-                            <div><p class="font-bold text-lg mb-1">자율주행 & 로보틱스</p><p class="text-sm opacity-60">미래형 모빌리티 시뮬레이션 및 데이터 처리</p></div>
-                            <i data-lucide="chevron-right" class="opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                        </div>
-                        <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center group hover:bg-blue-600 hover:text-white transition-all">
-                            <div><p class="font-bold text-lg mb-1">AI-IoT 융합 연구실</p><p class="text-sm opacity-60">지능형 센서 기반 데이터 수집 및 분석</p></div>
-                            <i data-lucide="chevron-right" class="opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                        </div>
-                    </div>
-                </div>
+            <div class="bg-slate-900 text-slate-400 p-8 rounded-3xl text-sm italic border-l-8 border-blue-500">
+                <p>“단순 지식 전달을 넘어 AI 시스템의 편향성과 공정성 등 사회적 책임을 강조하는 윤리 교육이 커리큘럼의 핵심 중 하나입니다.”</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Career Success Section -->
-    <section id="career" class="py-24 px-6 bg-slate-50">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h2 class="text-blue-600 font-bold tracking-widest uppercase mb-4 text-sm">Career Success</h2>
-                    <h3 class="text-4xl md:text-6xl font-black text-slate-900 mb-8 tracking-tighter italic uppercase">Beyond <br>Employment</h3>
-                    <div class="grid grid-cols-2 gap-4 mb-10">
-                        <div class="p-8 bg-blue-600 rounded-[2.5rem] text-white shadow-xl shadow-blue-500/20">
-                            <p class="text-4xl font-black mb-1">#1</p>
-                            <p class="font-bold text-xs opacity-70 uppercase tracking-tighter">Region Ranking</p>
-                            <p class="mt-4 font-bold text-sm leading-snug">경남·울산권 <br>취업률 독보적 1위</p>
-                        </div>
-                        <div class="p-8 bg-slate-900 rounded-[2.5rem] text-white">
-                            <p class="text-4xl font-black mb-1">50%+</p>
-                            <p class="font-bold text-xs opacity-70 uppercase tracking-tighter">Professional Roles</p>
-                            <p class="mt-4 font-bold text-sm leading-snug">졸업생 과반 <br>기술 전문직 진출</p>
+        <!-- 3. Faculty & Research -->
+        <section id="research" class="space-y-12">
+            <div class="flex items-center space-x-4">
+                <span class="text-blue-600 font-black text-xl">03.</span>
+                <h2 class="text-3xl font-bold tracking-tight">글로벌 네트워크와 연구 역량</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="space-y-6">
+                    <p class="text-slate-600 leading-relaxed">
+                        교수진은 해외 명문 대학 박사 학위와 HCI(인간-기계 상호작용) 분야의 깊은 전문성을 보유하고 있습니다. 이는 AI를 단순한 기술이 아닌 <strong>'인간과 기술의 공존'</strong>이라는 관점에서 접근하게 합니다.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-4 py-2 bg-slate-200 rounded-full text-xs font-bold uppercase tracking-widest">BK21 Plus 33억</span>
+                        <span class="px-4 py-2 bg-slate-200 rounded-full text-xs font-bold uppercase tracking-widest">헬스케어 사업 35억</span>
+                        <span class="px-4 py-2 bg-slate-200 rounded-full text-xs font-bold uppercase tracking-widest">웰니스웨어 20억</span>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-4 border-b border-slate-100 pb-4">
+                        <i data-lucide="microscope" class="text-blue-600 shrink-0"></i>
+                        <div>
+                            <h5 class="font-bold">학부생 연구원 제도</h5>
+                            <p class="text-sm text-slate-500">2~3학년부터 교수진 연구실(Lab)에 참여하여 실무 연구 수행</p>
                         </div>
                     </div>
-                    <p class="text-slate-600 text-lg leading-relaxed mb-8">
-                        단순 취업을 넘어 지역 강소기업부터 대기업까지 아우르는 'One-Team 프로젝트'를 통해 전공 역량을 극대화합니다.
-                    </p>
-                </div>
-                
-                <div class="bg-white border border-slate-100 rounded-[3rem] p-10 shadow-2xl relative">
-                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-100 rounded-full blur-3xl opacity-50"></div>
-                    <h4 class="text-2xl font-black mb-8 flex items-center text-slate-900">
-                        <i data-lucide="award" class="mr-3 text-amber-500"></i> SAIL System
-                    </h4>
-                    <div class="space-y-8 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-blue-100">
-                        <div class="relative pl-10">
-                            <div class="absolute left-0 top-1 w-6 h-6 bg-blue-600 rounded-full z-10"></div>
-                            <p class="text-xs font-black text-blue-600 uppercase mb-1">1학년</p>
-                            <h5 class="font-bold text-slate-800">진로 탐색 및 기초 역량</h5>
-                        </div>
-                        <div class="relative pl-10">
-                            <div class="absolute left-0 top-1 w-6 h-6 bg-blue-600 rounded-full z-10"></div>
-                            <p class="text-xs font-black text-blue-600 uppercase mb-1">2-3학년</p>
-                            <h5 class="font-bold text-slate-800">심화 학습 및 연구실 참여</h5>
-                        </div>
-                        <div class="relative pl-10">
-                            <div class="absolute left-0 top-1 w-6 h-6 bg-blue-600 rounded-full z-10"></div>
-                            <p class="text-xs font-black text-blue-600 uppercase mb-1">4학년</p>
-                            <h5 class="font-bold text-slate-800">실전 배포 및 취업 성공</h5>
+                    <div class="flex items-center space-x-4 border-b border-slate-100 pb-4">
+                        <i data-lucide="globe" class="text-blue-600 shrink-0"></i>
+                        <div>
+                            <h5 class="font-bold">글로벌 네트워크</h5>
+                            <p class="text-sm text-slate-500">스웨덴 왕립공과대학(KTH) 등 해외 유수 대학과의 협력 기반</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- 4. Infrastructure -->
+        <section id="infrastructure" class="space-y-12">
+            <div class="flex items-center space-x-4">
+                <span class="text-blue-600 font-black text-xl">04.</span>
+                <h2 class="text-3xl font-bold tracking-tight">혁신적 인프라 : All-City Campus</h2>
+            </div>
+            
+            <div class="bg-blue-50 p-10 rounded-[3rem] border border-blue-100">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h4 class="text-2xl font-black text-blue-900 mb-4">5년간 1,000억 원 투자</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            글로컬대학 30 사업 선정으로 도시 전체를 거대한 실험실로 만드는 원대한 계획을 실행 중입니다.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center text-sm font-bold text-slate-700">
+                                <i data-lucide="check" class="text-blue-500 mr-2" size="16"></i> 지능형 드론 및 로보틱스 연구실
+                            </li>
+                            <li class="flex items-center text-sm font-bold text-slate-700">
+                                <i data-lucide="check" class="text-blue-500 mr-2" size="16"></i> 50개 이상의 현장 캠퍼스 확보
+                            </li>
+                            <li class="flex items-center text-sm font-bold text-slate-700">
+                                <i data-lucide="check" class="text-blue-500 mr-2" size="16"></i> 고성능 GPU 서버 및 리더 센서 구축
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="relative rounded-3xl overflow-hidden aspect-square shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover" alt="캠퍼스 인프라">
+                        <div class="absolute inset-0 bg-blue-900/20"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Career & Success -->
+        <section id="career" class="space-y-12">
+            <div class="flex items-center space-x-4">
+                <span class="text-blue-600 font-black text-xl">05.</span>
+                <h2 class="text-3xl font-bold tracking-tight">독보적인 산학협력과 성과</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col items-center text-center">
+                    <p class="text-blue-600 font-black text-5xl mb-4 italic">No.1</p>
+                    <h5 class="font-bold text-lg mb-2 italic">경남-울산 지역 취업률 1위</h5>
+                    <p class="text-slate-500 text-sm italic leading-relaxed uppercase tracking-tighter">Region ranking by employment</p>
+                </div>
+                <div class="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col items-center text-center">
+                    <p class="text-slate-900 font-black text-5xl mb-4 italic">50%+</p>
+                    <h5 class="font-bold text-lg mb-2 italic">연구직 및 공학 기술직 진출</h5>
+                    <p class="text-slate-500 text-sm italic leading-relaxed uppercase tracking-tighter">Professional Roles Career path</p>
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="flex space-x-6">
+                    <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold shrink-0 shadow-lg shadow-blue-500/30">
+                        <i data-lucide="zap" size="20"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">SAIL System</h4>
+                        <p class="text-slate-600 leading-relaxed">
+                            입학부터 졸업 후 취업까지 책임지는 평생 지도 교수제와 연계된 취업 진로 지도 프로그램으로 학생들을 체계적으로 지원합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 py-16 px-6 text-white text-center border-t border-white/5">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-3xl font-black mb-6 tracking-tighter italic">INJE <span class="text-blue-400 font-black">AI SOFTWARE</span></h2>
-            <p class="text-slate-500 text-sm max-w-xl mx-auto mb-10 leading-relaxed">
-                4차 산업혁명 시대를 선도하는 창의적 소프트웨어 융합 인재 양성의 요람. 인제대학교 AI소프트웨어학과가 당신의 꿈을 응원합니다.
+    <footer class="bg-slate-950 py-20 px-6 text-slate-400">
+        <div class="max-w-4xl mx-auto flex flex-col items-center text-center">
+            <h2 class="text-2xl font-black text-white mb-6 italic tracking-tighter uppercase">Inje University <span class="text-blue-500 font-bold tracking-normal italic uppercase">AI SW</span></h2>
+            <p class="text-sm mb-12 max-w-lg leading-relaxed uppercase tracking-widest font-bold">
+                Analyzing the future of artificial intelligence through <br> rigorous education and regional innovation.
             </p>
-            <div class="flex justify-center space-x-6 text-slate-500 mb-10">
-                <a href="#" class="hover:text-white transition-colors">학과소개</a>
-                <a href="#" class="hover:text-white transition-colors">커리큘럼</a>
-                <a href="#" class="hover:text-white transition-colors">입학안내</a>
+            <div class="flex space-x-10 text-xs font-bold uppercase tracking-widest">
+                <a href="#" class="hover:text-blue-400 transition-colors italic uppercase">Admission Info</a>
+                <a href="#" class="hover:text-blue-400 transition-colors italic uppercase">Department Site</a>
+                <a href="#" class="hover:text-blue-400 transition-colors italic uppercase">Contact Us</a>
             </div>
-            <p class="text-xs text-slate-600">© 2025 Inje University. All Rights Reserved.</p>
+            <div class="mt-16 pt-8 border-t border-slate-900 w-full text-[10px] uppercase font-bold tracking-widest italic opacity-40">
+                © 2025 Inje University AI Software. All analytical data is for educational assessment purposes.
+            </div>
         </div>
     </footer>
 
     <script>
-        // Lucide 아이콘 로드
+        // Lucide Icons
         lucide.createIcons();
 
-        // 네비게이션 스크롤 효과
-        const navbar = document.getElementById('navbar');
-        const logoIcon = document.getElementById('logo-icon');
-        const logoText = document.getElementById('logo-text');
-        const navLinks = document.querySelectorAll('.nav-link');
+        // Scroll Progress Bar
+        window.onscroll = function() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("progress").style.width = scrolled + "%";
+        };
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled-nav');
-                logoText.classList.replace('text-white', 'text-slate-900');
-                document.getElementById('menu-icon').classList.replace('text-white', 'text-slate-900');
-                navLinks.forEach(link => {
-                    link.classList.replace('text-white/80', 'text-slate-600');
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
-            } else {
-                navbar.classList.remove('scrolled-nav');
-                logoText.classList.replace('text-slate-900', 'text-white');
-                document.getElementById('menu-icon').classList.replace('text-slate-900', 'text-white');
-                navLinks.forEach(link => {
-                    link.classList.replace('text-slate-600', 'text-white/80');
-                });
-            }
+            });
         });
-
-        // 모바일 메뉴 토글
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        function closeMenu() {
-            mobileMenu.classList.add('hidden');
-        }
     </script>
 </body>
 </html>
