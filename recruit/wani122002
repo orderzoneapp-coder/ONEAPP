@@ -1,0 +1,274 @@
+import React, { useState } from 'react';
+import { 
+  BookOpen, 
+  Users, 
+  Building2, 
+  Cpu, 
+  GraduationCap, 
+  Network, 
+  Award, 
+  Globe, 
+  ChevronRight,
+  Microscope,
+  Briefcase
+} from 'lucide-react';
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState(0);
+
+  const curriculumData = [
+    { step: "1단계", title: "기초 및 데이터 이해", tech: "Python 기초, 데이터 전처리", detail: "데이터 품질 향상을 위한 정제 기법 실습" },
+    { step: "2단계", title: "기계 학습(ML)", tech: "Scikit-learn, 회귀, 클러스터링", detail: "Scikit-learn을 활용한 데이터 예측 모델 구축" },
+    { step: "3단계", title: "신경망 및 딥러닝", tech: "TensorFlow/PyTorch, CNN, RNN", detail: "프레임워크 기반 이미지 분류 및 윤리적 고려" },
+    { step: "4단계", title: "심화 심층 학습", tech: "GAN, 전이 학습, DRL", detail: "최신 AI 논문 기반 모델 구현 및 성능 고도화" },
+    { step: "5단계", title: "언어 및 시각 지능", tech: "NLP, OpenCV, 텍스트 분석", detail: "텍스트 요약 및 객체 탐지 기술 응용" },
+    { step: "6단계", title: "실전 프로젝트", tech: "산업 데이터셋, 모델 배포", detail: "기업 애로 기술 해결을 위한 One-Team 프로젝트" },
+  ];
+
+  const labs = [
+    { name: "지능형 드론 연구실", desc: "자율 비행 및 제어 알고리즘 연구" },
+    { name: "자율주행 및 로보틱스", desc: "미래 모빌리티 및 로봇 지능 개발" },
+    { name: "AI-IoT 연구실", desc: "지능형 사물인터넷 융합 기술" },
+    { name: "컴퓨터 그래픽스 & 시뮬레이션", desc: "디지털 트윈 및 가상 현실 구현" },
+    { name: "AI & 데이터 사이언스", desc: "빅데이터 분석 및 고급 AI 모델링" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+      {/* Hero Section */}
+      <header className="relative bg-gradient-to-r from-blue-900 to-indigo-800 py-24 px-6 overflow-hidden">
+        <div className="absolute top-0 right-0 opacity-10">
+          <Cpu size={400} />
+        </div>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="inline-block px-4 py-1 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-200 text-sm font-semibold mb-6">
+            글로컬대학 30 선정 | SW중심대학
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            인제대학교 <br />
+            <span className="text-blue-300">AI소프트웨어학과</span> 심층 분석
+          </h1>
+          <p className="text-xl text-blue-100 max-w-2xl leading-relaxed">
+            "도시 대전환, 올 시티 캠퍼스(All-City Campus)" 비전 아래 지역 혁신을 선도하는 글로컬 AI 리더를 양성합니다.
+          </p>
+        </div>
+      </header>
+
+      {/* Stats Quick View */}
+      <div className="max-w-6xl mx-auto -mt-12 px-6 grid grid-cols-1 md:grid-cols-3 gap-6 relative z-20">
+        {[
+          { icon: <Award className="text-blue-600" />, label: "취업률 성과", value: "경남·울산 지역 1위" },
+          { icon: <Globe className="text-blue-600" />, label: "글로컬 예산", value: "5년간 1,000억원 확보" },
+          { icon: <Users className="text-blue-600" />, label: "연구 프로젝트", value: "88억+ 국책사업 수행" },
+        ].map((stat, idx) => (
+          <div key={idx} className="bg-white p-8 rounded-2xl shadow-xl flex items-center space-x-5 border border-slate-100">
+            <div className="bg-blue-50 p-4 rounded-xl">{stat.icon}</div>
+            <div>
+              <p className="text-sm text-slate-500 font-medium">{stat.label}</p>
+              <p className="text-xl font-bold text-slate-800">{stat.value}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <main className="max-w-6xl mx-auto px-6 py-20 space-y-32">
+        
+        {/* Section 1: Philosophy */}
+        <section className="grid md:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-3xl font-bold mb-8 flex items-center">
+              <span className="w-10 h-10 bg-blue-600 text-white rounded-lg flex items-center justify-center mr-4 text-xl">01</span>
+              교육 철학 및 비전
+            </h2>
+            <div className="space-y-6">
+              <div className="bg-white p-6 rounded-xl border-l-4 border-blue-600 shadow-sm">
+                <h3 className="font-bold text-lg mb-2">현장 중심 실무 역량</h3>
+                <p className="text-slate-600 leading-relaxed italic">
+                  "산업 현장의 요구를 즉각 반영하여 신기술 수요에 부합하는 전문 인재를 양성하는 데 집중합니다."
+                </p>
+              </div>
+              <div className="bg-white p-6 rounded-xl border-l-4 border-indigo-600 shadow-sm">
+                <h3 className="font-bold text-lg mb-2">All-City Campus (도시 대전환)</h3>
+                <p className="text-slate-600 leading-relaxed">
+                  캠퍼스의 경계를 허물고 김해시 전역의 산업 현장을 거대한 교육 실험실로 활용하여 실제 도시 문제를 해결합니다.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-slate-200 rounded-3xl aspect-video relative overflow-hidden shadow-2xl group">
+             <div className="absolute inset-0 bg-blue-900/40 flex items-center justify-center group-hover:bg-blue-900/20 transition-all">
+                <p className="text-white font-bold text-2xl tracking-widest uppercase">Glocal Leader</p>
+             </div>
+             <img 
+              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000" 
+              alt="Lab" 
+              className="w-full h-full object-cover"
+              onError={(e) => e.target.src = 'https://via.placeholder.com/800x450?text=Campus+Innovation'}
+             />
+          </div>
+        </section>
+
+        {/* Section 2: Curriculum Table */}
+        <section>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">6단계 역량 강화 커리큘럼</h2>
+            <p className="text-slate-600">기초 데이터 이해부터 실전 산업 배포까지 10주 단위의 집중 교육</p>
+          </div>
+          <div className="overflow-x-auto rounded-2xl shadow-lg border border-slate-200 bg-white">
+            <table className="w-full text-left">
+              <thead className="bg-slate-50 border-b border-slate-200">
+                <tr>
+                  <th className="px-6 py-4 font-bold text-sm uppercase tracking-wider">단계</th>
+                  <th className="px-6 py-4 font-bold text-sm uppercase tracking-wider">과정명</th>
+                  <th className="px-6 py-4 font-bold text-sm uppercase tracking-wider">학습 내용 및 기술 스택</th>
+                  <th className="px-6 py-4 font-bold text-sm uppercase tracking-wider">프로젝트 예시</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {curriculumData.map((row, i) => (
+                  <tr key={i} className="hover:bg-blue-50/50 transition-colors">
+                    <td className="px-6 py-4 font-bold text-blue-600 whitespace-nowrap">{row.step}</td>
+                    <td className="px-6 py-4 font-semibold">{row.title}</td>
+                    <td className="px-6 py-4 text-slate-600 text-sm">{row.tech}</td>
+                    <td className="px-6 py-4 text-slate-600 text-sm">
+                      <div className="flex items-center">
+                        <ChevronRight size={14} className="mr-1 text-blue-400" />
+                        {row.detail}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-8 p-6 bg-amber-50 rounded-xl border border-amber-100 flex items-start space-x-4">
+             <div className="bg-amber-100 p-2 rounded-lg text-amber-600"><Award size={20}/></div>
+             <p className="text-amber-900 text-sm leading-relaxed">
+               <strong>심화 교육의 차별성:</strong> 학부 단계에서 OpenAI Gym 기반의 심층 강화 학습(DQN, A3C) 실습을 진행하며, AI 시스템의 편향성과 공정성 등 사회적 책임을 함께 강조하는 커리큘럼을 제공합니다.
+             </p>
+          </div>
+        </section>
+
+        {/* Section 3: Faculty & Research */}
+        <section className="bg-indigo-900 rounded-[3rem] p-12 text-white">
+          <div className="grid md:grid-cols-2 gap-16">
+            <div>
+              <h2 className="text-3xl font-bold mb-8">교수진 및 연구 역량</h2>
+              <p className="text-indigo-200 leading-relaxed mb-8">
+                해외 명문대 박사 및 풍부한 실무 경험을 보유한 세계적 수준의 교수진이 인공지능과 인간의 공존(HCI)을 중심으로 교육합니다.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-full bg-indigo-700 flex items-center justify-center"><Microscope size={24}/></div>
+                  <div>
+                    <h4 className="font-bold">대규모 국책 사업 수행</h4>
+                    <p className="text-sm text-indigo-300">BK21, 디지털 헬스케어 등 총 88억 규모</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-full bg-indigo-700 flex items-center justify-center"><Users size={24}/></div>
+                  <div>
+                    <h4 className="font-bold">학부생 연구원 제도</h4>
+                    <p className="text-sm text-indigo-300">2~3학년부터 교수 연구실 직접 참여 기회</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
+              {labs.map((lab, i) => (
+                <div key={i} className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10 hover:bg-white/20 transition-all cursor-default">
+                  <h4 className="font-bold text-lg mb-1">{lab.name}</h4>
+                  <p className="text-indigo-200 text-sm">{lab.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section 4: Facilities */}
+        <section>
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div>
+              <h2 className="text-3xl font-bold mb-4 italic underline decoration-blue-500 underline-offset-8">인프라 및 투자 계획</h2>
+              <p className="text-slate-600">글로컬대학 30 사업을 통한 혁신적 학습 환경</p>
+            </div>
+            <div className="text-right">
+              <span className="text-5xl font-black text-slate-100 absolute -mt-12 right-0 select-none">FACILITIES</span>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: <Cpu/>, title: "SW 전용 실습실", desc: "장영실관 등 수백 석 규모 최신 AI 연산 인프라" },
+              { icon: <Building2/>, title: "현장 캠퍼스", desc: "김해시 전역 50개 이상의 산업 연계 학습 공간" },
+              { icon: <Globe/>, title: "실제 데이터 활용", desc: "스마트 의약품 물류센터 등 실전 테스트베드" },
+              { icon: <Briefcase/>, title: "고가 장비 지원", desc: "LiDAR, GPU 서버, 자율주행 플랫폼 등 전폭 지원" },
+            ].map((item, i) => (
+              <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow group">
+                <div className="text-blue-600 mb-4 group-hover:scale-110 transition-transform">{item.icon}</div>
+                <h4 className="font-bold text-lg mb-2">{item.title}</h4>
+                <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Section 5: Cooperation & Employment */}
+        <section className="pb-20">
+          <div className="bg-slate-900 rounded-[3rem] p-8 md:p-16 text-white overflow-hidden relative">
+            <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-600/20 blur-3xl -mb-32 -mr-32"></div>
+            <div className="relative z-10 grid lg:grid-cols-5 gap-12 items-center">
+              <div className="lg:col-span-3">
+                <h2 className="text-4xl font-bold mb-8">산학협력 & 취업 성과</h2>
+                <div className="space-y-8">
+                  <div className="flex gap-6">
+                    <div className="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center font-bold">01</div>
+                    <div>
+                      <h4 className="text-xl font-bold mb-2">One-Team 프로젝트</h4>
+                      <p className="text-slate-400">기업 애로 기술을 교수-학생-기업이 함께 해결하고 장학금까지 수혜</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-6">
+                    <div className="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center font-bold">02</div>
+                    <div>
+                      <h4 className="text-xl font-bold mb-2">SAIL System</h4>
+                      <p className="text-slate-400">입학부터 졸업까지 책임지는 평생 지도 교수제 기반 취업 진로 로드맵</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="lg:col-span-2 space-y-4">
+                <div className="bg-white/10 p-8 rounded-3xl border border-white/10 text-center">
+                   <p className="text-blue-400 text-sm uppercase font-bold tracking-widest mb-2">Employment Rate</p>
+                   <p className="text-5xl font-black mb-1 text-white">REGION #1</p>
+                   <p className="text-slate-400">경남-울산 지역 대학 중 취업률 1위</p>
+                </div>
+                <div className="bg-blue-600 p-8 rounded-3xl text-center">
+                   <p className="text-white/80 text-sm font-bold mb-2 tracking-widest uppercase">Career Path</p>
+                   <p className="text-2xl font-bold">50% 이상 전문직 진출</p>
+                   <p className="text-white/70 text-sm">졸업생 과반이 연구직 및 공학 기술직 진출</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-slate-100 py-12 px-6 border-t border-slate-200">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+          <div className="mb-6 md:mb-0">
+            <h3 className="font-bold text-slate-800 mb-2">INJE UNIVERSITY</h3>
+            <p>인제대학교 AI소프트웨어학과 심층 분석 보고서 (2024-2025)</p>
+          </div>
+          <div className="flex space-x-8">
+            <span className="hover:text-blue-600 cursor-pointer transition-colors">학과 홈페이지</span>
+            <span className="hover:text-blue-600 cursor-pointer transition-colors">입학 정보</span>
+            <span className="hover:text-blue-600 cursor-pointer transition-colors">문의하기</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
