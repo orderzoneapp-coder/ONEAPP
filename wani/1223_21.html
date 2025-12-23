@@ -3,316 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>인제대 전기·배터리공학과 학부 전략</title>
+    <title>인제대 전기·배터리공학과 학과 전략 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #003893; /* 인제대 상징색 계열 */
-            --secondary-color: #00a886; /* 에너지/배터리 상징색 */
-            --bg-color: #f8f9fa;
-            --text-color: #333;
-            --card-bg: #ffffff;
-        }
-
-        body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 3rem 1rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2rem;
-            letter-spacing: -1px;
-        }
-
-        header p {
-            margin-top: 10px;
-            opacity: 0.9;
-        }
-
-        nav {
-            background: white;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: center;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        nav a {
-            padding: 1rem 1.5rem;
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--secondary-color);
-        }
-
-       .container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        section {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        h2 {
-            border-left: 5px solid var(--secondary-color);
-            padding-left: 1rem;
-            color: var(--primary-color);
-            margin-top: 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
-        }
-
-        table th, table td {
-            border: 1px solid #eee;
-            padding: 12px;
-            text-align: left;
-        }
-
-        table th {
-            background-color: #f4f7ff;
-            color: var(--primary-color);
-        }
-
-       .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-       .step-card {
-            background: #fdfdfd;
-            border: 1px solid #edf2f7;
-            border-radius: 8px;
-            padding: 1.5rem;
-            border-top: 4px solid var(--primary-color);
-        }
-
-       .step-card h3 {
-            margin-top: 0;
-            color: var(--primary-color);
-        }
-
-       .badge {
-            display: inline-block;
-            background: var(--secondary-color);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: #777;
-            font-size: 0.8rem;
-        }
-
-       .citation {
-            color: var(--secondary-color);
-            font-size: 0.8rem;
-            vertical-align: super;
-            text-decoration: none;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
     </style>
 </head>
-<body>
+<body class="text-slate-800">
 
-<header>
-    <h1>인제대학교 전기·배터리공학과</h1>
-    <p>전공 역량 강화 및 첨단 산업 대응을 위한 학부 상세 전략</p>
-</header>
-
-<nav>
-    <a href="#curriculum">교과 과정</a>
-    <a href="#research">연구 분야</a>
-    <a href="#industry">산업 동향</a>
-    <a href="#cert">자격증</a>
-    <a href="#roadmap">액션 플랜</a>
-</nav>
-
-<div class="container">
-    <section id="intro">
-        <h2>학과 개요</h2>
-        <p>전기공학의 전통적 기초 위에 배터리 공학을 융합하여 미래 에너지 산업을 선도하는 인재를 양성합니다. 경남 김해에 위치하여 부산·울산·경남의 자동차 및 중공업 벨트와 긴밀히 연계되어 있습니다 <a class="citation" href="#">[1, 2]</a>.</p>
-        <ul>
-            <li><strong>위치:</strong> 경남 김해시 인제로 197 <a class="citation" href="#">[1]</a></li>
-            <li><strong>등록금:</strong> 학기당 약 4,275,000원 (전기·배터리공학과 기준) <a class="citation" href="#">[1]</a></li>
-        </ul>
-    </section>
-
-    <section id="curriculum">
-        <h2>학년별 커리큘럼 로드맵</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>학년</th>
-                    <th>주요 과목</th>
-                    <th>핵심 역량</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1학년</td>
-                    <td>일반물리, 일반화학, 미적분학, 기초설계</td>
-                    <td>기초 과학 및 공학적 정량화 능력 <a class="citation" href="#">[3]</a></td>
-                </tr>
-                <tr>
-                    <td>2학년</td>
-                    <td>회로이론, 전자기학, 공업수학, 전기기기</td>
-                    <td>전력 계통 및 에너지 변환 원리 습득 <a class="citation" href="#">[3]</a></td>
-                </tr>
-                <tr>
-                    <td>3학년</td>
-                    <td>배터리공학, 제어공학, 전력전자, 디지털회로</td>
-                    <td>BMS 설계 및 전기화학 특성 분석 능력 <a class="citation" href="#">[4, 3]</a></td>
-                </tr>
-                <tr>
-                    <td>4학년</td>
-                    <td>캡스톤디자인, 에너지저장시스템, 시뮬레이션</td>
-                    <td>실무 프로젝트 및 시스템 통합 해결 역량 <a class="citation" href="#">[4, 5]</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <section id="research">
-        <h2>첨단 연구 분야</h2>
-        <div class="grid">
-            <div class="step-card">
-                <h3>차세대 나노 소재 연구</h3>
-                <p>손근용 교수 연구실을 중심으로 실리콘 기반 음극 소재와 나노 소재를 활용한 배터리 성능 향상 연구가 진행됩니다 <a class="citation" href="#">[6]</a>.</p>
-                <ul>
-                    <li>실리콘/탄소 나노 복합체 설계</li>
-                    <li>코발트 도핑을 통한 리튬 저장 성능 최적화</li>
-                </ul>
-            </div>
-            <div class="step-card">
-                <h3>배터리 열 시뮬레이션</h3>
-                <p>ABAQUS 등 유한요소해석(FEA) 프로그램을 활용하여 대형 배터리의 3차원 온도 분포를 예측하고 안전성을 설계합니다 <a class="citation" href="#">[7]</a>.</p>
-            </div>
+    <!-- Header & Hero Section -->
+    <header class="gradient-bg text-white py-16 px-6 text-center shadow-lg">
+        <div class="max-w-4xl mx-auto">
+            <span class="bg-blue-500/30 text-blue-100 px-4 py-1 rounded-full text-sm font-semibold mb-4 inline-block">인제대학교 전기·배터리공학과</span>
+            <h1 class="text-3xl md:text-5xl font-bold mb-6">첨단 산업 대응을 위한 학부 전략 리포트</h1>
+            <p class="text-lg md:text-xl text-blue-100 leading-relaxed opacity-90">
+                차세대 에너지 패러다임을 선도하는 글로벌 배터리 전문가 양성 로드맵
+            </p>
         </div>
-    </section>
+    </header>
 
-    <section id="industry">
-        <h2>배터리 3사 채용 및 기술 동향</h2>
-        <p>국내 배터리 3사는 계약학과 신설 및 글로벌 채용 행사를 통해 인재 확보에 총력을 기울이고 있습니다 <a class="citation" href="#">[8, 9]</a>.</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>기업</th>
-                    <th>주요 채용 채널</th>
-                    <th>핵심 기술 키워드</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>LG에너지솔루션</td>
-                    <td>BTC(미국), 산학협력센터 확대 <a class="citation" href="#">[8, 9]</a></td>
-                    <td>원통형 배터리, 스마트팩토리 <a class="citation" href="#">[10]</a></td>
-                </tr>
-                <tr>
-                    <td>삼성SDI</td>
-                    <td>T&C 포럼, 성균관대 계약학과 <a class="citation" href="#">[8, 9]</a></td>
-                    <td>전고체 배터리, 초격차 기술 <a class="citation" href="#">[9]</a></td>
-                </tr>
-                <tr>
-                    <td>SK온</td>
-                    <td>e-SKB(UNIST), 인터배터리 멘토링 <a class="citation" href="#">[8, 9]</a></td>
-                    <td>급속 충전, 파우치형 배터리 <a class="citation" href="#">[9]</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+    <main class="max-w-6xl mx-auto px-6 py-12">
 
-    <section id="cert">
-        <h2>추천 자격증 및 툴</h2>
-        <div class="grid">
-            <div class="step-card">
-                <span class="badge">필수</span>
-                <h3>전기 분야</h3>
-                <p>전기기사, 전기공사기사 <a class="citation" href="#">[2]</a></p>
-                <p>법적 선임 및 공기업/대기업 전력계통 취업 필수 역량</p>
+        <!-- Quick Stats Section -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4 card-hover">
+                <div class="bg-blue-100 p-3 rounded-lg text-blue-600"><i class="fas fa-map-marker-alt text-2xl"></i></div>
+                <div>
+                    <h3 class="text-sm text-slate-500">소재지</h3>
+                    <p class="font-bold">경남 김해시 인제로 197</p>
+                </div>
             </div>
-            <div class="step-card">
-                <span class="badge">심화</span>
-                <h3>배터리/전자 분야</h3>
-                <p>전자기사, 신재생에너지발전설비기사 <a class="citation" href="#">[2]</a></p>
-                <p>BMS 설계 및 ESS 에너지 저장 장치 특화</p>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4 card-hover">
+                <div class="bg-green-100 p-3 rounded-lg text-green-600"><i class="fas fa-microchip text-2xl"></i></div>
+                <div>
+                    <h3 class="text-sm text-slate-500">핵심 연구</h3>
+                    <p class="font-bold">차세대 나노 소재 & 시뮬레이션</p>
+                </div>
             </div>
-            <div class="step-card">
-                <span class="badge">소프트웨어</span>
-                <h3>실무 툴(Tool)</h3>
-                <p>MATLAB/Simulink, PSpice, AutoCAD, ABAQUS <a class="citation" href="#">[7, 2]</a></p>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4 card-hover">
+                <div class="bg-purple-100 p-3 rounded-lg text-purple-600"><i class="fas fa-university text-2xl"></i></div>
+                <div>
+                    <h3 class="text-sm text-slate-500">정부 지원</h3>
+                    <p class="font-bold">LINC 3.0 & 이차전지 특성화</p>
+                </div>
             </div>
+        </section>
+
+        <!-- Academic Roadmap Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-8 flex items-center"><i class="fas fa-route mr-3 text-blue-600"></i>학년별 학습 전략 로드맵</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-400">
+                    <span class="text-blue-600 font-bold">1학년: 기초 확립</span>
+                    <h4 class="font-bold text-lg mt-2 mb-3">Foundational</h4>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li>• 일반물리학 & 일반화학</li>
+                        <li>• 미적분학 (공학 수학 기초)</li>
+                        <li>• 공학적 정량화 능력 배양</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-indigo-400">
+                    <span class="text-indigo-600 font-bold">2학년: 핵심 전공</span>
+                    <h4 class="font-bold text-lg mt-2 mb-3">Core Engineering</h4>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li>• 회로이론 & 전자기학</li>
+                        <li>• 공업수학 (알고리즘 기반)</li>
+                        <li>• 전력 계통 및 에너지 변환</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-purple-400">
+                    <span class="text-purple-600 font-bold">3학년: 심화 전문</span>
+                    <h4 class="font-bold text-lg mt-2 mb-3">Specialized</h4>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li>• 리튬이온 배터리 공학</li>
+                        <li>• BMS 설계 & 제어공학</li>
+                        <li>• 전력전자 및 디지털 회로</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-pink-400">
+                    <span class="text-pink-600 font-bold">4학년: 실전 프로젝트</span>
+                    <h4 class="font-bold text-lg mt-2 mb-3">Practical</h4>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li>• 캡스톤 디자인 (기업 연계)</li>
+                        <li>• 열 관리 시뮬레이션</li>
+                        <li>• 공정 최적화 문제 해결</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Research & Tech Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+            <div class="bg-slate-900 text-white p-8 rounded-2xl shadow-xl overflow-hidden relative">
+                <div class="relative z-10">
+                    <h2 class="text-2xl font-bold mb-6">차세대 배터리 핵심 기술</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-blue-400 font-bold mb-2">실리콘 기반 나노 소재</h4>
+                            <p class="text-sm text-slate-300">흑연 음극재의 용량 한계를 극복하기 위한 나노 복합체 연구 및 코발트 도핑 최적화 기술.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-blue-400 font-bold mb-2">유한요소해석 (FEA) 시뮬레이션</h4>
+                            <p class="text-sm text-slate-300">ABAQUS 등을 활용한 3D 열 분포 분석으로 배터리 팩의 안전성 설계 역량 확보.</p>
+                        </div>
+                    </div>
+                </div>
+                <i class="fas fa-atom absolute -bottom-10 -right-10 text-9xl text-slate-800 opacity-50"></i>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-2xl font-bold mb-6 text-slate-800">산업계 요구 인재상</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <span class="bg-red-100 text-red-600 px-2 py-1 rounded text-xs font-bold mt-1 uppercase">LG엔솔</span>
+                        <p class="text-sm">스마트팩토리, 원통형 배터리 및 소재 융합 전문가</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs font-bold mt-1 uppercase">삼성SDI</span>
+                        <p class="text-sm">전고체 배터리 등 초격차 기술 경쟁력을 위한 R&D 역량</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded text-xs font-bold mt-1 uppercase">SK온</span>
+                        <p class="text-sm">급속 충전 기술 및 고에너지 밀도 파우치형 공정 혁신</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-8 flex items-center"><i class="fas fa-id-card mr-3 text-blue-600"></i>전문성 증명을 위한 자격증</h2>
+            <div class="bg-blue-50 p-8 rounded-2xl border border-blue-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-bold text-blue-800 mb-4 uppercase tracking-wider">공통 필수 자격</h4>
+                        <div class="space-y-3">
+                            <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-600">
+                                <span class="font-bold block">전기기사 / 전기공사기사</span>
+                                <p class="text-xs text-slate-500 mt-1">공기업 및 대기업 전력 계통 관리 필수 사양</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-blue-800 mb-4 uppercase tracking-wider">직무 특화 자격</h4>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-white p-3 rounded-lg text-center text-sm font-medium border border-blue-100 shadow-sm">위험물산업기사</div>
+                            <div class="bg-white p-3 rounded-lg text-center text-sm font-medium border border-blue-100 shadow-sm">소방설비기사</div>
+                            <div class="bg-white p-3 rounded-lg text-center text-sm font-medium border border-blue-100 shadow-sm">신재생에너지기사</div>
+                            <div class="bg-white p-3 rounded-lg text-center text-sm font-medium border border-blue-100 shadow-sm">전자기사</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Action Plan Checklist -->
+        <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-2xl font-bold mb-8 text-center">성공적인 학부 생활을 위한 Action Plan</h2>
+            <div class="space-y-4 max-w-3xl mx-auto">
+                <div class="flex items-center p-4 bg-slate-50 rounded-xl">
+                    <input type="checkbox" checked class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                    <span class="ml-4 text-slate-700"><strong>[1~2학년]</strong> 전공 기초 과목(물리/수학/화학) A학점 이상 목표</span>
+                </div>
+                <div class="flex items-center p-4 bg-slate-50 rounded-xl">
+                    <input type="checkbox" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                    <span class="ml-4 text-slate-700"><strong>[3학년]</strong> 학부 연구생(RA) 참여 및 MATLAB/ABAQUS 숙달</span>
+                </div>
+                <div class="flex items-center p-4 bg-slate-50 rounded-xl">
+                    <input type="checkbox" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                    <span class="ml-4 text-slate-700"><strong>[4학년]</strong> 전기기사 자격증 취득 및 인터배터리 서포터즈 활동</span>
+                </div>
+                <div class="flex items-center p-4 bg-slate-50 rounded-xl">
+                    <input type="checkbox" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                    <span class="ml-4 text-slate-700"><strong>[상시]</strong> LINC 3.0 산학협력 플랫폼을 통한 실무 과제 수행</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 px-6 text-center border-t border-slate-800">
+        <div class="max-w-4xl mx-auto">
+            <p class="text-sm mb-4">인제대학교 전기·배터리공학과 학술 전략 보고서 요약</p>
+            <p class="text-xs">© 2024 Inje University Department of Electrical & Battery Engineering. All rights reserved.</p>
         </div>
-    </section>
-
-    <section id="roadmap">
-        <h2>학부 생활 단계별 액션 플랜</h2>
-        <div class="grid">
-            <div class="step-card">
-                <h3>1-2학년: 적응 및 탐색</h3>
-                <ul>
-                    <li>기초 MSC(수학, 물리, 화학) 학점 관리 <a class="citation" href="#">[4]</a></li>
-                    <li>어학 성적(토익/스피킹) 조기 확보</li>
-                </ul>
-            </div>
-            <div class="step-card">
-                <h3>3학년: 심화 및 역량 강화</h3>
-                <ul>
-                    <li>학부 연구생 참여 (나노 소재/시뮬레이션) <a class="citation" href="#">[6]</a></li>
-                    <li>전기기사 필기 준비 시작</li>
-                </ul>
-            </div>
-            <div class="step-card">
-                <h3>4학년: 실전 및 취업</h3>
-                <ul>
-                    <li>캡스톤 디자인 포트폴리오 완성 <a class="citation" href="#">[5]</a></li>
-                    <li>배터리 3사 채용 연계 포럼 참가 <a class="citation" href="#">[9]</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-</div>
-
-<footer>
-    <p>© 2025 인제대학교 전기·배터리공학과 학부 전략 가이드</p>
-    <p>본 페이지는 인제대 LINC 3.0 및 이차전지 특성화 대학 사업 정보를 바탕으로 구성되었습니다.</p>
-</footer>
+    </footer>
 
 </body>
 </html>
