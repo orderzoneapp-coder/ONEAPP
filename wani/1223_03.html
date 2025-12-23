@@ -1,468 +1,514 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Cpu, 
-  School, 
-  Microscope, 
-  Award, 
-  Users, 
-  Zap, 
-  BookOpen, 
-  Factory, 
-  ArrowRight, 
-  Menu, 
-  X,
-  TrendingUp,
-  MonitorCheck
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인제대학교 반도체·전자공학부 전략 보고서</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-const InjeSemiconductorReport = () => {
-  const [activeTab, setActiveTab] = useState('overview');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-blue-100 selection:text-blue-900">
 
-  // Handle scroll for navbar styling
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm py-4">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+            <div class="flex items-center gap-2 font-bold text-xl md:text-2xl text-blue-900 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <i data-lucide="cpu" class="w-8 h-8 text-blue-600"></i>
+                <span>INJE<span class="text-blue-600">SEMI</span></span>
+            </div>
 
-  const sections = [
-    { id: 'overview', label: '개요 및 비전' },
-    { id: 'projects', label: '국책 사업' },
-    { id: 'faculty', label: '교수진 및 연구' },
-    { id: 'infrastructure', label: '인프라' },
-    { id: 'curriculum', label: '교육 혁신' },
-  ];
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex gap-8">
+                <button onclick="scrollToSection('overview')" class="nav-link text-sm font-medium transition-colors hover:text-blue-600 text-slate-600" data-target="overview">개요 및 비전</button>
+                <button onclick="scrollToSection('projects')" class="nav-link text-sm font-medium transition-colors hover:text-blue-600 text-slate-600" data-target="projects">국책 사업</button>
+                <button onclick="scrollToSection('faculty')" class="nav-link text-sm font-medium transition-colors hover:text-blue-600 text-slate-600" data-target="faculty">교수진 및 연구</button>
+                <button onclick="scrollToSection('infrastructure')" class="nav-link text-sm font-medium transition-colors hover:text-blue-600 text-slate-600" data-target="infrastructure">인프라</button>
+                <button onclick="scrollToSection('curriculum')" class="nav-link text-sm font-medium transition-colors hover:text-blue-600 text-slate-600" data-target="curriculum">교육 혁신</button>
+            </div>
 
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setActiveTab(id);
-      setIsMenuOpen(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-blue-100 selection:text-blue-900">
-      
-      {/* Navigation Bar */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2' : 'bg-white/90 backdrop-blur-sm py-4'}`}>
-        <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
-          <div className="flex items-center gap-2 font-bold text-xl md:text-2xl text-blue-900 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-            <Cpu className="w-8 h-8 text-blue-600" />
-            <span>INJE<span className="text-blue-600">SEMI</span></span>
-          </div>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex gap-8">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => scrollToSection(section.id)}
-                className={`text-sm font-medium transition-colors hover:text-blue-600 ${activeTab === section.id ? 'text-blue-600 font-bold' : 'text-slate-600'}`}
-              >
-                {section.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button className="md:hidden text-slate-600" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X /> : <Menu />}
-          </button>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-600">
+                <i data-lucide="menu"></i>
+            </button>
         </div>
 
-        {/* Mobile Menu Dropdown */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-slate-100 absolute w-full px-4 py-4 shadow-lg flex flex-col gap-4">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => scrollToSection(section.id)}
-                className="text-left text-slate-600 font-medium py-2 border-b border-slate-50 last:border-0"
-              >
-                {section.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </nav>
-
-      {/* Hero Section */}
-      <header className="pt-32 pb-20 px-4 bg-gradient-to-br from-slate-900 via-blue-900 to-blue-800 text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-y-1/2 -translate-x-1/2"></div>
-        
-        <div className="container mx-auto relative z-10 text-center md:text-left">
-          <div className="inline-block bg-blue-700/50 backdrop-blur border border-blue-500/30 px-4 py-1.5 rounded-full text-blue-100 text-sm font-semibold mb-6">
-            동남권 반도체 교육·연구의 거점
-          </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-            인제대학교 <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-300">반도체·전자공학부</span> 전략 보고서
-          </h1>
-          <p className="text-lg md:text-xl text-blue-100 max-w-2xl mb-10 leading-relaxed">
-            차세대 AI 반도체 및 전력 반도체 분야의 혁신적 성과.<br/>
-            수도권-비수도권 격차를 해소하는 <strong>KI-STAR</strong> 사업과 지역 산업 생태계를 이끄는 <strong>인제대학교</strong>의 비전을 소개합니다.
-          </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-            <button onClick={() => scrollToSection('projects')} className="px-8 py-3 bg-white text-blue-900 rounded-lg font-bold hover:bg-blue-50 transition-colors shadow-lg flex items-center justify-center gap-2">
-              주요 성과 보기 <ArrowRight className="w-4 h-4" />
-            </button>
-            <button onClick={() => scrollToSection('faculty')} className="px-8 py-3 bg-transparent border border-white/30 text-white rounded-lg font-semibold hover:bg-white/10 transition-colors">
-              교수진 소개
-            </button>
-          </div>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full px-4 py-4 shadow-lg flex flex-col gap-4">
+            <button onclick="scrollToSection('overview')" class="text-left text-slate-600 font-medium py-2 border-b border-slate-50 last:border-0">개요 및 비전</button>
+            <button onclick="scrollToSection('projects')" class="text-left text-slate-600 font-medium py-2 border-b border-slate-50 last:border-0">국책 사업</button>
+            <button onclick="scrollToSection('faculty')" class="text-left text-slate-600 font-medium py-2 border-b border-slate-50 last:border-0">교수진 및 연구</button>
+            <button onclick="scrollToSection('infrastructure')" class="text-left text-slate-600 font-medium py-2 border-b border-slate-50 last:border-0">인프라</button>
+            <button onclick="scrollToSection('curriculum')" class="text-left text-slate-600 font-medium py-2 border-b border-slate-50 last:border-0">교육 혁신</button>
         </div>
-      </header>
+    </nav>
 
-      {/* Key Stats */}
-      <div className="py-10 bg-white shadow-sm -mt-10 relative z-20 container mx-auto rounded-xl grid grid-cols-2 md:grid-cols-4 gap-8 px-8 border border-slate-100">
-        <StatItem number="231억" label="KI-STAR 지원 규모" suffix="원" />
-        <StatItem number="240억" label="LINC 3.0 지원 규모" suffix="원" />
-        <StatItem number="20+" label="클린룸 보유 장비" suffix="종" />
-        <StatItem number="2025" label="반도체 트랙 지원" suffix="년까지" />
-      </div>
-
-      <main className="container mx-auto px-4 md:px-6 py-20 space-y-32">
+    <!-- Hero Section -->
+    <header id="overview" class="pt-32 pb-20 px-4 bg-gradient-to-br from-slate-900 via-blue-900 to-blue-800 text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-y-1/2 -translate-x-1/2"></div>
         
-        {/* Section 1: Overview (Hidden visual only, incorporated in Hero) */}
-
-        {/* Section 2: National Projects */}
-        <section id="projects" className="scroll-mt-24">
-          <SectionHeader 
-            title="국가 전략 사업 추진 현황" 
-            subtitle="교육부와 산업통상자원부가 주관하는 대규모 인력 양성 및 기술 개발 사업 선정"
-          />
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* KI-STAR Card */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow group relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
-              <div className="relative z-10">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
-                  <Award className="w-6 h-6" />
-                </div>
-                <h3 className="text-2xl font-bold mb-2 text-slate-900">차세대 AI 반도체 특성화대학 (KI-STAR)</h3>
-                <p className="text-slate-500 font-medium mb-6">교육부 & KIAT 주관 · 고려대학교와 컨소시엄</p>
-                
-                <ul className="space-y-3 mb-8">
-                  <ListItem text="4년간 총 231억 원 국비 지원" />
-                  <ListItem text="수도권-비수도권 복수학위제 운영" />
-                  <ListItem text="현장 완성형 인재 육성 (설계, 공정, 소재)" />
-                  <ListItem text="장학금 지원 및 첨단 실습 장비 구축" />
-                </ul>
-                <div className="pt-4 border-t border-slate-100">
-                  <span className="inline-flex items-center text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                    동반성장형 모델
-                  </span>
-                </div>
-              </div>
+        <div class="container mx-auto relative z-10 text-center md:text-left">
+            <div class="inline-block bg-blue-700/50 backdrop-blur border border-blue-500/30 px-4 py-1.5 rounded-full text-blue-100 text-sm font-semibold mb-6">
+                동남권 반도체 교육·연구의 거점
             </div>
-
-            {/* LINC 3.0 & Track Card */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow group relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
-              <div className="relative z-10">
-                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-6">
-                  <TrendingUp className="w-6 h-6" />
-                </div>
-                <h3 className="text-2xl font-bold mb-2 text-slate-900">반도체 전공트랙 & LINC 3.0</h3>
-                <p className="text-slate-500 font-medium mb-6">산학연 협력 및 소부장 특화 교육</p>
-                
-                <ul className="space-y-3 mb-8">
-                  <ListItem text="LINC 3.0: 2027년까지 240억 원 지원 확보" />
-                  <ListItem text="반도체 전공트랙: 경남권 유일 선정 (9억 원)" />
-                  <ListItem text="기업가형 대학 지향 및 재직자 교육" />
-                  <ListItem text="삼성전자 등 유수 기업 인력 공급 성과" />
-                </ul>
-                <div className="pt-4 border-t border-slate-100">
-                  <span className="inline-flex items-center text-sm font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
-                    지역 산업 생태계 기여
-                  </span>
-                </div>
-              </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+                인제대학교 <br class="hidden md:block"/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-300">반도체·전자공학부</span> 전략 보고서
+            </h1>
+            <p class="text-lg md:text-xl text-blue-100 max-w-2xl mb-10 leading-relaxed">
+                차세대 AI 반도체 및 전력 반도체 분야의 혁신적 성과.<br/>
+                수도권-비수도권 격차를 해소하는 <strong>KI-STAR</strong> 사업과 지역 산업 생태계를 이끄는 <strong>인제대학교</strong>의 비전을 소개합니다.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                <button onclick="scrollToSection('projects')" class="px-8 py-3 bg-white text-blue-900 rounded-lg font-bold hover:bg-blue-50 transition-colors shadow-lg flex items-center justify-center gap-2">
+                    주요 성과 보기 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+                <button onclick="scrollToSection('faculty')" class="px-8 py-3 bg-transparent border border-white/30 text-white rounded-lg font-semibold hover:bg-white/10 transition-colors">
+                    교수진 소개
+                </button>
             </div>
-          </div>
-        </section>
+        </div>
+    </header>
 
-        {/* Section 3: Faculty */}
-        <section id="faculty" className="scroll-mt-24">
-          <SectionHeader 
-            title="주요 교수진 및 학문적 성과" 
-            subtitle="반도체 전 영역을 아우르는 전문성을 보유한 핵심 연구진"
-          />
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <FacultyCard 
-              name="송한정 교수"
-              role="반도체공학과 / KI-STAR 부단장"
-              specialty="뉴로모픽 반도체, 멤리스터"
-              desc="인간 뇌 구조를 모방한 뉴로모픽 컴퓨팅의 권위자. HfO₂ 기반 소자 및 카오스 회로 연구 주도."
-              icon={<Zap className="w-6 h-6" />}
-            />
-             <FacultyCard 
-              name="김종원 교수"
-              role="나노융합공학부"
-              specialty="비선형 복잡계 이론 물리"
-              desc="미국 메릴랜드 주립대 박사. 나노 소자의 양자 역학적 문제와 불확실성 제어 연구."
-              icon={<Award className="w-6 h-6" />}
-            />
-             <FacultyCard 
-              name="김희철 교수"
-              role="AI소프트웨어학부"
-              specialty="디지털 헬스케어 융합"
-              desc="반도체 센서와 헬스케어 접목. 나노섬유 기반 웰니스웨어 시스템 개발 주도."
-              icon={<MonitorCheck className="w-6 h-6" />}
-            />
-             <FacultyCard 
-              name="정우석 교수"
-              role="의예과 / 융합전공"
-              specialty="바이오 센서 융합 기술"
-              desc="세포 신호 전달 영상화 연구를 통해 반도체 기반 바이오 이미징 센서 기술 확장."
-              icon={<Microscope className="w-6 h-6" />}
-            />
-          </div>
-
-          {/* Research Highlight Box */}
-          <div className="mt-8 bg-slate-900 rounded-xl p-8 text-white">
-            <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-blue-400" />
-              주목할 만한 연구 성과: 송한정 교수팀
-            </h4>
-            <div className="grid md:grid-cols-3 gap-6 text-slate-300 text-sm">
-              <div className="bg-slate-800 p-4 rounded-lg">
-                <strong className="block text-white mb-2 text-lg">멤리스터 특성화</strong>
-                뉴로모픽 시스템의 시냅스 모방을 위한 새로운 소자 성능 측정 방법론 제시 (2020)
-              </div>
-              <div className="bg-slate-800 p-4 rounded-lg">
-                <strong className="block text-white mb-2 text-lg">HfO<sub>2</sub> 기반 시스템</strong>
-                가돌리늄(Gd) 도핑 멤리스터를 통한 이미지 노이즈 제거 및 에지 검출 효율 입증
-              </div>
-              <div className="bg-slate-800 p-4 rounded-lg">
-                <strong className="block text-white mb-2 text-lg">CMOS 혼돈 생성기</strong>
-                보안 통신 및 난수 생성기 성능 극대화를 위한 1차원 선형 조각 맵 회로 연구
-              </div>
+    <!-- Key Stats -->
+    <div class="py-10 bg-white shadow-sm -mt-10 relative z-20 container mx-auto rounded-xl grid grid-cols-2 md:grid-cols-4 gap-8 px-8 border border-slate-100">
+        <div class="text-center">
+            <div class="text-3xl md:text-4xl font-extrabold text-blue-600 mb-2">
+                231억<span class="text-lg md:text-xl text-slate-400 ml-1 font-normal">원</span>
             </div>
-          </div>
-        </section>
-
-        {/* Section 4: Infrastructure */}
-        <section id="infrastructure" className="scroll-mt-24">
-          <SectionHeader 
-            title="첨단 연구 인프라" 
-            subtitle="프라임의생명공학관 내 반도체공정교육센터 및 클린룸 운영"
-          />
-
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
-            <div className="lg:w-1/2 space-y-6">
-              <div className="prose prose-lg text-slate-600">
-                <p>
-                  인제대학교는 약 <strong>130m² 규모의 클린룸(Cleanroom)</strong>을 보유하여 
-                  학생들이 실제 반도체 8대 공정을 직접 수행할 수 있는 환경을 제공합니다.
-                  이곳은 단순 교육 공간을 넘어 지역 기업과의 공동 연구 거점으로 활용됩니다.
-                </p>
-              </div>
-              
-              <div className="bg-white border-l-4 border-blue-600 shadow-sm p-6 rounded-r-lg">
-                <h4 className="font-bold text-lg mb-4 text-slate-900 flex items-center gap-2">
-                  <Factory className="w-5 h-5 text-blue-600" />
-                  주요 보유 장비 (20여 종)
-                </h4>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-slate-700">
-                  <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>습식 세정기 (Wet Station)</li>
-                  <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>컨텍 얼라이너 (Contact Aligner)</li>
-                  <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>주사전자현미경 (SEM)</li>
-                  <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>프로브 스테이션 & LCR 미터</li>
-                  <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>4포인트 프로브 (4-Point Probe)</li>
-                  <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>성분 분석기</li>
-                </ul>
-              </div>
+            <div class="text-sm font-medium text-slate-600 uppercase tracking-wide">KI-STAR 지원 규모</div>
+        </div>
+        <div class="text-center">
+            <div class="text-3xl md:text-4xl font-extrabold text-blue-600 mb-2">
+                240억<span class="text-lg md:text-xl text-slate-400 ml-1 font-normal">원</span>
             </div>
+            <div class="text-sm font-medium text-slate-600 uppercase tracking-wide">LINC 3.0 지원 규모</div>
+        </div>
+        <div class="text-center">
+            <div class="text-3xl md:text-4xl font-extrabold text-blue-600 mb-2">
+                20+<span class="text-lg md:text-xl text-slate-400 ml-1 font-normal">종</span>
+            </div>
+            <div class="text-sm font-medium text-slate-600 uppercase tracking-wide">클린룸 보유 장비</div>
+        </div>
+        <div class="text-center">
+            <div class="text-3xl md:text-4xl font-extrabold text-blue-600 mb-2">
+                2025<span class="text-lg md:text-xl text-slate-400 ml-1 font-normal">년까지</span>
+            </div>
+            <div class="text-sm font-medium text-slate-600 uppercase tracking-wide">반도체 트랙 지원</div>
+        </div>
+    </div>
 
-            <div className="lg:w-1/2 bg-slate-100 rounded-2xl p-2 md:p-8 aspect-video flex items-center justify-center shadow-inner">
-               {/* Schematic representation of Cleanroom */}
-               <div className="w-full h-full bg-white rounded-xl border border-slate-200 p-6 flex flex-col justify-between relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-2 bg-blue-500"></div>
-                  <div className="flex justify-between items-start mb-4">
-                    <span className="font-mono text-xs text-slate-400">ROOM: 304</span>
-                    <span className="font-bold text-slate-800 flex items-center gap-2"><Users className="w-4 h-4"/> Class 1000/10000</span>
-                  </div>
-                  <div className="flex-1 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="inline-block p-4 bg-blue-50 rounded-full mb-3">
-                        <Microscope className="w-12 h-12 text-blue-600" />
-                      </div>
-                      <p className="font-bold text-slate-700">반도체공정교육센터</p>
-                      <p className="text-sm text-slate-500">Fab Process Simulation & Practice</p>
+    <main class="container mx-auto px-4 md:px-6 py-20 space-y-32">
+
+        <!-- Section 2: National Projects -->
+        <section id="projects" class="scroll-mt-24">
+            <div class="mb-12 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-slate-900 mb-3">국가 전략 사업 추진 현황</h2>
+                <div class="w-20 h-1 bg-blue-600 mb-4 mx-auto md:mx-0"></div>
+                <p class="text-slate-500 text-lg max-w-2xl">교육부와 산업통상자원부가 주관하는 대규모 인력 양성 및 기술 개발 사업 선정</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- KI-STAR Card -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                            <i data-lucide="award" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 text-slate-900">차세대 AI 반도체 특성화대학 (KI-STAR)</h3>
+                        <p class="text-slate-500 font-medium mb-6">교육부 & KIAT 주관 · 고려대학교와 컨소시엄</p>
+                        
+                        <ul class="space-y-3 mb-8 text-slate-700">
+                            <li class="flex items-start gap-3"><div class="mt-1.5 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div><span class="leading-relaxed">4년간 총 231억 원 국비 지원</span></li>
+                            <li class="flex items-start gap-3"><div class="mt-1.5 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div><span class="leading-relaxed">수도권-비수도권 복수학위제 운영</span></li>
+                            <li class="flex items-start gap-3"><div class="mt-1.5 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div><span class="leading-relaxed">현장 완성형 인재 육성 (설계, 공정, 소재)</span></li>
+                            <li class="flex items-start gap-3"><div class="mt-1.5 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div><span class="leading-relaxed">장학금 지원 및 첨단 실습 장비 구축</span></li>
+                        </ul>
+                        <div class="pt-4 border-t border-slate-100">
+                            <span class="inline-flex items-center text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                                동반성장형 모델
+                            </span>
+                        </div>
                     </div>
-                  </div>
-                  <div className="flex justify-center gap-2 mt-4">
-                    {[1,2,3,4].map(i => <div key={i} className="w-12 h-1 bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-blue-200 w-2/3"></div></div>)}
-                  </div>
-               </div>
+                </div>
+
+                <!-- LINC 3.0 & Track Card -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-6">
+                            <i data-lucide="trending-up" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 text-slate-900">반도체 전공트랙 & LINC 3.0</h3>
+                        <p class="text-slate-500 font-medium mb-6">산학연 협력 및 소부장 특화 교육</p>
+                        
+                        <ul class="space-y-3 mb-8 text-slate-700">
+                            <li class="flex items-start gap-3"><div class="mt-1.5 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div><span class="leading-relaxed">LINC 3.0: 2027년까지 240억 원 지원 확보</span></li>
+                            <li class="flex items-start gap-3"><div class="mt-1.5 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div><span class="leading-relaxed">반도체 전공트랙: 경남권 유일 선정 (9억 원)</span></li>
+                            <li class="flex items-start gap-3"><div class="mt-1.5 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div><span class="leading-relaxed">기업가형 대학 지향 및 재직자 교육</span></li>
+                            <li class="flex items-start gap-3"><div class="mt-1.5 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div><span class="leading-relaxed">삼성전자 등 유수 기업 인력 공급 성과</span></li>
+                        </ul>
+                        <div class="pt-4 border-t border-slate-100">
+                            <span class="inline-flex items-center text-sm font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
+                                지역 산업 생태계 기여
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </section>
 
-        {/* Section 5: Curriculum */}
-        <section id="curriculum" className="scroll-mt-24">
-          <SectionHeader 
-            title="교육 혁신 및 인재 양성 로드맵" 
-            subtitle="AI 반도체 소부장 융합 전공 및 파워반도체 특화 교육"
-          />
-
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-8 md:p-12">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-8 relative">
-              {/* Connecting Line (Desktop) */}
-              <div className="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-slate-100 -z-0 -translate-y-1/2"></div>
-
-              {/* Step 1 */}
-              <CurriculumStep 
-                step="01" 
-                title="입문 단계" 
-                desc="AI 반도체 신소재 개론, 반도체 기초 이론 학습"
-                color="bg-blue-100 text-blue-700"
-              />
-              
-              {/* Step 2 */}
-              <CurriculumStep 
-                step="02" 
-                title="심화 단계" 
-                desc="고급 AI 반도체 소자, 공정 및 응용 기술 습득"
-                color="bg-indigo-100 text-indigo-700"
-              />
-
-              {/* Step 3 */}
-              <CurriculumStep 
-                step="03" 
-                title="실전 단계" 
-                desc="산학 연계 프로젝트, 기업 현장 실습 (제엠제코 등)"
-                color="bg-purple-100 text-purple-700"
-              />
+        <!-- Section 3: Faculty -->
+        <section id="faculty" class="scroll-mt-24">
+            <div class="mb-12 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-slate-900 mb-3">주요 교수진 및 학문적 성과</h2>
+                <div class="w-20 h-1 bg-blue-600 mb-4 mx-auto md:mx-0"></div>
+                <p class="text-slate-500 text-lg max-w-2xl">반도체 전 영역을 아우르는 전문성을 보유한 핵심 연구진</p>
             </div>
 
-            <div className="mt-12 bg-slate-50 rounded-xl p-6 border border-slate-100">
-              <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <School className="w-5 h-5" />
-                차별화된 교육 포인트
-              </h4>
-              <div className="grid md:grid-cols-2 gap-4 text-sm">
-                <div className="flex gap-3">
-                  <div className="w-1 bg-blue-500 h-full rounded-full"></div>
-                  <div>
-                    <strong className="block text-slate-900">고려대 공동 교육 & 복수학위</strong>
-                    수도권 첨단 인프라 경험 및 양교 학위 동시 취득 기회 제공
-                  </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Faculty 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-700 mb-4">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-900">송한정 교수</h4>
+                    <p class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">반도체공학과 / KI-STAR 부단장</p>
+                    <div class="mb-3">
+                        <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded">뉴로모픽 반도체, 멤리스터</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed line-clamp-3">인간 뇌 구조를 모방한 뉴로모픽 컴퓨팅의 권위자. HfO₂ 기반 소자 및 카오스 회로 연구 주도.</p>
                 </div>
-                <div className="flex gap-3">
-                  <div className="w-1 bg-emerald-500 h-full rounded-full"></div>
-                  <div>
-                    <strong className="block text-slate-900">동남권 파워반도체 클러스터 연계</strong>
-                    SiC, GaN 등 전력 반도체 소자 설계 및 공정 실무 강화
-                  </div>
+                <!-- Faculty 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-700 mb-4">
+                        <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-900">김종원 교수</h4>
+                    <p class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">나노융합공학부</p>
+                    <div class="mb-3">
+                        <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded">비선형 복잡계 이론 물리</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed line-clamp-3">미국 메릴랜드 주립대 박사. 나노 소자의 양자 역학적 문제와 불확실성 제어 연구.</p>
                 </div>
-              </div>
+                <!-- Faculty 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-700 mb-4">
+                        <i data-lucide="monitor-check" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-900">김희철 교수</h4>
+                    <p class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">AI소프트웨어학부</p>
+                    <div class="mb-3">
+                        <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded">디지털 헬스케어 융합</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed line-clamp-3">반도체 센서와 헬스케어 접목. 나노섬유 기반 웰니스웨어 시스템 개발 주도.</p>
+                </div>
+                <!-- Faculty 4 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-700 mb-4">
+                        <i data-lucide="microscope" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-900">정우석 교수</h4>
+                    <p class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">의예과 / 융합전공</p>
+                    <div class="mb-3">
+                        <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded">바이오 센서 융합 기술</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed line-clamp-3">세포 신호 전달 영상화 연구를 통해 반도체 기반 바이오 이미징 센서 기술 확장.</p>
+                </div>
             </div>
-          </div>
+
+            <!-- Research Highlight Box -->
+            <div class="mt-8 bg-slate-900 rounded-xl p-8 text-white">
+                <h4 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <i data-lucide="book-open" class="w-5 h-5 text-blue-400"></i>
+                    주목할 만한 연구 성과: 송한정 교수팀
+                </h4>
+                <div class="grid md:grid-cols-3 gap-6 text-slate-300 text-sm">
+                    <div class="bg-slate-800 p-4 rounded-lg">
+                        <strong class="block text-white mb-2 text-lg">멤리스터 특성화</strong>
+                        뉴로모픽 시스템의 시냅스 모방을 위한 새로운 소자 성능 측정 방법론 제시 (2020)
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-lg">
+                        <strong class="block text-white mb-2 text-lg">HfO<sub>2</sub> 기반 시스템</strong>
+                        가돌리늄(Gd) 도핑 멤리스터를 통한 이미지 노이즈 제거 및 에지 검출 효율 입증
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-lg">
+                        <strong class="block text-white mb-2 text-lg">CMOS 혼돈 생성기</strong>
+                        보안 통신 및 난수 생성기 성능 극대화를 위한 1차원 선형 조각 맵 회로 연구
+                    </div>
+                </div>
+            </div>
         </section>
 
-      </main>
+        <!-- Section 4: Infrastructure -->
+        <section id="infrastructure" class="scroll-mt-24">
+            <div class="mb-12 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-slate-900 mb-3">첨단 연구 인프라</h2>
+                <div class="w-20 h-1 bg-blue-600 mb-4 mx-auto md:mx-0"></div>
+                <p class="text-slate-500 text-lg max-w-2xl">프라임의생명공학관 내 반도체공정교육센터 및 클린룸 운영</p>
+            </div>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-slate-300 py-16">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid md:grid-cols-3 gap-12 mb-12">
-            <div>
-              <div className="flex items-center gap-2 font-bold text-2xl text-white mb-4">
-                <Cpu className="w-8 h-8 text-blue-500" />
-                <span>INJE<span className="text-blue-500">SEMI</span></span>
-              </div>
-              <p className="text-slate-400 leading-relaxed">
-                인제대학교 반도체·전자공학부는 지역 소멸 위기에 대응하고 
-                국가 전략 기술을 확보하는 대한민국 반도체 인재 양성의 요람입니다.
-              </p>
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <div class="lg:w-1/2 space-y-6">
+                    <div class="prose prose-lg text-slate-600">
+                        <p>
+                            인제대학교는 약 <strong>130m² 규모의 클린룸(Cleanroom)</strong>을 보유하여 
+                            학생들이 실제 반도체 8대 공정을 직접 수행할 수 있는 환경을 제공합니다.
+                            이곳은 단순 교육 공간을 넘어 지역 기업과의 공동 연구 거점으로 활용됩니다.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white border-l-4 border-blue-600 shadow-sm p-6 rounded-r-lg">
+                        <h4 class="font-bold text-lg mb-4 text-slate-900 flex items-center gap-2">
+                            <i data-lucide="factory" class="w-5 h-5 text-blue-600"></i>
+                            주요 보유 장비 (20여 종)
+                        </h4>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-slate-700">
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>습식 세정기 (Wet Station)</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>컨텍 얼라이너 (Contact Aligner)</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>주사전자현미경 (SEM)</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>프로브 스테이션 & LCR 미터</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>4포인트 프로브 (4-Point Probe)</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>성분 분석기</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2 bg-slate-100 rounded-2xl p-2 md:p-8 aspect-video w-full flex items-center justify-center shadow-inner">
+                    <!-- Schematic representation of Cleanroom -->
+                    <div class="w-full h-full bg-white rounded-xl border border-slate-200 p-6 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-blue-500"></div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="font-mono text-xs text-slate-400">ROOM: 304</span>
+                            <span class="font-bold text-slate-800 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Class 1000/10000</span>
+                        </div>
+                        <div class="flex-1 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="inline-block p-4 bg-blue-50 rounded-full mb-3">
+                                    <i data-lucide="microscope" class="w-12 h-12 text-blue-600"></i>
+                                </div>
+                                <p class="font-bold text-slate-700">반도체공정교육센터</p>
+                                <p class="text-sm text-slate-500">Fab Process Simulation & Practice</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-center gap-2 mt-4">
+                            <div class="w-12 h-1 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-blue-200 w-2/3"></div></div>
+                            <div class="w-12 h-1 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-blue-200 w-2/3"></div></div>
+                            <div class="w-12 h-1 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-blue-200 w-2/3"></div></div>
+                            <div class="w-12 h-1 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-blue-200 w-2/3"></div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-              <h5 className="text-white font-bold text-lg mb-4">주요 관련 학과</h5>
-              <ul className="space-y-2">
-                <li>반도체공학과</li>
-                <li>전자공학과</li>
-                <li>나노융합공학부</li>
-                <li>AI소프트웨어학부</li>
-              </ul>
+        </section>
+
+        <!-- Section 5: Curriculum -->
+        <section id="curriculum" class="scroll-mt-24">
+            <div class="mb-12 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-slate-900 mb-3">교육 혁신 및 인재 양성 로드맵</h2>
+                <div class="w-20 h-1 bg-blue-600 mb-4 mx-auto md:mx-0"></div>
+                <p class="text-slate-500 text-lg max-w-2xl">AI 반도체 소부장 융합 전공 및 파워반도체 특화 교육</p>
             </div>
-            <div>
-              <h5 className="text-white font-bold text-lg mb-4">Contact</h5>
-              <ul className="space-y-2">
-                <li>경남 김해시 인제로 197</li>
-                <li>차세대 AI 반도체 특성화 사업단 (KI-STAR)</li>
-                <li>LINC 3.0 사업단</li>
-              </ul>
+
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-8 md:p-12">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-8 relative">
+                    <!-- Connecting Line (Desktop) -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-slate-100 -z-0 -translate-y-1/2"></div>
+
+                    <!-- Step 1 -->
+                    <div class="relative z-10 flex-1 bg-white p-6 rounded-xl border border-slate-100 shadow-sm text-center md:text-left flex flex-col items-center md:items-start group hover:border-blue-200 transition-colors w-full">
+                        <div class="text-sm font-bold px-3 py-1 rounded-full mb-3 bg-blue-100 text-blue-700">
+                            STEP 01
+                        </div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">입문 단계</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">AI 반도체 신소재 개론, 반도체 기초 이론 학습</p>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="relative z-10 flex-1 bg-white p-6 rounded-xl border border-slate-100 shadow-sm text-center md:text-left flex flex-col items-center md:items-start group hover:border-blue-200 transition-colors w-full">
+                        <div class="text-sm font-bold px-3 py-1 rounded-full mb-3 bg-indigo-100 text-indigo-700">
+                            STEP 02
+                        </div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">심화 단계</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">고급 AI 반도체 소자, 공정 및 응용 기술 습득</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative z-10 flex-1 bg-white p-6 rounded-xl border border-slate-100 shadow-sm text-center md:text-left flex flex-col items-center md:items-start group hover:border-blue-200 transition-colors w-full">
+                        <div class="text-sm font-bold px-3 py-1 rounded-full mb-3 bg-purple-100 text-purple-700">
+                            STEP 03
+                        </div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">실전 단계</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">산학 연계 프로젝트, 기업 현장 실습 (제엠제코 등)</p>
+                    </div>
+                </div>
+
+                <div class="mt-12 bg-slate-50 rounded-xl p-6 border border-slate-100">
+                    <h4 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="school" class="w-5 h-5"></i>
+                        차별화된 교육 포인트
+                    </h4>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div class="flex gap-3">
+                            <div class="w-1 bg-blue-500 h-full min-h-[40px] rounded-full"></div>
+                            <div>
+                                <strong class="block text-slate-900">고려대 공동 교육 & 복수학위</strong>
+                                수도권 첨단 인프라 경험 및 양교 학위 동시 취득 기회 제공
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="w-1 bg-emerald-500 h-full min-h-[40px] rounded-full"></div>
+                            <div>
+                                <strong class="block text-slate-900">동남권 파워반도체 클러스터 연계</strong>
+                                SiC, GaN 등 전력 반도체 소자 설계 및 공정 실무 강화
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div className="pt-8 border-t border-slate-800 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm">© 2025 Inje University Department of Semiconductor Engineering. All rights reserved.</p>
-            <p className="text-xs text-slate-500">Based on strategic research capability report.</p>
-          </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-16">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="grid md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-2 font-bold text-2xl text-white mb-4">
+                        <i data-lucide="cpu" class="w-8 h-8 text-blue-500"></i>
+                        <span>INJE<span class="text-blue-500">SEMI</span></span>
+                    </div>
+                    <p class="text-slate-400 leading-relaxed">
+                        인제대학교 반도체·전자공학부는 지역 소멸 위기에 대응하고 
+                        국가 전략 기술을 확보하는 대한민국 반도체 인재 양성의 요람입니다.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold text-lg mb-4">주요 관련 학과</h5>
+                    <ul class="space-y-2">
+                        <li>반도체공학과</li>
+                        <li>전자공학과</li>
+                        <li>나노융합공학부</li>
+                        <li>AI소프트웨어학부</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold text-lg mb-4">Contact</h5>
+                    <ul class="space-y-2">
+                        <li>경남 김해시 인제로 197</li>
+                        <li>차세대 AI 반도체 특성화 사업단 (KI-STAR)</li>
+                        <li>LINC 3.0 사업단</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-slate-800 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm">© 2025 Inje University Department of Semiconductor Engineering. All rights reserved.</p>
+                <p class="text-xs text-slate-500">Based on strategic research capability report.</p>
+            </div>
         </div>
-      </footer>
-    </div>
-  );
-};
+    </footer>
 
-/* Sub-components for cleaner code */
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
 
-const StatItem = ({ number, label, suffix }) => (
-  <div className="text-center">
-    <div className="text-3xl md:text-4xl font-extrabold text-blue-600 mb-2">
-      {number}<span className="text-lg md:text-xl text-slate-400 ml-1 font-normal">{suffix}</span>
-    </div>
-    <div className="text-sm font-medium text-slate-600 uppercase tracking-wide">{label}</div>
-  </div>
-);
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileIcon = mobileMenuBtn.querySelector('i');
 
-const SectionHeader = ({ title, subtitle }) => (
-  <div className="mb-12 text-center md:text-left">
-    <h2 className="text-3xl font-bold text-slate-900 mb-3">{title}</h2>
-    <div className="w-20 h-1 bg-blue-600 mb-4 mx-auto md:mx-0"></div>
-    <p className="text-slate-500 text-lg max-w-2xl">{subtitle}</p>
-  </div>
-);
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                // Change icon to X
+                mobileMenuBtn.innerHTML = '<i data-lucide="x"></i>';
+            } else {
+                mobileMenu.classList.add('hidden');
+                // Change icon back to Menu
+                mobileMenuBtn.innerHTML = '<i data-lucide="menu"></i>';
+            }
+            lucide.createIcons();
+        });
 
-const ListItem = ({ text }) => (
-  <li className="flex items-start gap-3 text-slate-700">
-    <div className="mt-1.5 min-w-[6px] h-[6px] rounded-full bg-blue-500"></div>
-    <span className="leading-relaxed">{text}</span>
-  </li>
-);
+        // Navigation Scroll Spy & Smooth Scroll
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                const headerOffset = 80;
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-const FacultyCard = ({ name, role, specialty, desc, icon }) => (
-  <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-1">
-    <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-700 mb-4">
-      {icon}
-    </div>
-    <h4 className="text-lg font-bold text-slate-900">{name}</h4>
-    <p className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">{role}</p>
-    <div className="mb-3">
-      <span className="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded">{specialty}</span>
-    </div>
-    <p className="text-sm text-slate-500 leading-relaxed line-clamp-3">{desc}</p>
-  </div>
-);
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
 
-const CurriculumStep = ({ step, title, desc, color }) => (
-  <div className="relative z-10 flex-1 bg-white p-6 rounded-xl border border-slate-100 shadow-sm text-center md:text-left flex flex-col items-center md:items-start group hover:border-blue-200 transition-colors">
-    <div className={`text-sm font-bold px-3 py-1 rounded-full mb-3 ${color}`}>
-      STEP {step}
-    </div>
-    <h4 className="text-xl font-bold text-slate-900 mb-2">{title}</h4>
-    <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
-  </div>
-);
+                // Close mobile menu if open
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.innerHTML = '<i data-lucide="menu"></i>';
+                    lucide.createIcons();
+                }
+            }
+        }
 
-export default InjeSemiconductorReport;
+        // Navbar Scroll Styling
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-white', 'shadow-md', 'py-2');
+                navbar.classList.remove('bg-white/90', 'py-4');
+            } else {
+                navbar.classList.remove('bg-white', 'shadow-md', 'py-2');
+                navbar.classList.add('bg-white/90', 'py-4');
+            }
+        });
+        
+        // Update Active Nav Link
+        const sections = ['overview', 'projects', 'faculty', 'infrastructure', 'curriculum'];
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const sectionTop = element.offsetTop;
+                    if (window.pageYOffset >= sectionTop - 100) {
+                        current = section;
+                    }
+                }
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('text-blue-600', 'font-bold');
+                link.classList.add('text-slate-600');
+                if (link.dataset.target === current) {
+                    link.classList.add('text-blue-600', 'font-bold');
+                    link.classList.remove('text-slate-600');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
