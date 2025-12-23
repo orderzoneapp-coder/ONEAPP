@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인제대 전기·배터리공학과 연구 및 지역전략 리포트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;800&display=swap');
+        body { font-family: 'Pretendard', sans-serif; background-color: #f1f5f9; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .accent-border { border-left: 5px solid #1e40af; }
+        .section-title { position: relative; display: inline-block; }
+        .section-title::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 60%; height: 4px; background: #3b82f6; border-radius: 2px; }
+        .prof-card:hover { border-color: #3b82f6; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+    </style>
+</head>
+<body class="text-slate-900 antialiased">
+
+    <!-- Hero Header -->
+    <header class="bg-slate-900 text-white py-20 px-6 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="flex flex-wrap items-center justify-between mb-8">
+                <div class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold tracking-widest uppercase mb-4 md:mb-0">
+                    Glocal University 30 선정대학
+                </div>
+                <div class="text-slate-400 text-sm italic">Academic Strategy & Regional Industry Report</div>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                도시와 대학의 공생,<br><span class="text-blue-400">전기·배터리 공학</span>의 미래
+            </h1>
+            <p class="text-xl text-slate-300 max-w-3xl leading-relaxed">
+                인제대학교 전기·배터리공학과는 글로컬대학 30의 핵심 엔진으로서 차세대 에너지 저장 장치(ESS) 및 전기차(EV) 분야의 지역 혁신을 주도합니다.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 -mt-10 pb-20">
+        
+        <!-- Summary Stats -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-16">
+            <div class="glass-card p-6 rounded-2xl shadow-xl border border-white text-center">
+                <div class="text-blue-600 text-3xl font-bold mb-1">1,000억</div>
+                <div class="text-slate-500 text-sm font-medium">글로컬대학 지원예산</div>
+            </div>
+            <div class="glass-card p-6 rounded-2xl shadow-xl border border-white text-center">
+                <div class="text-blue-600 text-3xl font-bold mb-1">1위</div>
+                <div class="text-slate-500 text-sm font-medium">학생 1인당 교육비 투자</div>
+            </div>
+            <div class="glass-card p-6 rounded-2xl shadow-xl border border-white text-center">
+                <div class="text-blue-600 text-3xl font-bold mb-1">246%</div>
+                <div class="text-slate-500 text-sm font-medium">교육비 환원율</div>
+            </div>
+            <div class="glass-card p-6 rounded-2xl shadow-xl border border-white text-center">
+                <div class="text-blue-600 text-3xl font-bold mb-1">TOP 3</div>
+                <div class="text-slate-500 text-sm font-medium">배터리 핵심 교수진</div>
+            </div>
+        </section>
+
+        <!-- Section 1: All-City Campus -->
+        <section class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-10">글로컬대학 30 & 올시티 캠퍼스</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <p class="text-lg text-slate-700 leading-relaxed">
+                        인제대학교는 <strong>'도시 대전환, 올시티 캠퍼스(All-City Campus)'</strong> 비전을 통해 김해시 전체를 교육과 산업의 현장으로 탈바꿈하고 있습니다. 지자체와 대학, 산업체가 하나로 통합된 거버넌스를 구축하여 지역 정주형 인재를 양성합니다.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl border-l-4 border-blue-600 shadow-sm">
+                        <h4 class="font-bold text-blue-800 mb-2">핵심 추진 방향</h4>
+                        <ul class="space-y-2 text-slate-600 text-sm">
+                            <li class="flex items-center"><i class="fas fa-check text-blue-500 mr-2"></i>김해인재양성재단 기반의 통합 거버넌스</li>
+                            <li class="flex items-center"><i class="fas fa-check text-blue-500 mr-2"></i>미래 모빌리티 및 이차전지 맞춤형 교육</li>
+                            <li class="flex items-center"><i class="fas fa-check text-blue-500 mr-2"></i>현장 캠퍼스를 통한 실무 중심 인턴십</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-slate-200 rounded-3xl h-64 flex items-center justify-center border-4 border-white shadow-inner">
+                    <span class="text-slate-400 font-bold uppercase tracking-widest">[ All-City Campus Architecture ]</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Faculty Analysis -->
+        <section class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-10">핵심 교수진 및 연구 역량 분석</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Prof 1 -->
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 prof-card transition-all duration-300">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-6">
+                        <i class="fas fa-microscope text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">손근용 교수</h3>
+                    <p class="text-blue-600 font-semibold text-sm mb-4">차세대 배터리 소재 전문가</p>
+                    <div class="space-y-3 text-sm text-slate-600">
+                        <p><strong>핵심분야:</strong> 실리콘(Si) 기반 음극 활물질 안정화</p>
+                        <p><strong>성과:</strong> 탄소 나노플레이크 매트릭스 및 코발트 도핑을 통한 수명 향상 연구</p>
+                        <p class="bg-slate-50 p-3 rounded-lg mt-4 italic">"실리콘의 부피 팽창 한계를 극복하는 나노 구조 제어 기술의 권위자"</p>
+                    </div>
+                </div>
+
+                <!-- Prof 2 -->
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 prof-card transition-all duration-300">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-6">
+                        <i class="fas fa-project-diagram text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">정필승 교수</h3>
+                    <p class="text-green-600 font-semibold text-sm mb-4">에너지 시스템 & 나노 공학 전문가</p>
+                    <div class="space-y-3 text-sm text-slate-600">
+                        <p><strong>핵심분야:</strong> 연료전지(PEMFC) 시스템 모델링 및 나노 윤활 기술</p>
+                        <p><strong>이력:</strong> 삼성전기 책임연구원, 카네기멜론 박사</p>
+                        <p class="bg-slate-50 p-3 rounded-lg mt-4 italic">"에너지 시스템 효율 극대화 및 지역 에너지 자립을 위한 정책 자문"</p>
+                    </div>
+                </div>
+
+                <!-- Prof 3 -->
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 prof-card transition-all duration-300">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mb-6">
+                        <i class="fas fa-charging-station text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">조영만 교수</h3>
+                    <p class="text-purple-600 font-semibold text-sm mb-4">전력 시스템 & 신뢰성 평가 전문가</p>
+                    <div class="space-y-3 text-sm text-slate-600">
+                        <p><strong>핵심분야:</strong> 전기차 전자기 간섭(EMC) 및 KOLAS 공인 시험</p>
+                        <p><strong>이력:</strong> HD현대일렉트릭 책임연구원</p>
+                        <p class="bg-slate-50 p-3 rounded-lg mt-4 italic">"글로벌 품질 표준에 부합하는 전기차 부품의 안정성 확보 전문가"</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 3: Impact Table -->
+        <section class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-10">지역 산업 파급 효과 및 가치 창출</h2>
+            <div class="overflow-x-auto bg-white rounded-3xl shadow-sm border border-slate-200">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900 text-white">
+                            <th class="p-5 font-semibold">핵심 기술 분야</th>
+                            <th class="p-5 font-semibold">기대 효과</th>
+                            <th class="p-5 font-semibold">지역 산업 연계</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr>
+                            <td class="p-5 font-bold text-blue-700">고에너지 배터리 소재</td>
+                            <td class="p-5">전기차 주행거리 연장 및 원천 기술 확보</td>
+                            <td class="p-5">경남 자동차 부품사 업종 전환 지원</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-blue-700">시스템 모델링 & 제어</td>
+                            <td class="p-5">에너지 저장 효율 최적화 및 신뢰성 확보</td>
+                            <td class="p-5">김해 스마트 물류 로봇 산업 고도화</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-blue-700">신뢰성 및 EMC 인증</td>
+                            <td class="p-5">글로벌 규제 대응 및 부품 품질 경쟁력 강화</td>
+                            <td class="p-5">수출형 전기차 부품 클러스터 조성</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 4: Future Vision & Education -->
+        <section class="bg-blue-900 text-white p-10 md:p-16 rounded-[3rem] relative shadow-2xl overflow-hidden">
+            <div class="relative z-10">
+                <h2 class="text-3xl font-bold mb-8 italic">"지방 사립대의 한계를 넘어 지역 혁신의 메카로"</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="space-y-6">
+                        <p class="text-blue-100 leading-relaxed text-lg">
+                            인제대학교는 부산·경남 사립대 중 학생 교육 투자 1위를 유지하며, 전공자율선택제와 모듈형 커리큘럼을 통해 학생 스스로가 진로를 설계하도록 돕습니다. 배터리 소재부터 시스템, 의료 로봇용 전원까지 융합형 인재가 태어나는 곳입니다.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <span class="bg-blue-700/50 border border-blue-400/30 px-4 py-2 rounded-full text-sm">RISE 사업본부 협력</span>
+                            <span class="bg-blue-700/50 border border-blue-400/30 px-4 py-2 rounded-full text-sm">김해 미래발전위원회 연계</span>
+                            <span class="bg-blue-700/50 border border-blue-400/30 px-4 py-2 rounded-full text-sm">Baas(Battery as a Service) 확장</span>
+                        </div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+                        <h4 class="font-bold text-xl mb-4">결론: 우리의 나침반</h4>
+                        <p class="text-sm text-blue-50 text-slate-300 leading-relaxed">
+                            본 보고서가 제시한 학년별 전략과 교수진의 연구 역량은 인제대학교 전기·배터리공학도가 세계적 전문가로 거듭나기 위한 실무적 가이드입니다. 거시적인 안목으로 산업을 보고, 미시적인 정밀함으로 소재를 연구하는 T자형 인재가 이곳에서 시작됩니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <i class="fas fa-bolt absolute -top-10 -right-10 text-[20rem] text-blue-800 opacity-20 rotate-12"></i>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-950 text-slate-500 py-12 px-6 border-t border-slate-900">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
+            <div class="mb-6 md:mb-0">
+                <h3 class="font-bold text-white text-lg">인제대학교 전기·배터리공학과</h3>
+                <p>Strategic Industry Deep-Dive Report 2024</p>
+            </div>
+            <div class="text-center md:text-right">
+                <p>경상남도 김해시 인제로 197</p>
+                <p>© 2024 Inje University RISE Division & Dept. of Electrical & Battery Eng.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
