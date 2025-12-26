@@ -68,9 +68,33 @@
             </div>
         </section>
 
+        <!-- 이동 및 순서 변경된 전략 섹션 (좌: 미션 / 우: 목표) -->
+        <div class="gradient-bg p-10 rounded-[40px] text-white text-center shadow-2xl relative overflow-hidden mb-12 border border-indigo-500/30">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
+            <div class="relative z-10 text-center">
+                <h3 class="text-2xl md:text-3xl font-black mb-6">"성공적인 공학도가 되는 가장 똑똑한 전략"</h3>
+                <p class="text-indigo-100 text-sm md:text-lg max-w-3xl mx-auto leading-relaxed mb-10 font-medium">
+                    최고의 비전을 가진 학과를 직접 선택하고 실물 제품을 만드는 엔지니어가 되세요.<br class="hidden md:block">
+                    그것이 취업 시장에서 가장 인정받고 높은 연봉을 받는 지름길입니다.
+                </p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <!-- 입학 전 미션 (링크 추가됨) -->
+                    <a href="https://oneapp.orderz.co.kr/wani/1226_30" target="_blank" class="bg-white/10 px-8 py-4 rounded-3xl border border-white/20 backdrop-blur-md hover:bg-white/20 transition-all group shadow-inner text-center">
+                        <span class="text-emerald-400 font-black block text-xl mb-1 group-hover:scale-105 transition-transform">입학 전 미션</span>
+                        <span class="text-sm font-bold">기초 수학 복습 & 코딩 입문</span>
+                    </a>
+                    <!-- 1학기 목표 링크 -->
+                    <a href="https://oneapp.orderz.co.kr/wani/1226_31" target="_blank" class="bg-white/10 px-8 py-4 rounded-3xl border border-white/20 backdrop-blur-md hover:bg-white/20 transition-all group shadow-inner text-center">
+                        <span class="text-amber-400 font-black block text-xl mb-1 group-hover:scale-105 transition-transform">1학기 목표</span>
+                        <span class="text-sm font-bold">학점(GPA) 4.0 도전</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <!-- 2. 공과계열 학부 소개 -->
         <section class="mb-12">
-            <div class="flex items-center gap-3 mb-8">
+            <div class="flex items-center gap-3 mb-8 text-left">
                 <div class="w-12 h-12 flex items-center justify-center bg-amber-100 text-amber-700 rounded-2xl shadow-inner">
                     <i class="fa-solid fa-bullseye text-2xl"></i>
                 </div>
@@ -95,14 +119,14 @@
                             <span class="text-sm font-black text-indigo-700">추천도: ★★★★★</span>
                         </div>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div class="space-y-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 h-full text-left">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6 text-left">
+                        <div class="space-y-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 h-full">
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter flex items-center gap-1">
                                 <i class="fa-solid fa-chart-line mr-1 text-indigo-500"></i> 시장 전망
                             </p>
                             <p class="text-sm text-slate-700 font-medium leading-relaxed italic">AI 시대의 핵심은 결국 AI 전용 반도체(NPU)입니다. AI 소프트웨어가 아무리 발전해도 그것을 돌릴 '판'인 반도체가 없으면 불가능합니다. 최근 반도체 공정은 AI를 활용해 불량을 잡아내고 설계하기 때문에 AI와의 접점이 매우 큽니다.</p>
                         </div>
-                        <a href="https://oneapp.orderz.co.kr/wani/1226_21" target="_blank" class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100 hover:bg-indigo-100 transition-colors group h-full block text-left">
+                        <a href="https://oneapp.orderz.co.kr/wani/1226_21" target="_blank" class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100 hover:bg-indigo-100 transition-colors group h-full block">
                             <p class="text-xs font-bold text-indigo-800 mb-2 flex justify-between items-center">
                                 <span><i class="fa-solid fa-sigma mr-1"></i> 필요 수학 (상세)</span>
                                 <i class="fa-solid fa-arrow-up-right-from-square text-[10px] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
@@ -110,7 +134,7 @@
                             <p class="text-xs text-slate-600 leading-relaxed font-medium">회로 이론 등 수학이 쓰이긴 하지만, AI 전공처럼 고도의 추상적인 통계나 선형대수학에만 매몰되지 않고 <strong>'실물(칩)'을 다루는 실무 중심</strong>이라 적응하기 더 수월할 수 있습니다.</p>
                         </a>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
                         <a href="https://oneapp.orderz.co.kr/wani/1223_11" target="_blank" class="flex items-center justify-center gap-2 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl transition-all shadow-lg shadow-indigo-100 group">
                             <i class="fa-solid fa-file-lines text-lg group-hover:scale-110 transition-transform"></i>
                             학부 상세 전략 보고서
@@ -139,14 +163,14 @@
                             <span class="text-sm font-black text-emerald-700">추천도: ★★★★☆</span>
                         </div>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div class="space-y-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 h-full text-left">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6 text-left">
+                        <div class="space-y-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 h-full">
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter flex items-center gap-1">
                                 <i class="fa-solid fa-leaf mr-1 text-emerald-500"></i> 시장 전망
                             </p>
                             <p class="text-sm text-slate-700 font-medium leading-relaxed italic">미래 AI 비전의 또 다른 축은 '에너지'와 '모빌리티'입니다. AI 데이터 센터, 자율주행차, 로봇은 모두 엄청난 전력을 소모합니다. AI가 두뇌라면 전기는 심장입니다. 배터리 관리 시스템(BMS)에 AI 기술이 필수적으로 들어가기 때문에 비전이 매우 밝습니다.</p>
                         </div>
-                        <a href="https://oneapp.orderz.co.kr/wani/1223_25" target="_blank" class="bg-emerald-50 p-4 rounded-2xl border border-emerald-100 hover:bg-emerald-100 transition-colors group h-full block text-left">
+                        <a href="https://oneapp.orderz.co.kr/wani/1226_24" target="_blank" class="bg-emerald-50 p-4 rounded-2xl border border-emerald-100 hover:bg-emerald-100 transition-colors group h-full block text-left">
                             <p class="text-xs font-bold text-emerald-800 mb-2 flex justify-between items-center">
                                 <span><i class="fa-solid fa-sigma mr-1"></i> 필요 수학 (상세)</span>
                                 <i class="fa-solid fa-arrow-up-right-from-square text-[10px] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
@@ -154,12 +178,11 @@
                             <p class="text-xs text-slate-600 leading-relaxed font-medium">기초 전자기학 정도의 수학이 필요하지만, <strong>논리 구조가 명확한 편</strong>이라 꾸준히 하면 충분히 따라갈 수 있는 수준입니다. 실무 수학 로드맵을 확인하세요.</p>
                         </a>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
                         <a href="https://oneapp.orderz.co.kr/wani/1223_21" target="_blank" class="flex items-center justify-center gap-2 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl transition-all shadow-lg shadow-emerald-50 group">
                             <i class="fa-solid fa-file-lines text-lg group-hover:scale-110 transition-transform"></i>
                             학부 상세 전략 보고서
                         </a>
-                        <!-- 전기·배터리공학과 주요 성과 및 교수진 소개 링크 업데이트 -->
                         <a href="https://oneapp.orderz.co.kr/wani/1223_24" target="_blank" class="flex items-center justify-center gap-2 py-4 bg-slate-800 hover:bg-slate-900 text-white font-black rounded-2xl transition-all shadow-lg shadow-slate-100 group">
                             <i class="fa-solid fa-users-gears text-lg group-hover:scale-110 transition-transform"></i>
                             주요 성과 및 교수진 소개
@@ -204,7 +227,7 @@
             </div>
 
             <!-- 상세 비교 링크 버튼 -->
-            <div class="mb-10">
+            <div class="mb-10 text-center">
                 <a href="https://oneapp.orderz.co.kr/wani/1226_01" target="_blank" class="flex items-center justify-center gap-3 w-full py-5 bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-700 hover:to-emerald-700 text-white font-black rounded-3xl shadow-xl transition-all group">
                     <i class="fa-solid fa-magnifying-glass-chart text-xl group-hover:scale-110 transition-transform"></i>
                     반도체 vs 배터리: 상세 비교 보고서 확인하기
@@ -223,28 +246,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- 결론 섹션 -->
-        <div class="gradient-bg p-12 rounded-[40px] text-white text-center shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
-            <div class="relative z-10">
-                <h3 class="text-2xl md:text-3xl font-black mb-6">"성공적인 공학도가 되는 가장 똑똑한 전략"</h3>
-                <p class="text-indigo-100 text-sm md:text-lg max-w-3xl mx-auto leading-relaxed mb-10 font-medium text-center">
-                    최고의 비전을 가진 학과를 직접 선택하고 실물 제품을 만드는 엔지니어가 되세요.<br class="hidden md:block">
-                    그것이 취업 시장에서 가장 인정받고 높은 연봉을 받는 지름길입니다.
-                </p>
-                <div class="flex flex-wrap justify-center gap-6">
-                    <div class="bg-white/10 px-8 py-4 rounded-3xl border border-white/20 backdrop-blur-md">
-                        <span class="text-amber-400 font-black block text-xl mb-1">1학기 목표</span>
-                        <span class="text-sm font-bold">학점(GPA) 4.0 도전</span>
-                    </div>
-                    <div class="bg-white/10 px-8 py-4 rounded-3xl border border-white/20 backdrop-blur-md">
-                        <span class="text-emerald-400 font-black block text-xl mb-1">입학 전 미션</span>
-                        <span class="text-sm font-bold">기초 수학 복습 & 코딩 입문</span>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </main>
 
