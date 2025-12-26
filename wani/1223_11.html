@@ -17,22 +17,6 @@
         .animate-fade-in-up {
             animation: fadeInUp 0.6s ease-out forwards;
         }
-        
-        /* Accordion Transition */
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-            opacity: 0;
-        }
-        .accordion-content.active {
-            max-height: 2000px; /* 충분히 큰 값 설정 */
-            opacity: 1;
-        }
-        .rotate-chevron {
-            transform: rotate(180deg);
-            transition: transform 0.3s ease;
-        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 selection:bg-blue-200">
@@ -47,7 +31,7 @@
             <div class="hidden md:flex gap-6 text-sm font-medium text-slate-600">
                 <a href="#highlights" class="hover:text-blue-600 transition">핵심 혜택</a>
                 <a href="#curriculum" class="hover:text-blue-600 transition">전공 트랙</a>
-                <a href="#guide" class="hover:text-blue-600 transition">학습 가이드</a>
+                <!-- 학습 가이드 링크 삭제됨 -->
             </div>
         </div>
     </nav>
@@ -111,273 +95,117 @@
         </div>
     </section>
 
-    <!-- Curriculum Section -->
+    <!-- Curriculum Section (Expanded Detail) -->
     <section id="curriculum" class="py-20 bg-white">
         <div class="max-w-6xl mx-auto px-4">
             <div class="text-center mb-16">
                 <span class="text-blue-600 font-bold tracking-wider text-sm uppercase">Curriculum</span>
                 <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">AI 반도체 4대 핵심 트랙</h2>
-                <p class="text-slate-500 mt-4">자신의 적성에 맞는 분야를 선택하여 전문성을 기를 수 있습니다.</p>
+                <p class="text-slate-500 mt-4 max-w-2xl mx-auto">
+                    단순한 이론 학습을 넘어, 산업체 수요를 반영한 실무 중심의 4가지 전문화 트랙을 운영합니다.
+                    학생들은 자신의 적성에 맞는 트랙을 선택하여 해당 분야의 전문가로 성장할 수 있습니다.
+                </p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Track 1 -->
-                <div class="bg-amber-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition cursor-default">
-                    <i data-lucide="zap" class="w-10 h-10 text-amber-500 mb-4"></i>
-                    <h4 class="text-xl font-bold mb-2 text-slate-800">소자 (Device)</h4>
-                    <p class="text-sm text-slate-600">AI 반도체의 물리적 특성 연구 및 TCAD 시뮬레이션</p>
-                </div>
-                <!-- Track 2 -->
-                <div class="bg-blue-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition cursor-default">
-                    <i data-lucide="factory" class="w-10 h-10 text-blue-500 mb-4"></i>
-                    <h4 class="text-xl font-bold mb-2 text-slate-800">공정 (Process)</h4>
-                    <p class="text-sm text-slate-600">반도체 제조 8대 공정 실습 및 수율 관리 기술</p>
-                </div>
-                <!-- Track 3 -->
-                <div class="bg-emerald-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition cursor-default">
-                    <i data-lucide="cpu" class="w-10 h-10 text-emerald-500 mb-4"></i>
-                    <h4 class="text-xl font-bold mb-2 text-slate-800">설계 (Design)</h4>
-                    <p class="text-sm text-slate-600">디지털 집적회로 및 시스템 반도체(SoC) 설계</p>
-                </div>
-                <!-- Track 4 -->
-                <div class="bg-purple-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition cursor-default">
-                    <i data-lucide="users" class="w-10 h-10 text-purple-500 mb-4"></i>
-                    <h4 class="text-xl font-bold mb-2 text-slate-800">패키징 (Packaging)</h4>
-                    <p class="text-sm text-slate-600">칩 성능 극대화를 위한 후공정 및 신소재 연구</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Guide Section (Accordion) -->
-    <section id="guide" class="py-20 bg-slate-50">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="flex items-center gap-3 mb-10">
-                <i data-lucide="book-open" class="w-8 h-8 text-blue-600"></i>
-                <h2 class="text-3xl font-bold text-slate-900">미리 준비하면 좋은 것들</h2>
-            </div>
-
-            <div class="space-y-4" id="accordion-container">
-                <!-- Javascript will populate this or we write it statically for stability. Writing statically for HTML reliability. -->
-                
-                <!-- Item 1 -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <button class="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition text-left" onclick="toggleAccordion(this)">
-                        <span class="font-bold text-lg text-slate-800">1. 양자역학 입문 및 슈뢰딩거 방정식 (기초 개념)</span>
-                        <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
-                    </button>
-                    <div class="accordion-content border-t border-slate-100 bg-white">
-                        <div class="p-6 text-slate-600 space-y-4">
-                            <p class="text-sm bg-blue-50 p-3 rounded-lg border border-blue-100">
-                                양자역학의 역사와 기본 원리를 정성적으로 이해하기 좋은 강의들입니다.
-                            </p>
-                            <ul class="space-y-4">
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/results?search_query=EBS+알고e즘+채은미+양자역학" target="_blank" class="flex items-center gap-2 font-bold text-blue-600 hover:underline">
-                                        <i data-lucide="external-link" class="w-4 h-4"></i> EBS 알고e즘 (채은미 교수): 가장 쉬운 양자역학 그 시작
-                                    </a>
-                                    <p class="text-sm pl-6">초보자 눈높이에서 양자역학의 기초를 설명합니다.</p>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/results?search_query=안될과학+채은미+양자역학" target="_blank" class="flex items-center gap-2 font-bold text-blue-600 hover:underline">
-                                        <i data-lucide="external-link" class="w-4 h-4"></i> 안될과학 (채은미 교수): 양자역학의 기본, 중첩과 얽힘
-                                    </a>
-                                    <p class="text-sm pl-6">양자역학의 핵심 원리를 흥미롭게 풀어내어 기초를 잡기에 좋습니다.</p>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/results?search_query=EBS+컬렉션+김상욱+양자역학" target="_blank" class="flex items-center gap-2 font-bold text-blue-600 hover:underline">
-                                        <i data-lucide="external-link" class="w-4 h-4"></i> EBS 컬렉션 - 사이언스 (김상욱 교수): 양자역학의 운명을 건 싸움
-                                    </a>
-                                    <p class="text-sm pl-6">양자역학의 역사와 양자 도약(Quantum Jump) 등의 개념을 대중적인 언어로 설명합니다.</p>
-                                </li>
-                            </ul>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Track 1: Device -->
+                <div class="bg-amber-50 rounded-2xl border border-amber-100 overflow-hidden hover:shadow-lg transition group">
+                    <div class="p-8">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-amber-100 p-3 rounded-xl text-amber-600">
+                                <i data-lucide="zap" class="w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-slate-800">소자 (Device)</h4>
+                                <span class="text-sm font-medium text-amber-600">차세대 반도체 물성 연구</span>
+                            </div>
                         </div>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            전자의 이동 원리와 반도체 물성을 심층 연구합니다. 무어의 법칙 한계를 극복하기 위한 차세대 트랜지스터 구조(GAA, FinFET)를 이해하고, 
+                            <span class="font-semibold text-slate-800">TCAD 시뮬레이션 툴</span>을 활용하여 소자의 전기적 특성을 예측 및 최적화하는 능력을 기릅니다.
+                        </p>
+                        <ul class="space-y-2 text-sm text-slate-600 bg-white/60 p-4 rounded-xl">
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-amber-500"></i> 반도체 물성 및 양자역학적 해석</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-amber-500"></i> 차세대 트랜지스터(GAA) 구조 연구</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-amber-500"></i> TCAD 시뮬레이션 실습</li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Item 2 -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <button class="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition text-left" onclick="toggleAccordion(this)">
-                        <span class="font-bold text-lg text-slate-800">2. 반도체 소자 중심의 슈뢰딩거 방정식 및 에너지 밴드</span>
-                        <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
-                    </button>
-                    <div class="accordion-content border-t border-slate-100 bg-white">
-                        <div class="p-6 text-slate-600 space-y-4">
-                            <p class="text-sm bg-indigo-50 p-3 rounded-lg border border-indigo-100">
-                                반도체 공학 전공에서 다루는 수식과 물리적 모델링을 배우기 적합한 강의입니다.
-                            </p>
-                            <ul class="space-y-4">
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/results?search_query=한림대학교+장문규+슈뢰딩거" target="_blank" class="flex items-center gap-2 font-bold text-indigo-600 hover:underline">
-                                        <i data-lucide="external-link" class="w-4 h-4"></i> 한림대학교 장문규 교수 (EDISON Nano physics)
-                                    </a>
-                                    <div class="pl-6 text-sm space-y-1">
-                                        <p>• 슈뢰딩거 방정식 개요: 전자가 포텐셜에 갇혔을 때 에너지가 불연속적인 값을 갖는 이유 설명</p>
-                                        <p>• 시간독립 슈뢰딩거 방정식: 수식 위주의 심화 학습 가능</p>
-                                    </div>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/results?search_query=이종수+교수+물리학+슈뢰딩거" target="_blank" class="flex items-center gap-2 font-bold text-indigo-600 hover:underline">
-                                        <i data-lucide="external-link" class="w-4 h-4"></i> 이종수 교수의 물리학 강의: 슈뢰딩거 방정식의 해
-                                    </a>
-                                    <p class="text-sm pl-6">파동 함수(Ψ)의 의미와 방정식의 해를 구하는 과정을 차근차근 설명합니다.</p>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/watch?v=4oInc9lLQn8" target="_blank" class="flex items-center gap-2 font-bold text-indigo-600 hover:underline">
-                                        <i data-lucide="external-link" class="w-4 h-4"></i> 반도체의 전기적 특성 이해 시리즈 (YouTube)
-                                    </a>
-                                    <p class="text-sm pl-6">공간 및 시간 의존 파동함수를 통해 에너지 밴드 이론으로 넘어가는 과정을 다룹니다.</p>
-                                </li>
-                            </ul>
+                <!-- Track 2: Process -->
+                <div class="bg-blue-50 rounded-2xl border border-blue-100 overflow-hidden hover:shadow-lg transition group">
+                    <div class="p-8">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-blue-100 p-3 rounded-xl text-blue-600">
+                                <i data-lucide="factory" class="w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-slate-800">공정 (Process)</h4>
+                                <span class="text-sm font-medium text-blue-600">나노 단위 제조 기술 및 수율 관리</span>
+                            </div>
                         </div>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            웨이퍼 위에 회로를 정밀하게 새기는 8대 핵심 공정(포토, 식각, 증착 등)의 원리를 익힙니다. 
+                            교내 및 고려대의 <span class="font-semibold text-slate-800">클린룸 실습</span>을 통해 장비 운용 능력을 배양하고, 
+                            공정상의 불량 원인을 분석하여 수율(Yield)을 극대화하는 공정 엔지니어로 성장합니다.
+                        </p>
+                        <ul class="space-y-2 text-sm text-slate-600 bg-white/60 p-4 rounded-xl">
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-blue-500"></i> 반도체 8대 공정 이론 및 실습</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-blue-500"></i> 클린룸 장비 운용 및 박막 분석</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-blue-500"></i> 공정 수율 분석 및 불량 개선</li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Item 3 -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <button class="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition text-left" onclick="toggleAccordion(this)">
-                        <span class="font-bold text-lg text-slate-800">3. 반도체 통계 (페르미 레벨, 캐리어 농도 계산) 및 실무 기초</span>
-                        <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
-                    </button>
-                    <div class="accordion-content border-t border-slate-100 bg-white">
-                        <div class="p-6 text-slate-600 space-y-4">
-                            <p class="text-sm bg-amber-50 p-3 rounded-lg border border-amber-100">
-                                이론이 실제 반도체 데이터로 어떻게 환산되는지 배울 수 있습니다.
-                            </p>
-                            <ul class="space-y-4">
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/results?search_query=렛유인+반읽남+페르미+레벨" target="_blank" class="flex items-center gap-2 font-bold text-amber-600 hover:underline">
-                                        <i data-lucide="external-link" class="w-4 h-4"></i> 렛유인 (Letuin) & 반읽남: 페르미 레벨과 에너지 이해
-                                    </a>
-                                    <p class="text-sm pl-6">페르미 레벨의 물리적 의미를 시각적으로 쉽게 설명합니다.</p>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/results?search_query=렛유인+반도체+기초+엔지니어" target="_blank" class="flex items-center gap-2 font-bold text-amber-600 hover:underline">
-                                        <i data-lucide="external-link" class="w-4 h-4"></i> 렛유인 반도체 기초: 엔지니어 업무와 기초 개념
-                                    </a>
-                                    <p class="text-sm pl-6">반도체 소자 및 공정의 기초가 실무와 어떻게 연결되는지 파악하기 좋습니다.</p>
-                                </li>
-                            </ul>
+                <!-- Track 3: Design -->
+                <div class="bg-emerald-50 rounded-2xl border border-emerald-100 overflow-hidden hover:shadow-lg transition group">
+                    <div class="p-8">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-emerald-100 p-3 rounded-xl text-emerald-600">
+                                <i data-lucide="cpu" class="w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-slate-800">설계 (Design)</h4>
+                                <span class="text-sm font-medium text-emerald-600">시스템 반도체 및 회로 설계</span>
+                            </div>
                         </div>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            AI 연산 및 고속 데이터 처리에 최적화된 시스템 반도체(SoC)와 초미세 집적회로를 설계합니다. 
+                            <span class="font-semibold text-slate-800">Verilog HDL</span>을 이용한 논리 회로 설계부터 FPGA 검증, 
+                            실제 칩 구현을 위한 레이아웃(Layout)까지 팹리스(Fabless) 산업계에서 요구하는 실무 전 과정을 다룹니다.
+                        </p>
+                        <ul class="space-y-2 text-sm text-slate-600 bg-white/60 p-4 rounded-xl">
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> 디지털/아날로그 집적회로 설계</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Verilog HDL 및 FPGA 활용</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> 시스템 반도체(SoC) 아키텍처</li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Item 4 -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <button class="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition text-left" onclick="toggleAccordion(this)">
-                        <span class="font-bold text-lg text-slate-800">4. 반도체 8대 공정 (제조 과정) 유튜브 강의</span>
-                        <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
-                    </button>
-                    <div class="accordion-content border-t border-slate-100 bg-white">
-                        <div class="p-6 text-slate-600 space-y-4">
-                            <p class="text-sm bg-rose-50 p-3 rounded-lg border border-rose-100">
-                                반도체 제조의 핵심인 8대 공정을 기업별 공식 채널에서 쉽게 설명해줍니다.
-                            </p>
-                            <ul class="space-y-4">
-                                <li class="flex flex-col gap-1">
-                                    <div class="flex items-center gap-2 font-bold text-rose-600">
-                                        <i data-lucide="youtube" class="w-4 h-4"></i> 삼성전자 반도체 '인생맛칩' 시리즈
-                                    </div>
-                                    <div class="pl-6 space-y-1 text-sm">
-                                        <a href="https://www.youtube.com/results?search_query=삼성전자+반도체+인생맛칩+포토공정" target="_blank" class="hover:underline hover:text-rose-700 block">• 포토공정: 반도체에 회로를 그리는 포토장인</a>
-                                        <a href="https://www.youtube.com/results?search_query=삼성전자+반도체+인생맛칩+식각공정" target="_blank" class="hover:underline hover:text-rose-700 block">• 식각공정: 기술을 예술로 만드는 식각의 세계</a>
-                                        <a href="https://www.youtube.com/results?search_query=삼성전자+반도체+인생맛칩+증착공정" target="_blank" class="hover:underline hover:text-rose-700 block">• 증착공정: 머리카락 1/10,000 굵기의 막을 입히다</a>
-                                    </div>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/watch?v=pFeu3obBrsw" target="_blank" class="flex items-center gap-2 font-bold text-rose-600 hover:underline">
-                                        <i data-lucide="monitor-play" class="w-4 h-4"></i> SK하이닉스 '반도체 hy-스쿨' (1교시)
-                                    </a>
-                                    <p class="text-sm pl-6">과학 교과서 속 개념과 반도체 공정을 연결하여 초보자가 이해하기 좋습니다.</p>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <div class="flex items-center gap-2 font-bold text-rose-600">
-                                        <i data-lucide="youtube" class="w-4 h-4"></i> 종합 요약 영상 (추천)
-                                    </div>
-                                    <div class="pl-6 space-y-1 text-sm">
-                                        <a href="https://www.youtube.com/results?search_query=렛유인+반도체+8대+공정" target="_blank" class="hover:underline hover:text-rose-700 block">• 렛유인: 반도체 8대 공정 한눈에 보기</a>
-                                        <a href="https://www.youtube.com/results?search_query=주식캐스터+여니+반도체+8대+공정" target="_blank" class="hover:underline hover:text-rose-700 block">• 주식캐스터 여니: 15분 만에 끝내는 반도체 8대 공정</a>
-                                    </div>
-                                </li>
-                            </ul>
+                <!-- Track 4: Packaging -->
+                <div class="bg-purple-50 rounded-2xl border border-purple-100 overflow-hidden hover:shadow-lg transition group">
+                    <div class="p-8">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-purple-100 p-3 rounded-xl text-purple-600">
+                                <i data-lucide="users" class="w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-slate-800">패키징 (Packaging)</h4>
+                                <span class="text-sm font-medium text-purple-600">첨단 후공정 및 이종 집적 기술</span>
+                            </div>
                         </div>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            제조된 칩을 보호하고 외부와 전기적으로 연결하는 후공정 기술입니다. 고성능 AI 반도체를 위한 
+                            <span class="font-semibold text-slate-800">3D 적층(HBM)</span>, 이종 집적 기술을 배우며, 
+                            발열 문제를 해결하는 방열 설계 및 반도체 신뢰성 평가 기술을 심도 있게 학습합니다.
+                        </p>
+                        <ul class="space-y-2 text-sm text-slate-600 bg-white/60 p-4 rounded-xl">
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-purple-500"></i> 첨단 패키징 공정 및 소재</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-purple-500"></i> HBM 등 3D 적층 기술 이해</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-purple-500"></i> 열 관리 및 신뢰성 분석</li>
+                        </ul>
                     </div>
                 </div>
-
-                <!-- Item 5 -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <button class="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition text-left" onclick="toggleAccordion(this)">
-                        <span class="font-bold text-lg text-slate-800">5. 반도체 동작 원리 (트랜지스터 및 소자)</span>
-                        <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
-                    </button>
-                    <div class="accordion-content border-t border-slate-100 bg-white">
-                        <div class="p-6 text-slate-600 space-y-4">
-                            <p class="text-sm bg-cyan-50 p-3 rounded-lg border border-cyan-100">
-                                눈에 보이지 않는 전자의 흐름과 트랜지스터의 작동 스위치 원리를 시각화한 영상들입니다.
-                            </p>
-                            <ul class="space-y-4">
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.youtube.com/results?search_query=트랜지스터+작동+원리+물+비유" target="_blank" class="flex items-center gap-2 font-bold text-cyan-600 hover:underline">
-                                        <i data-lucide="youtube" class="w-4 h-4"></i> (한국어 추천) 트랜지스터의 작동 원리: 물의 흐름 비유
-                                    </a>
-                                    <p class="text-sm pl-6">물의 흐름에 비유하여 트랜지스터가 어떻게 스위치와 증폭기 역할을 하는지 설명하는 한국어 강의들입니다.</p>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <div class="flex items-center gap-2 font-bold text-cyan-600">
-                                        <i data-lucide="monitor-play" class="w-4 h-4"></i> 한림대 장문규 교수: MOSFET 구조 및 동작
-                                    </div>
-                                    <div class="pl-6 space-y-1 text-sm">
-                                        <p class="mb-1">전공 입문 수준에서 MOSFET의 구조와 반전층(Inversion) 형성을 심도 있게 다룹니다.</p>
-                                        <a href="https://www.youtube.com/watch?v=on_3QvhcHL8" target="_blank" class="text-cyan-600 hover:underline block">• MOSFET 구조와 동작 원리 1</a>
-                                        <a href="https://www.youtube.com/watch?v=ZbSxph5SR70" target="_blank" class="text-cyan-600 hover:underline block">• MOSFET 구조와 동작 원리 2</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 6 -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <button class="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition text-left" onclick="toggleAccordion(this)">
-                        <span class="font-bold text-lg text-slate-800">6. 시각자료 및 인포그래픽 링크</span>
-                        <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
-                    </button>
-                    <div class="accordion-content border-t border-slate-100 bg-white">
-                        <div class="p-6 text-slate-600 space-y-4">
-                            <p class="text-sm bg-emerald-50 p-3 rounded-lg border border-emerald-100">
-                                복잡한 반도체 공정과 개념을 고품질 인포그래픽으로 한눈에 확인하세요.
-                            </p>
-                            <ul class="space-y-4">
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://www.samsungsemiconstory.com/" target="_blank" class="flex items-center gap-2 font-bold text-emerald-600 hover:underline">
-                                        <i data-lucide="link" class="w-4 h-4"></i> 삼성반도체이야기 인포그래픽
-                                    </a>
-                                    <p class="text-sm pl-6">삼성전자에서 제공하는 반도체 제조 공정 및 최신 기술(GAA, EUV 등)의 고품질 인포그래픽입니다.</p>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <a href="http://www.visualdive.com/" target="_blank" class="flex items-center gap-2 font-bold text-emerald-600 hover:underline">
-                                        <i data-lucide="link" class="w-4 h-4"></i> 비주얼다이브 (Visual Dive): 반도체 아카이브
-                                    </a>
-                                    <p class="text-sm pl-6">반도체 산업의 트렌드와 기초 지식을 카드뉴스 형태의 시각자료로 제공합니다.</p>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://v-vdesign.com/portfolio/" target="_blank" class="flex items-center gap-2 font-bold text-emerald-600 hover:underline">
-                                        <i data-lucide="link" class="w-4 h-4"></i> 바이스 버사 (Vice Versa): 포트폴리오
-                                    </a>
-                                    <p class="text-sm pl-6">복잡한 IT/공학 데이터를 정교하게 시각화한 자료들을 참고할 수 있습니다.</p>
-                                </li>
-                                <li class="flex flex-col gap-1">
-                                    <a href="https://mymap.ai/" target="_blank" class="flex items-center gap-2 font-bold text-emerald-600 hover:underline">
-                                        <i data-lucide="link" class="w-4 h-4"></i> MyMap.AI: 인포그래픽 메이커
-                                    </a>
-                                    <p class="text-sm pl-6">학습한 텍스트 내용을 입력하면 즉시 나만의 반도체 공정 지도로 변환해 주는 AI 도구입니다.</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
@@ -411,32 +239,6 @@
     <script>
         // Initialize Icons
         lucide.createIcons();
-
-        // Accordion Function
-        function toggleAccordion(button) {
-            const content = button.nextElementSibling;
-            const icon = button.querySelector('i[data-lucide="chevron-down"]');
-            
-            // Close other accordions
-            const allContents = document.querySelectorAll('.accordion-content');
-            const allIcons = document.querySelectorAll('i[data-lucide="chevron-down"]');
-            
-            allContents.forEach(c => {
-                if (c !== content && c.classList.contains('active')) {
-                    c.classList.remove('active');
-                }
-            });
-
-            allIcons.forEach(i => {
-                if (i !== icon && i.classList.contains('rotate-chevron')) {
-                    i.classList.remove('rotate-chevron');
-                }
-            });
-
-            // Toggle current
-            content.classList.toggle('active');
-            icon.classList.toggle('rotate-chevron');
-        }
     </script>
 </body>
 </html>
