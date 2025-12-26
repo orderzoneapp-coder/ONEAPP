@@ -10,178 +10,215 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
         body { font-family: 'Noto Sans KR', sans-serif; scroll-behavior: smooth; }
         .gradient-bg { background: linear-gradient(135deg, #001f3f 0%, #004080 100%); }
-        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .status-tag { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .subject-card { border-top: 5px solid transparent; }
+        .subject-card.cad { border-top-color: #ef4444; }
+        .subject-card.design { border-top-color: #8b5cf6; }
+        
+        /* 커스텀 버튼 스타일 */
+        .btn-youtube {
+            background-color: #ff0000;
+            color: white;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .btn-youtube:hover {
+            background-color: #cc0000;
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #004080;
+            color: white;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #002d5a;
+            transform: scale(1.02);
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
 
     <!-- Header -->
     <header class="gradient-bg text-white py-20 px-4 text-center">
-        <div class="mb-4 inline-block bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold tracking-widest">
-            FRESHMAN SUCCESS GUIDE
+        <div class="mb-4 inline-block bg-blue-500 text-white px-5 py-1 rounded-full text-xs font-bold tracking-[0.2em]">
+            INJE UNIVERSITY ENGINEERING
         </div>
-        <h1 class="text-3xl md:text-5xl font-extrabold mb-4">1학기 목표: 학점(GPA) 4.0 도전</h1>
-        <p class="text-lg md:text-xl opacity-80 max-w-2xl mx-auto">
-            "성공적인 전공 진입과 장학금 선점을 위한 입학 전 필수 선행 학습 가이드"
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6">1학기 실무 정복: GPA 4.0 로드맵</h1>
+        <p class="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto font-light">
+            "실무 도구와 기초 학문을 한 번에, <br class="md:hidden"> 준비된 인제대 공학도를 위한 지침서"
         </p>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-16">
+    <main class="max-w-6xl mx-auto px-4 py-16">
         
-        <!-- Section 1: Pre-learning for GPA 4.0 -->
-        <section class="mb-20">
-            <div class="flex items-center mb-10 border-b-2 border-blue-900 pb-2">
-                <h2 class="text-2xl font-extrabold text-blue-900"><i class="fas fa-book-open mr-3"></i>GPA 4.0을 위한 3대 핵심 선행 학습</h2>
+        <!-- Section 1: Practical Skills (CAD & Capstone) -->
+        <section class="mb-24">
+            <div class="flex items-center justify-between mb-10 border-b-2 border-blue-900 pb-4">
+                <h2 class="text-3xl font-extrabold text-blue-900 flex items-center">
+                    <i class="fas fa-rocket mr-4 text-orange-500"></i>실전! 실무 과목 선행 학습
+                </h2>
+                <span class="hidden md:block text-slate-400 font-medium">※ 시청 순서를 지켜주세요</span>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-10">
+                <!-- CAD Card -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-slate-100 subject-card cad card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mr-6">
+                            <i class="fas fa-pencil-ruler text-3xl"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-red-500 tracking-widest uppercase">Essential Skill 01</span>
+                            <h3 class="text-2xl font-bold">공학 설계 (AutoCAD)</h3>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 mb-8 leading-relaxed">
+                        모든 공학 프로젝트의 시작은 설계 도면입니다. <strong>반도체 레이아웃</strong>이나 <strong>전기 시스템 배치</strong>를 위해 기본 도구 사용법을 익히는 것이 1학기 학점의 60%를 결정합니다.
+                    </p>
+                    <div class="space-y-4">
+                        <a href="https://www.youtube.com/results?search_query=오토캐드+기초+강좌+1강" target="_blank" 
+                           class="btn-youtube w-full flex items-center justify-center py-5 rounded-2xl text-lg font-bold">
+                            <i class="fab fa-youtube mr-3 text-2xl"></i> 1단계: 인터페이스 및 기초 선 그리기
+                        </a>
+                        <a href="https://www.youtube.com/results?search_query=도면+해석+기초+투상법" target="_blank" 
+                           class="btn-primary w-full flex items-center justify-center py-4 rounded-2xl font-bold opacity-90">
+                            <i class="fas fa-eye mr-3"></i> 2단계: 도면 해석 및 투상법 정리
+                        </a>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-slate-100 flex gap-2">
+                        <span class="text-xs font-bold bg-slate-100 px-3 py-1 rounded-md text-slate-500">#CAD기초</span>
+                        <span class="text-xs font-bold bg-slate-100 px-3 py-1 rounded-md text-slate-500">#전공선택필수</span>
+                    </div>
+                </div>
+
+                <!-- Pre-Capstone Card -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-slate-100 subject-card design card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center mr-6">
+                            <i class="fas fa-brain text-3xl"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-purple-500 tracking-widest uppercase">Essential Skill 02</span>
+                            <h3 class="text-2xl font-bold">Pre-캡스톤 디자인</h3>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 mb-8 leading-relaxed">
+                        기술을 사회에 적용하는 <strong>인술제세</strong>의 첫걸음입니다. '디자인 씽킹'을 통해 실생활의 문제를 정의하고 창의적인 해결책을 도출하는 훈련을 시작하세요.
+                    </p>
+                    <div class="space-y-4">
+                        <a href="https://www.youtube.com/results?search_query=디자인씽킹+개념+정리" target="_blank" 
+                           class="btn-youtube w-full flex items-center justify-center py-5 rounded-2xl text-lg font-bold">
+                            <i class="fab fa-youtube mr-3 text-2xl"></i> 1단계: 디자인 씽킹 핵심 개념 정리
+                        </a>
+                        <a href="https://www.youtube.com/results?search_query=공대+캡스톤+디자인+우수사례" target="_blank" 
+                           class="btn-primary w-full flex items-center justify-center py-4 rounded-2xl font-bold opacity-90">
+                            <i class="fas fa-lightbulb mr-3"></i> 2단계: 선배들의 우수 사례 엿보기
+                        </a>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-slate-100 flex gap-2">
+                        <span class="text-xs font-bold bg-slate-100 px-3 py-1 rounded-md text-slate-500">#창의설계</span>
+                        <span class="text-xs font-bold bg-slate-100 px-3 py-1 rounded-md text-slate-500">#팀워크</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Core Prep -->
+        <section class="mb-24">
+            <div class="flex items-center mb-10 border-b-2 border-blue-900 pb-4">
+                <h2 class="text-3xl font-extrabold text-blue-900"><i class="fas fa-book mr-4 text-blue-500"></i>기초 학문 강화 (Math & Physics)</h2>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Subject: Math -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover">
-                    <div class="mb-4 text-blue-600"><i class="fas fa-calculator text-4xl"></i></div>
-                    <h3 class="text-xl font-bold mb-2">기초 공업수학</h3>
-                    <p class="text-sm text-slate-500 mb-4">모든 공학의 언어입니다. 미분적분학의 기초가 흔들리면 1학기 전체가 위태롭습니다.</p>
-                    <div class="space-y-3">
-                        <a href="https://www.youtube.com/results?search_query=기초+미분적분학+정리" target="_blank" class="block w-full py-2 bg-slate-100 text-center rounded-lg text-sm font-semibold hover:bg-slate-200 transition">
-                            <i class="fab fa-youtube text-red-600 mr-2"></i>미적분 핵심 정리
-                        </a>
-                        <p class="text-xs text-slate-400 font-medium italic">* 관점: 고교 미적분 복습 및 초월함수 미분법 위주로 시청</p>
+                <!-- Math -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-blue-500 card-hover flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-xl font-bold text-blue-900 mb-3">기초 공업수학</h4>
+                        <p class="text-sm text-slate-500 mb-6">미분과 적분을 공학적 도구로 사용하는 법을 익힙니다.</p>
                     </div>
+                    <a href="https://www.youtube.com/results?search_query=공학수학+기초+미적분" target="_blank" 
+                       class="w-full py-3 bg-blue-50 text-blue-700 text-center rounded-xl font-bold text-sm hover:bg-blue-100 transition">
+                        미적분 기초 영상보기 <i class="fas fa-chevron-right ml-1"></i>
+                    </a>
                 </div>
-
-                <!-- Subject: Physics -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover">
-                    <div class="mb-4 text-emerald-600"><i class="fas fa-atom text-4xl"></i></div>
-                    <h3 class="text-xl font-bold mb-2">일반물리학 (역학)</h3>
-                    <p class="text-sm text-slate-500 mb-4">공학적 사고의 기본입니다. 힘의 평형과 운동 법칙을 시각적으로 이해해야 합니다.</p>
-                    <div class="space-y-3">
-                        <a href="https://www.youtube.com/results?search_query=일반물리학+1장+벡터와+역학" target="_blank" class="block w-full py-2 bg-slate-100 text-center rounded-lg text-sm font-semibold hover:bg-slate-200 transition">
-                            <i class="fab fa-youtube text-red-600 mr-2"></i>역학 개념 시각화
-                        </a>
-                        <p class="text-xs text-slate-400 font-medium italic">* 관점: 물리 개념이 실제 기계 장치에 어떻게 적용되는지 확인</p>
+                <!-- Physics -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-emerald-500 card-hover flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-xl font-bold text-emerald-900 mb-3">일반물리학</h4>
+                        <p class="text-sm text-slate-500 mb-6">전자기학의 기본 개념은 반도체와 배터리 이해의 필수입니다.</p>
                     </div>
+                    <a href="https://www.youtube.com/results?search_query=일반물리학+전자기학+기초" target="_blank" 
+                       class="w-full py-3 bg-emerald-50 text-emerald-700 text-center rounded-xl font-bold text-sm hover:bg-emerald-100 transition">
+                        전자기학 기초 영상보기 <i class="fas fa-chevron-right ml-1"></i>
+                    </a>
                 </div>
-
-                <!-- Subject: Programming -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover">
-                    <div class="mb-4 text-amber-500"><i class="fas fa-code text-4xl"></i></div>
-                    <h3 class="text-xl font-bold mb-2">프로그래밍 입문</h3>
-                    <p class="text-sm text-slate-500 mb-4">C언어 또는 Python의 기본 문법을 익히세요. 1학년 실습 과목의 핵심입니다.</p>
-                    <div class="space-y-3">
-                        <a href="https://www.youtube.com/results?search_query=C언어+입문+기초+강좌" target="_blank" class="block w-full py-2 bg-slate-100 text-center rounded-lg text-sm font-semibold hover:bg-slate-200 transition">
-                            <i class="fab fa-youtube text-red-600 mr-2"></i>C언어 1시간 완성
-                        </a>
-                        <p class="text-xs text-slate-400 font-medium italic">* 관점: 코딩 문법보다 '논리적 흐름'을 이해하는 데 집중</p>
+                <!-- Coding -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-amber-500 card-hover flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-xl font-bold text-amber-900 mb-3">C언어 기초</h4>
+                        <p class="text-sm text-slate-500 mb-6">컴퓨터의 논리적 사고를 배우는 1학년 핵심 과정입니다.</p>
                     </div>
+                    <a href="https://www.youtube.com/results?search_query=C언어+기초+문법+정리" target="_blank" 
+                       class="w-full py-3 bg-amber-50 text-amber-700 text-center rounded-xl font-bold text-sm hover:bg-amber-100 transition">
+                        코딩 기초 영상보기 <i class="fas fa-chevron-right ml-1"></i>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- Section 2: Final Mission Details -->
-        <section class="mb-20">
-            <div class="flex items-center mb-10 border-b-2 border-blue-900 pb-2">
-                <h2 class="text-2xl font-extrabold text-blue-900"><i class="fas fa-flag-checkered mr-3"></i>Final Mission: 1학기 성공 로드맵</h2>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- Action Plan -->
-                <div class="space-y-6">
-                    <h4 class="text-lg font-bold flex items-center text-blue-800">
-                        <span class="bg-blue-800 text-white w-7 h-7 flex items-center justify-center rounded-md mr-3 text-sm">1</span>
-                        월별 액션 플랜
-                    </h4>
-                    <div class="relative border-l-2 border-blue-100 ml-3 pl-8 space-y-8">
-                        <div class="relative">
-                            <div class="absolute -left-10 w-4 h-4 bg-blue-600 rounded-full border-4 border-white"></div>
-                            <h5 class="font-bold">3월: 기초 다지기</h5>
-                            <p class="text-sm text-slate-600">공학 수학/물리 개념 정리 및 대학 생활 적응</p>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute -left-10 w-4 h-4 bg-blue-600 rounded-full border-4 border-white"></div>
-                            <h5 class="font-bold">4월: 중간고사 집중</h5>
-                            <p class="text-sm text-slate-600">중간고사 A학점 확보 (최종 성적의 50% 결정)</p>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute -left-10 w-4 h-4 bg-blue-600 rounded-full border-4 border-white"></div>
-                            <h5 class="font-bold">5월: 창의 설계 참여</h5>
-                            <p class="text-sm text-slate-600">드림팩토리 활용 창의 설계 프로젝트 수행</p>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute -left-10 w-4 h-4 bg-blue-600 rounded-full border-4 border-white"></div>
-                            <h5 class="font-bold">6월: 유종의 미</h5>
-                            <p class="text-sm text-slate-600">기말고사 완주 및 최종 GPA 4.0 확정</p>
-                        </div>
-                    </div>
+        <!-- Final Mission Summary -->
+        <section class="bg-slate-900 text-white rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600 opacity-10 rounded-full -mr-32 -mt-32"></div>
+            
+            <div class="relative z-10">
+                <div class="text-center mb-16">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4 tracking-widest uppercase">Final Mission</h3>
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-6">GPA 4.0 달성 보상 체계</h2>
+                    <p class="text-lg opacity-60">성실함의 보상은 취업 성공까지 이어집니다</p>
                 </div>
-
-                <!-- Tips & Rewards -->
-                <div class="space-y-8">
-                    <div class="bg-blue-900 text-white p-6 rounded-2xl shadow-xl">
-                        <h4 class="text-lg font-bold mb-4 flex items-center">
-                            <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>성적 고득점 비밀 팁
+                
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="space-y-8">
+                        <h4 class="text-2xl font-bold flex items-center">
+                            <i class="fas fa-calendar-check text-blue-500 mr-4"></i> 월별 액션 플랜
                         </h4>
-                        <ul class="space-y-3 text-sm opacity-90">
-                            <li class="flex items-start"><i class="fas fa-check-circle mt-1 mr-2 text-blue-300"></i>교수님 오피스 아워(상담) 100% 활용</li>
-                            <li class="flex items-start"><i class="fas fa-check-circle mt-1 mr-2 text-blue-300"></i>교내 공학 튜터링 프로그램 신청</li>
-                            <li class="flex items-start"><i class="fas fa-check-circle mt-1 mr-2 text-blue-300"></i>시험 전 2주 '집중 학습 구간' 설정</li>
-                            <li class="flex items-start"><i class="fas fa-check-circle mt-1 mr-2 text-blue-300"></i>출석 및 과제 제출 기한 엄수</li>
+                        <ul class="space-y-6 text-lg opacity-80">
+                            <li class="flex items-start"><span class="font-bold text-blue-400 mr-4">03월</span> 기초 공학 개념 정립 및 CAD 툴 익히기</li>
+                            <li class="flex items-start"><span class="font-bold text-blue-400 mr-4">04월</span> 중간고사 A학점 사수 (전체 성적의 50%)</li>
+                            <li class="flex items-start"><span class="font-bold text-blue-400 mr-4">05월</span> 드림팩토리 실습 및 프로젝트 몰입</li>
+                            <li class="flex items-start"><span class="font-bold text-blue-400 mr-4">06월</span> 최종 GPA 4.0 달성 및 장학금 확보</li>
                         </ul>
                     </div>
-
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                        <h4 class="text-lg font-bold mb-4 flex items-center text-blue-900">
-                            <i class="fas fa-trophy text-yellow-600 mr-2"></i>달성 시 압도적 보상
+                    <div class="bg-white/5 p-8 rounded-3xl backdrop-blur-sm border border-white/10">
+                        <h4 class="text-2xl font-bold mb-8 flex items-center">
+                            <i class="fas fa-gift text-yellow-500 mr-4"></i> 4.0 달성 시 혜택
                         </h4>
-                        <div class="grid grid-cols-1 gap-3">
-                            <div class="flex items-center p-3 bg-slate-50 rounded-lg">
-                                <i class="fas fa-hand-holding-usd text-blue-600 mr-3"></i>
-                                <span class="text-sm font-medium">차학기 전액/반액 장학금 수혜</span>
+                        <div class="space-y-5">
+                            <div class="flex items-center p-4 bg-white/10 rounded-2xl">
+                                <i class="fas fa-award text-yellow-400 text-2xl mr-4"></i>
+                                <span class="font-bold">차학기 등록금 전액/반액 장학금</span>
                             </div>
-                            <div class="flex items-center p-3 bg-slate-50 rounded-lg">
-                                <i class="fas fa-plane-departure text-blue-600 mr-3"></i>
-                                <span class="text-sm font-medium">LINC 3.0 해외 연수 프로그램 우선권</span>
+                            <div class="flex items-center p-4 bg-white/10 rounded-2xl">
+                                <i class="fas fa-globe-asia text-blue-400 text-2xl mr-4"></i>
+                                <span class="font-bold">LINC 3.0 해외 단기 연수 지원권</span>
                             </div>
-                            <div class="flex items-center p-3 bg-slate-50 rounded-lg">
-                                <i class="fas fa-star text-blue-600 mr-3"></i>
-                                <span class="text-sm font-medium">원하는 전공(학과) 1순위 진입 확신</span>
-                            </div>
-                            <div class="flex items-center p-3 bg-slate-50 rounded-lg">
-                                <i class="fas fa-user-graduate text-blue-600 mr-3"></i>
-                                <span class="text-sm font-medium">대기업 취업용 포트폴리오 첫 줄 완성</span>
+                            <div class="flex items-center p-4 bg-white/10 rounded-2xl">
+                                <i class="fas fa-check-double text-emerald-400 text-2xl mr-4"></i>
+                                <span class="font-bold">원하는 전공(학과) 100% 진입 보장</span>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Final Banner -->
-        <section class="bg-blue-600 rounded-3xl p-10 text-white text-center">
-            <h2 class="text-2xl md:text-3xl font-bold mb-6">입학 전 4주, 당신의 미래가 결정됩니다.</h2>
-            <div class="flex justify-center gap-6">
-                <div class="text-center">
-                    <p class="text-4xl font-extrabold">28</p>
-                    <p class="text-xs opacity-70">Day Plan</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-4xl font-extrabold">3</p>
-                    <p class="text-xs opacity-70">Core Subjects</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-4xl font-extrabold">4.0</p>
-                    <p class="text-xs opacity-70">Target GPA</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="py-12 text-center text-slate-400 text-xs bg-slate-900">
-        <div class="mb-4">
-            <a href="https://www.youtube.com/@InjeUniversity" target="_blank" class="mx-2 hover:text-white transition"><i class="fab fa-youtube text-lg"></i></a>
-            <a href="#" class="mx-2 hover:text-white transition"><i class="fas fa-home text-lg"></i></a>
-        </div>
-        <p>© 2025 Inje University Engineering Division Success Roadmap.</p>
+    <footer class="py-16 text-center text-slate-500 text-sm bg-slate-900 border-t border-slate-800">
+        <p class="mb-4">인제대학교 공학계열 신입생의 성공적인 시작을 기원합니다.</p>
+        <p class="opacity-30">© 2025 Inje University Engineering Division Success Guide.</p>
     </footer>
 
 </body>
