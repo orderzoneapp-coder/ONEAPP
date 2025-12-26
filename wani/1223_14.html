@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>인제대학교 반도체·전자공학부 전략 보고서</title>
+    <title>반도체·전자공학부의 주요 성과 및 교수 소개</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,6 +23,13 @@
         .no-scrollbar {
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
+        }
+        .hover-lift {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
     </style>
 </head>
@@ -68,15 +75,16 @@
         
         <div class="container mx-auto relative z-10 text-center md:text-left">
             <div class="inline-block bg-blue-700/50 backdrop-blur border border-blue-500/30 px-4 py-1.5 rounded-full text-blue-100 text-sm font-semibold mb-6">
-                동남권 반도체 교육·연구의 거점
+                동남권 AI 반도체 교육·연구의 거점
             </div>
             <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
                 인제대학교 <br class="hidden md:block"/>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-300">반도체·전자공학부</span> 전략 보고서
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-300">반도체·전자공학부</span><br>
+                주요 성과 및 교수 소개
             </h1>
             <p class="text-lg md:text-xl text-blue-100 max-w-2xl mb-10 leading-relaxed">
                 차세대 AI 반도체 및 전력 반도체 분야의 혁신적 성과.<br/>
-                수도권-비수도권 격차를 해소하는 <strong>KI-STAR</strong> 사업과 지역 산업 생태계를 이끄는 <strong>인제대학교</strong>의 비전을 소개합니다.
+                수도권 격차를 해소하는 <strong>KI-STAR 사업</strong>과 지역 산업 생태계를 이끄는 <strong>인제대학교</strong>의 비전을 소개합니다.
             </p>
             <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
                 <button onclick="scrollToSection('projects')" class="px-8 py-3 bg-white text-blue-900 rounded-lg font-bold hover:bg-blue-50 transition-colors shadow-lg flex items-center justify-center gap-2">
@@ -129,7 +137,7 @@
             
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- KI-STAR Card -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow group relative overflow-hidden">
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-slate-100 hover-lift group relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
                     <div class="relative z-10">
                         <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
@@ -153,7 +161,7 @@
                 </div>
 
                 <!-- LINC 3.0 & Track Card -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow group relative overflow-hidden">
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-slate-100 hover-lift group relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
                     <div class="relative z-10">
                         <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-6">
@@ -178,83 +186,78 @@
             </div>
         </section>
 
-        <!-- Section 3: Faculty -->
+        <!-- Section 3: Faculty (Updated: Semiconductor Only) -->
         <section id="faculty" class="scroll-mt-24">
             <div class="mb-12 text-center md:text-left">
-                <h2 class="text-3xl font-bold text-slate-900 mb-3">주요 교수진 및 학문적 성과</h2>
+                <h2 class="text-3xl font-bold text-slate-900 mb-3">반도체공학과 주요 연구진</h2>
                 <div class="w-20 h-1 bg-blue-600 mb-4 mx-auto md:mx-0"></div>
-                <p class="text-slate-500 text-lg max-w-2xl">반도체 전 영역을 아우르는 전문성을 보유한 핵심 연구진</p>
+                <p class="text-slate-500 text-lg max-w-2xl">차세대 반도체 및 나노 소자 연구에 특화된 전문 교수진의 성과</p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Faculty 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-700 mb-4">
-                        <i data-lucide="zap" class="w-6 h-6"></i>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Faculty 1: Song Han-jung -->
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-100 hover-lift flex flex-col h-full">
+                    <div class="flex items-start justify-between mb-6">
+                        <div>
+                            <div class="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 mb-4">
+                                <i data-lucide="zap" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold text-slate-900">송한정 교수</h4>
+                            <p class="text-sm font-bold text-blue-600 uppercase tracking-wide">반도체공학과 / KI-STAR 부단장</p>
+                        </div>
                     </div>
-                    <h4 class="text-lg font-bold text-slate-900">송한정 교수</h4>
-                    <p class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">반도체공학과 / KI-STAR 부단장</p>
-                    <div class="mb-3">
-                        <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded">뉴로모픽 반도체, 멤리스터</span>
+                    
+                    <div class="mb-6 space-y-4">
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <strong class="block text-slate-800 mb-1">차세대 뉴로모픽 반도체</strong>
+                            <p class="text-sm text-slate-600">인간의 뇌 시냅스 가소성을 모방하는 <strong>멤리스터(Memristor)</strong> 소자 연구를 주도하며, 기존 폰 노이만 구조의 한계를 넘는 저전력·고효율 AI 반도체 하드웨어를 개발합니다.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <strong class="block text-slate-800 mb-1">HfO₂ 기반 시스템 & CMOS 혼돈 회로</strong>
+                            <p class="text-sm text-slate-600">가돌리늄(Gd) 도핑 $HfO_2$ 멤리스터를 이용한 이미지 노이즈 제거 기술 및 보안 통신용 CMOS 혼돈(Chaos) 생성기 설계 분야에서 독보적인 성과를 보유하고 있습니다.</p>
+                        </div>
                     </div>
-                    <p class="text-sm text-slate-500 leading-relaxed line-clamp-3">인간 뇌 구조를 모방한 뉴로모픽 컴퓨팅의 권위자. HfO₂ 기반 소자 및 카오스 회로 연구 주도.</p>
-                </div>
-                <!-- Faculty 2 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-700 mb-4">
-                        <i data-lucide="award" class="w-6 h-6"></i>
-                    </div>
-                    <h4 class="text-lg font-bold text-slate-900">김종원 교수</h4>
-                    <p class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">나노융합공학부</p>
-                    <div class="mb-3">
-                        <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded">비선형 복잡계 이론 물리</span>
-                    </div>
-                    <p class="text-sm text-slate-500 leading-relaxed line-clamp-3">미국 메릴랜드 주립대 박사. 나노 소자의 양자 역학적 문제와 불확실성 제어 연구.</p>
-                </div>
-                <!-- Faculty 3 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-700 mb-4">
-                        <i data-lucide="monitor-check" class="w-6 h-6"></i>
-                    </div>
-                    <h4 class="text-lg font-bold text-slate-900">김희철 교수</h4>
-                    <p class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">AI소프트웨어학부</p>
-                    <div class="mb-3">
-                        <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded">디지털 헬스케어 융합</span>
-                    </div>
-                    <p class="text-sm text-slate-500 leading-relaxed line-clamp-3">반도체 센서와 헬스케어 접목. 나노섬유 기반 웰니스웨어 시스템 개발 주도.</p>
-                </div>
-                <!-- Faculty 4 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-700 mb-4">
-                        <i data-lucide="microscope" class="w-6 h-6"></i>
-                    </div>
-                    <h4 class="text-lg font-bold text-slate-900">정우석 교수</h4>
-                    <p class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">의예과 / 융합전공</p>
-                    <div class="mb-3">
-                        <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded">바이오 센서 융합 기술</span>
-                    </div>
-                    <p class="text-sm text-slate-500 leading-relaxed line-clamp-3">세포 신호 전달 영상화 연구를 통해 반도체 기반 바이오 이미징 센서 기술 확장.</p>
-                </div>
-            </div>
 
-            <!-- Research Highlight Box -->
-            <div class="mt-8 bg-slate-900 rounded-xl p-8 text-white">
-                <h4 class="text-xl font-bold mb-4 flex items-center gap-2">
-                    <i data-lucide="book-open" class="w-5 h-5 text-blue-400"></i>
-                    주목할 만한 연구 성과: 송한정 교수팀
-                </h4>
-                <div class="grid md:grid-cols-3 gap-6 text-slate-300 text-sm">
-                    <div class="bg-slate-800 p-4 rounded-lg">
-                        <strong class="block text-white mb-2 text-lg">멤리스터 특성화</strong>
-                        뉴로모픽 시스템의 시냅스 모방을 위한 새로운 소자 성능 측정 방법론 제시 (2020)
+                    <div class="mt-auto pt-6 border-t border-slate-100">
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-3">Major Achievements</h5>
+                        <ul class="text-sm text-slate-700 space-y-2">
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>뉴로모픽 시스템 시냅스 모방 소자 특성화 (2020)</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>저서: 『전력반도체 공정, 소자, 설계 및 응용』</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>1차원 선형 조각 맵 기반 CMOS 혼돈 생성기 연구</li>
+                        </ul>
                     </div>
-                    <div class="bg-slate-800 p-4 rounded-lg">
-                        <strong class="block text-white mb-2 text-lg">HfO<sub>2</sub> 기반 시스템</strong>
-                        가돌리늄(Gd) 도핑 멤리스터를 통한 이미지 노이즈 제거 및 에지 검출 효율 입증
+                </div>
+
+                <!-- Faculty 2: Kim Jong-won -->
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-100 hover-lift flex flex-col h-full">
+                    <div class="flex items-start justify-between mb-6">
+                        <div>
+                            <div class="w-14 h-14 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 mb-4">
+                                <i data-lucide="microscope" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold text-slate-900">김종원 교수</h4>
+                            <p class="text-sm font-bold text-indigo-600 uppercase tracking-wide">나노융합공학부</p>
+                        </div>
                     </div>
-                    <div class="bg-slate-800 p-4 rounded-lg">
-                        <strong class="block text-white mb-2 text-lg">CMOS 혼돈 생성기</strong>
-                        보안 통신 및 난수 생성기 성능 극대화를 위한 1차원 선형 조각 맵 회로 연구
+
+                    <div class="mb-6 space-y-4">
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <strong class="block text-slate-800 mb-1">비선형 복잡계 이론 물리</strong>
+                            <p class="text-sm text-slate-600">미국 메릴랜드 주립대학교 박사 출신으로, 반도체 소자의 미세화 한계에서 발생하는 <strong>양자 역학적 불확실성</strong>과 비선형적 물리 현상을 해석하는 이론적 토대를 제공합니다.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <strong class="block text-slate-800 mb-1">나노 소자 해석 및 신뢰성</strong>
+                            <p class="text-sm text-slate-600">나노 스케일 반도체 공정에서 발생하는 물리적 변수를 제어하고 소자의 신뢰성을 높이기 위한 기초 학문 연구를 수행하며, KI-STAR 사업단의 융합 교육 모델 개발에 기여하고 있습니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-6 border-t border-slate-100">
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-3">Major Achievements</h5>
+                        <ul class="text-sm text-slate-700 space-y-2">
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>비선형 동역학 및 카오스 이론 응용 연구</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>나노 구조의 물리적 특성 규명 및 모델링</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>KI-STAR 사업단 운영위원 및 교육과정 개발</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -436,17 +439,14 @@
         // Mobile Menu Logic
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        const mobileIcon = mobileMenuBtn.querySelector('i');
 
         mobileMenuBtn.addEventListener('click', () => {
             const isHidden = mobileMenu.classList.contains('hidden');
             if (isHidden) {
                 mobileMenu.classList.remove('hidden');
-                // Change icon to X
                 mobileMenuBtn.innerHTML = '<i data-lucide="x"></i>';
             } else {
                 mobileMenu.classList.add('hidden');
-                // Change icon back to Menu
                 mobileMenuBtn.innerHTML = '<i data-lucide="menu"></i>';
             }
             lucide.createIcons();
@@ -465,7 +465,6 @@
                     behavior: "smooth"
                 });
 
-                // Close mobile menu if open
                 if (!mobileMenu.classList.contains('hidden')) {
                     mobileMenu.classList.add('hidden');
                     mobileMenuBtn.innerHTML = '<i data-lucide="menu"></i>';
