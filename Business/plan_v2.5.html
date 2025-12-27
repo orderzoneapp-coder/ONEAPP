@@ -1,0 +1,405 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  BarChart, 
+  Target, 
+  Zap, 
+  Shield, 
+  Users, 
+  TrendingUp, 
+  LayoutDashboard, 
+  FileText, 
+  Settings, 
+  ChevronRight,
+  Database,
+  Search,
+  CheckCircle2,
+  AlertTriangle,
+  Menu,
+  X
+} from 'lucide-react';
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // 메뉴 클릭 시 사이드바 닫기 (모바일용)
+  const handleTabClick = (id) => {
+    setActiveTab(id);
+    setIsSidebarOpen(false);
+    window.scrollTo(0, 0);
+  };
+
+  const TabButton = ({ id, icon: Icon, label }) => (
+    <button
+      onClick={() => handleTabClick(id)}
+      className={`flex items-center gap-3 px-6 py-4 w-full text-left transition-all ${
+        activeTab === id 
+          ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-100' 
+          : 'text-gray-500 hover:bg-gray-50'
+      }`}
+    >
+      <Icon size={20} />
+      <span className="text-sm md:text-base">{label}</span>
+    </button>
+  );
+
+  return (
+    <div className="flex min-h-screen bg-slate-50 text-slate-900 font-sans relative">
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar Navigation */}
+      <aside className={`
+        fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-slate-200 z-50 transition-transform duration-300 ease-in-out
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black italic shrink-0">Z</div>
+            <h1 className="text-xl font-black tracking-tight italic">ORDERZ</h1>
+          </div>
+          <button className="lg:hidden p-2 text-slate-400" onClick={() => setIsSidebarOpen(false)}>
+            <X size={24} />
+          </button>
+        </div>
+        <nav className="mt-4 overflow-y-auto">
+          <p className="px-6 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Main Menu</p>
+          <TabButton id="overview" icon={LayoutDashboard} label="사업 개요" />
+          <TabButton id="market" icon={BarChart} label="시장 분석" />
+          <TabButton id="solution" icon={Zap} label="솔루션 전략" />
+          <TabButton id="operation" icon={Settings} label="수익 및 운영" />
+          <TabButton id="roadmap" icon={TrendingUp} label="성장 로드맵" />
+        </nav>
+        <div className="absolute bottom-0 w-full p-6 border-t border-slate-100 bg-slate-50/50">
+          <p className="text-[10px] text-slate-400 font-bold uppercase mb-2">Security Status</p>
+          <div className="flex items-center gap-2 text-blue-600">
+            <Shield size={14} />
+            <span className="text-xs font-bold">L3 Protected</span>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <main className="flex-1 w-full overflow-x-hidden">
+        <header className="bg-white border-b border-slate-200 px-4 md:px-8 py-4 md:py-6 sticky top-0 z-30 flex justify-between items-center shadow-sm">
+          <div className="flex items-center gap-4">
+            <button 
+              className="lg:hidden p-2 -ml-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <Menu size={24} />
+            </button>
+            <h2 className="text-lg md:text-2xl font-bold text-slate-800 uppercase tracking-tight italic truncate max-w-[180px] md:max-w-none">
+              {activeTab === 'overview' && 'Executive Summary'}
+              {activeTab === 'market' && 'Market Insight'}
+              {activeTab === 'solution' && 'Product Solution'}
+              {activeTab === 'operation' && 'Revenue & Operation'}
+              {activeTab === 'roadmap' && 'Future Roadmap'}
+            </h2>
+          </div>
+          <div className="flex gap-1.5 md:gap-2 shrink-0">
+            <span className="bg-slate-100 text-slate-600 text-[10px] md:text-xs px-2 md:px-3 py-1 rounded-full font-bold tracking-widest">V2.5</span>
+            <span className="bg-blue-600 text-white text-[10px] md:text-xs px-2 md:px-3 py-1 rounded-full font-bold tracking-widest">CONFIDENTIAL</span>
+          </div>
+        </header>
+
+        <div className="p-4 md:p-8 max-w-6xl mx-auto space-y-6 md:space-y-8">
+          {/* Tab: Overview */}
+          {activeTab === 'overview' && (
+            <div className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <section className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-10 shadow-sm border border-slate-200 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 md:p-12 opacity-5 pointer-events-none">
+                   <Target size={150} className="md:w-[200px]" />
+                </div>
+                <h3 className="text-blue-600 font-bold mb-3 md:mb-4 uppercase tracking-widest text-xs md:text-sm">Project Mission</h3>
+                <p className="text-2xl md:text-4xl font-extrabold leading-tight mb-4 md:mb-6">
+                  중소 식자재 유통사의 <br />
+                  <span className="text-blue-600 italic underline decoration-blue-100 decoration-4 underline-offset-4">ORDERZ</span>가 디지털 무기가 됩니다.
+                </p>
+                <p className="text-sm md:text-lg text-slate-600 max-w-2xl leading-relaxed">
+                  <span className="font-bold text-slate-800 italic">ORDERZ</span>는 복잡한 유통 구조와 아날로그 주문 방식에 갇힌 90%의 중소 유통사를 위해 
+                  대기업 수준의 IT 인프라와 운영 대행 서비스를 제공합니다.
+                </p>
+              </section>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                 {[
+                   { label: '핵심 타겟', val: '중소 유통사 (90% 점유)', icon: <Users className="text-blue-600" /> },
+                   { label: '주요 가치', val: '미수금 제로 & 디지털 DX', icon: <Zap className="text-yellow-500" /> },
+                   { label: '비즈니스 모델', val: 'SaaS + BPO (운영대행)', icon: <Database className="text-green-600" /> },
+                 ].map((item, i) => (
+                   <div key={i} className="bg-white p-5 md:p-6 rounded-2xl border border-slate-200 flex items-center gap-4 hover:shadow-md transition-shadow">
+                      <div className="p-3 bg-slate-50 rounded-xl shrink-0">{item.icon}</div>
+                      <div>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase">{item.label}</p>
+                        <p className="font-bold text-slate-800 text-sm md:text-base">{item.val}</p>
+                      </div>
+                   </div>
+                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Tab: Market */}
+          {activeTab === 'market' && (
+            <div className="space-y-6 md:space-y-8 animate-in slide-in-from-right duration-500">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+                <div className="bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl border border-slate-200 shadow-sm">
+                  <h4 className="text-base md:text-lg font-bold mb-6 flex items-center gap-2 uppercase italic tracking-wider">
+                    <TrendingUp size={20} className="text-blue-600" /> 시장 규모 및 잠재력
+                  </h4>
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-xs md:text-sm font-medium">국내 식자재 유통 시장</span>
+                        <span className="text-xs md:text-sm font-bold text-blue-600">약 64조 원</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div className="bg-blue-600 h-full w-[85%] animate-pulse-slow"></div>
+                      </div>
+                    </div>
+                    <div className="bg-blue-50 p-4 rounded-xl text-xs md:text-sm leading-relaxed text-blue-800 border border-blue-100">
+                      연평균 <strong>10.3%</strong>의 글로벌 성장률 기록 중. <br className="hidden md:block" />
+                      코로나 이후 모바일 거래액 49조 원 돌파 (2021년 기준)
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl border border-slate-200 shadow-sm">
+                  <h4 className="text-base md:text-lg font-bold mb-6 flex items-center gap-2 uppercase italic tracking-wider">
+                    <AlertTriangle size={20} className="text-red-500" /> 시장의 페인 포인트
+                  </h4>
+                  <ul className="space-y-4">
+                    {[
+                      { t: "디지털 격차", c: "빅3 대기업(6%) vs 중소업체(94%) 간 IT 인프라 양극화" },
+                      { t: "운영 비효율", c: "수기 주문 및 수동 정산으로 인한 인건비 낭비" },
+                      { t: "품질 관리", c: "중소업체의 콜드체인 및 식품안전 관리 미흡" }
+                    ].map((item, i) => (
+                      <li key={i} className="flex gap-4">
+                         <div className="w-1.5 h-1.5 bg-red-400 rounded-full mt-1.5 md:mt-2 shrink-0" />
+                         <div>
+                            <p className="font-bold text-slate-800 text-xs md:text-sm">{item.t}</p>
+                            <p className="text-slate-500 text-[11px] md:text-xs leading-relaxed">{item.c}</p>
+                         </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-slate-900 text-white p-6 md:p-10 rounded-2xl md:rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/10 blur-3xl rounded-full"></div>
+                 <h4 className="text-lg md:text-xl font-bold mb-4 uppercase italic tracking-widest text-blue-400">Benchmark Case: SYSCO (USA)</h4>
+                 <p className="text-slate-400 text-xs md:text-base leading-relaxed relative z-10">
+                   미국 1위 식자재 기업 시스코는 통합 물류 시스템과 직소싱 전략으로 시장을 혁신했습니다. 
+                   <span className="text-white font-bold italic"> ORDERZ</span>는 시스코의 효율성을 중소 유통사들에게 클라우드(SaaS) 형태로 보급하여 한국형 시스코 연합체를 구축합니다.
+                 </p>
+              </div>
+            </div>
+          )}
+
+          {/* Tab: Solution */}
+          {activeTab === 'solution' && (
+            <div className="space-y-6 md:space-y-8 animate-in slide-in-from-right duration-500">
+              <div className="text-center max-w-2xl mx-auto mb-8 md:mb-12">
+                <h3 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4 italic uppercase tracking-tighter text-blue-600">Product Strategy</h3>
+                <p className="text-sm md:text-base text-slate-500">유통사의 니즈와 우려를 동시에 해결하는 이원화 솔루션</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                {/* Leased Mall (Focus) */}
+                <div className="bg-white border-2 border-blue-600 rounded-2xl md:rounded-3xl p-6 md:p-8 relative shadow-xl shadow-blue-100">
+                  <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] px-3 py-1.5 rounded-bl-xl font-bold uppercase tracking-widest">
+                    Recommended
+                  </div>
+                  <h4 className="text-xl md:text-2xl font-bold mb-2 uppercase italic tracking-tighter text-blue-600">ORDERZ PARTNERS</h4>
+                  <p className="text-slate-500 text-xs md:text-sm mb-6">저비용·고효율, 즉시 도입 가능한 주력 임대몰 모델</p>
+                  <ul className="space-y-4 mb-8">
+                    {[
+                      "ORDERZ 전용 도메인 및 서버 인프라 활용",
+                      "전용 링크를 통한 거래처 노출 제한",
+                      "본사 마케팅 지원(네이버 키워드 광고 등)",
+                      "상시 시스템 업데이트 및 보안 관리"
+                    ].map((t, i) => (
+                      <li key={i} className="flex items-start gap-3 text-xs md:text-sm">
+                        <CheckCircle2 size={18} className="text-blue-600 shrink-0 mt-0.5" />
+                        <span className="text-slate-700">{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="bg-slate-50 p-4 rounded-xl">
+                    <p className="text-[10px] font-bold text-slate-400 mb-1 italic">핵심 가치 제안</p>
+                    <p className="text-xs md:text-sm font-bold text-slate-700 leading-snug">"사장님은 영업만 하세요, IT는 <span className="text-blue-600 italic">ORDERZ</span>가 책임집니다"</p>
+                  </div>
+                </div>
+
+                {/* Dedicated Mall */}
+                <div className="bg-white border border-slate-200 rounded-2xl md:rounded-3xl p-6 md:p-8 opacity-70 grayscale hover:grayscale-0 transition-all shadow-sm">
+                  <h4 className="text-xl md:text-2xl font-bold mb-2 uppercase italic tracking-tighter">ORDERZ ENTERPRISE</h4>
+                  <p className="text-slate-500 text-xs md:text-sm mb-6">독립성 중시 대형 유통사 대상 전용몰</p>
+                  <ul className="space-y-4 mb-8">
+                    {[
+                      "개인 도메인 및 자체 PG 가입",
+                      "높은 수준의 UI/UX 커스터마이징",
+                      "자체 서버 구축 및 유지보수 별도",
+                      "업데이트 및 기술 지원 시 비용 발생"
+                    ].map((t, i) => (
+                      <li key={i} className="flex items-start gap-3 text-xs md:text-sm text-slate-400">
+                        <CheckCircle2 size={18} className="text-slate-300 shrink-0 mt-0.5" />
+                        <span>{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="bg-slate-50 p-4 rounded-xl text-center">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Strategic Insight</p>
+                    <p className="text-[11px] text-slate-500 mt-1 italic">리소스 효율성을 위해 'PARTNERS' 임대몰에 집중</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab: Operation */}
+          {activeTab === 'operation' && (
+            <div className="space-y-6 md:space-y-8 animate-in slide-in-from-right duration-500">
+               <div className="bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl border border-slate-200 shadow-sm">
+                 <h4 className="text-lg md:text-xl font-bold mb-6 flex items-center gap-3 uppercase italic tracking-wider">
+                   <Database className="text-blue-600" /> <span className="text-blue-600 italic">ORDERZ</span> BPO 모델
+                 </h4>
+                 
+                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                   <div>
+                     <p className="text-[10px] font-bold text-slate-400 mb-6 uppercase tracking-widest">업무당 공수 분석 (Man-Hour)</p>
+                     <div className="space-y-5">
+                        {[
+                          { l: "상품 및 단가 업데이트", t: "10h", p: 50 },
+                          { l: "일일 주문 취합", t: "5h", p: 25 },
+                          { l: "정산 및 세금계산서", t: "3h", p: 15 },
+                          { l: "CS 및 커뮤니케이션", t: "2h", p: 10 }
+                        ].map((item, i) => (
+                          <div key={i}>
+                            <div className="flex justify-between text-xs mb-1.5">
+                              <span className="font-medium text-slate-600">{item.l}</span>
+                              <span className="font-bold text-slate-900">{item.t}</span>
+                            </div>
+                            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                              <div className="bg-blue-600 h-full transition-all duration-1000" style={{ width: `${item.p}%` }}></div>
+                            </div>
+                          </div>
+                        ))}
+                     </div>
+                   </div>
+
+                   <div className="space-y-4">
+                     <div className="p-5 md:p-6 bg-blue-50 border border-blue-100 rounded-2xl shadow-sm">
+                        <h5 className="font-bold text-blue-800 mb-2 uppercase italic tracking-tighter text-sm">ORDERZ LITE (Managed)</h5>
+                        <div className="flex items-baseline gap-1 mb-2">
+                          <p className="text-2xl font-black text-blue-600">월 200,000</p>
+                          <span className="text-xs font-bold text-blue-600">원</span>
+                        </div>
+                        <p className="text-[11px] md:text-xs text-blue-500 font-medium leading-relaxed">주 2회 단가 관리 + 일일 주문 데이터 양식 지원</p>
+                     </div>
+                     <div className="p-5 md:p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl">
+                        <h5 className="font-bold text-white mb-2 uppercase italic tracking-tighter text-sm">ORDERZ CONCIERGE (Premium)</h5>
+                        <div className="flex items-baseline gap-1 mb-2">
+                          <p className="text-2xl font-black text-blue-400">월 400,000</p>
+                          <span className="text-xs font-bold text-blue-400">원</span>
+                        </div>
+                        <p className="text-[11px] md:text-xs text-slate-400 font-medium leading-relaxed">매일 실시간 단가 관리 + 커스텀 정산 + 우선 지원</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+               <div className="bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl border border-slate-200 shadow-sm">
+                 <h4 className="text-base md:text-lg font-bold mb-6 italic uppercase tracking-wider">행정 및 법적 요구사항</h4>
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+                    {[
+                      { t: "사업자등록", c: "소프트웨어 개발/공급, 전자상거래 소매업" },
+                      { t: "통신판매업", c: "PG 연동 및 온라인 판매 필수 신고" },
+                      { t: "부가통신사업", c: "주문 정보 중개 플랫폼 운영 의무 사항" }
+                    ].map((item, i) => (
+                      <div key={i} className="p-4 bg-slate-50 rounded-xl border border-slate-100 flex md:flex-col gap-3 md:gap-1">
+                        <div className="w-8 h-8 md:w-auto md:h-auto bg-blue-100 md:bg-transparent rounded-lg flex items-center justify-center shrink-0">
+                          <CheckCircle2 size={16} className="text-blue-600" />
+                        </div>
+                        <div>
+                          <p className="text-blue-700 font-bold text-xs md:text-sm mb-1">{item.t}</p>
+                          <p className="text-[10px] md:text-xs text-slate-500 leading-tight">{item.c}</p>
+                        </div>
+                      </div>
+                    ))}
+                 </div>
+               </div>
+            </div>
+          )}
+
+          {/* Tab: Roadmap */}
+          {activeTab === 'roadmap' && (
+            <div className="space-y-10 md:space-y-12 animate-in slide-in-from-right duration-500 pb-12">
+               <div className="relative pt-4">
+                  {/* Vertical Line - Mobile: Left, Desktop: Center */}
+                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-slate-200"></div>
+                  
+                  <div className="space-y-12 md:space-y-16">
+                    {[
+                      { 
+                        step: "Phase 1: Entry", 
+                        title: "SaaS 플랫폼 확산", 
+                        desc: "수도권 유통사 50개 파트너십 구축 및 MVP 기능 고도화",
+                        pos: "left"
+                      },
+                      { 
+                        step: "Phase 2: Stable", 
+                        title: "BPO 서비스 수익화", 
+                        desc: "운영 대행을 통한 락인(Lock-in) 강화 및 마진 안정화",
+                        pos: "right"
+                      },
+                      { 
+                        step: "Phase 3: Scale", 
+                        title: "밸류체인 통합 플랫폼", 
+                        desc: "데이터 기반 공동 구매 및 핀테크(매입 자금 대출) 도입",
+                        pos: "left"
+                      }
+                    ].map((item, i) => (
+                      <div key={i} className={`relative flex items-center w-full md:justify-between ${item.pos === 'right' ? 'md:flex-row-reverse' : ''}`}>
+                         {/* Circle dot */}
+                         <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-blue-600 border-4 border-white shadow-md z-10"></div>
+                         
+                         <div className="hidden md:block w-1/2 px-12"></div>
+                         <div className="w-full md:w-1/2 pl-12 pr-4 md:px-12">
+                            <div className="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-lg transition-all active:scale-[0.98]">
+                               <span className="text-[10px] font-bold text-blue-600 uppercase mb-1 md:mb-2 block tracking-widest">{item.step}</span>
+                               <h4 className="text-base md:text-xl font-bold mb-2 uppercase italic tracking-tighter">{item.title}</h4>
+                               <p className="text-slate-500 text-xs md:text-sm leading-relaxed">{item.desc}</p>
+                            </div>
+                         </div>
+                      </div>
+                    ))}
+                  </div>
+               </div>
+
+               <div className="text-center p-8 md:p-12 bg-blue-600 rounded-3xl md:rounded-[40px] text-white shadow-2xl shadow-blue-200 relative overflow-hidden">
+                 <div className="absolute top-0 left-0 w-full h-full bg-white opacity-5 pointer-events-none rotate-12 scale-150"></div>
+                 <h3 className="text-xl md:text-3xl font-bold mb-4 uppercase italic tracking-tighter leading-snug px-4">
+                  "영업력에 <span className="underline decoration-blue-300 decoration-4 underline-offset-4 md:underline-offset-8">ORDERZ</span>의 <br className="md:hidden" /> 기술을 더하다"
+                 </h3>
+                 <p className="text-blue-100 mb-8 font-medium text-xs md:text-base">ORDERZ는 기술로 식자재 유통의 내일을 만듭니다.</p>
+                 <button className="bg-white text-blue-600 w-full md:w-auto px-10 py-4 rounded-full font-extrabold hover:bg-blue-50 transition-all uppercase tracking-widest text-sm md:text-lg shadow-xl active:scale-95">
+                   Biz Proposal Download
+                 </button>
+               </div>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default App;
