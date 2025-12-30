@@ -22,7 +22,7 @@
             --text-sub: #8b95a1;
             --border: #e5e8eb; 
             --bg-gray: #f9f9f9; 
-            --nav-height: 60px; /* GNB Height increased for 3 buttons */
+            --nav-height: 60px;
             --footer-height: 70px;
         }
 
@@ -46,7 +46,7 @@
 
         /* --- List Navigation (Tabs) --- */
         .tab-bar { display: flex; background: #fff; border-bottom: 1px solid var(--border); height: 44px; flex-shrink: 0; }
-        .tab { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--text-sub); cursor: pointer; font-weight: 500; position: relative; }
+        .tab { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--text-sub); cursor: pointer; font-weight: 500; position: relative; transition: color 0.2s; }
         .tab.active { color: var(--text-main); font-weight: 700; }
         .tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: var(--text-main); }
 
@@ -62,7 +62,7 @@
         .sort-btn.active { background: #fff; color: #191f28; font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
         /* --- Main Content --- */
-        .content-scroll { flex: 1; overflow-y: auto; background: #fff; padding-bottom: calc(var(--nav-height) + var(--footer-height)); }
+        .content-scroll { flex: 1; overflow-y: auto; background: #fff; padding-bottom: calc(var(--nav-height) + var(--footer-height)); -webkit-overflow-scrolling: touch; }
         
         .product-item { display: flex; padding: 16px; border-bottom: 1px solid #f2f4f6; align-items: center; background: #fff; }
         .prod-img { width: 70px; height: 70px; background: #f8f9fa; border-radius: 8px; margin-right: 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; border: 1px solid #edf0f4; }
@@ -70,10 +70,10 @@
         .prod-name { font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .prod-unit { font-size: 13px; color: var(--text-sub); margin-bottom: 6px; }
         .prod-price { font-size: 16px; font-weight: 700; color: var(--text-main); }
-        .prod-tag { font-size: 11px; color: #f04452; background: #fff0f1; padding: 2px 6px; border-radius: 4px; margin-right: 6px; font-weight: 600; }
+        .prod-tag { font-size: 11px; color: #f04452; background: #fff0f1; padding: 2px 6px; border-radius: 4px; margin-right: 6px; font-weight: 600; vertical-align: middle; }
 
-        .qty-control { display: flex; align-items: center; border: 1px solid #dfe2e6; border-radius: 4px; height: 32px; background: #fff; overflow: hidden; margin-left: 12px; }
-        .qty-btn { width: 32px; height: 100%; border: none; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #333; font-size: 16px; }
+        .qty-control { display: flex; align-items: center; border: 1px solid #dfe2e6; border-radius: 4px; height: 32px; background: #fff; overflow: hidden; margin-left: 12px; flex-shrink: 0; }
+        .qty-btn { width: 32px; height: 100%; border: none; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #333; font-size: 16px; transition: background 0.1s; }
         .qty-btn:active { background: #f2f4f6; }
         .qty-val { width: 36px; text-align: center; font-size: 14px; font-weight: 600; color: var(--text-main); }
 
@@ -83,14 +83,14 @@
             background: #fff; border-top: 1px solid var(--border); 
             padding: 10px 16px; display: flex; align-items: center; height: var(--footer-height); z-index: 50; 
         }
-        .delivery-info { margin-right: 12px; flex: 1; }
+        .delivery-info { margin-right: 12px; flex: 1; cursor: pointer; }
         .delivery-label { font-size: 11px; color: var(--text-sub); margin-bottom: 2px; }
-        .delivery-date { font-size: 14px; color: var(--text-main); font-weight: 700; cursor: pointer; display: flex; align-items: center; }
+        .delivery-date { font-size: 14px; color: var(--text-main); font-weight: 700; display: flex; align-items: center; }
         .delivery-date::after { content: '›'; margin-left: 4px; font-weight: 400; color: #999; transform: rotate(90deg); display: inline-block;}
         
         .order-btn { 
             background: #d1d6db; color: #fff; border: none; padding: 0 24px; height: 48px; border-radius: 8px; 
-            font-weight: 700; font-size: 15px; cursor: not-allowed; min-width: 140px; transition: background 0.2s; 
+            font-weight: 700; font-size: 15px; cursor: not-allowed; min-width: 140px; transition: all 0.2s; 
         }
         .order-btn.active { background: #191f28; cursor: pointer; } 
 
@@ -102,7 +102,7 @@
         }
         .nav-item { 
             flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            height: 100%; color: #333; cursor: pointer; background: none; border: none; 
+            height: 100%; color: #8b95a1; cursor: pointer; background: none; border: none; 
             transition: background 0.1s;
         }
         .nav-item:active { background: #f9f9f9; }
@@ -133,7 +133,7 @@
             flex: 1; border: none; background: transparent; font-size: 16px; outline: none; margin-left: 8px; color: #191f28; font-weight: 500;
         }
 
-        .search-body { flex: 1; overflow-y: auto; position: relative; background: #fff; }
+        .search-body { flex: 1; overflow-y: auto; position: relative; background: #fff; -webkit-overflow-scrolling: touch;}
 
         /* State A: Zero State (Above Keyboard) */
         .zero-state-container { padding: 16px 0; }
@@ -180,6 +180,14 @@
             color: #666; font-weight: 700; font-size: 14px; flex-shrink: 0;
             border-top: 1px solid #ccc;
         }
+        
+        /* Notification Toast */
+        .toast-msg {
+            position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px; border-radius: 20px;
+            font-size: 13px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 200;
+        }
+        .toast-msg.show { opacity: 1; }
     </style>
 </head>
 <body>
@@ -189,7 +197,7 @@
         <header>
             <a href="#" class="header-left-logo">ORDERZ</a>
             <div class="header-center-title">NH라인</div>
-            <button class="header-btn" onclick="alert('마이페이지')">
+            <button class="header-btn" onclick="showToast('마이페이지 기능 준비중')">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </button>
         </header>
@@ -205,8 +213,8 @@
         <div class="sort-bar" id="sortBar">
             <span class="list-count" id="listCount">전체 (0)</span>
             <div class="sort-toggle">
-                <button class="sort-btn active" onclick="alert('내 순서 정렬')">내 순서</button>
-                <button class="sort-btn" onclick="alert('최신순 정렬')">최신순</button>
+                <button class="sort-btn active" onclick="showToast('정렬 기준: 내 순서')">내 순서</button>
+                <button class="sort-btn" onclick="showToast('정렬 기준: 최신순')">최신순</button>
             </div>
         </div>
 
@@ -219,11 +227,11 @@
 
         <!-- 4. FOOTER (Sticky Order Bar) -->
         <div class="footer-bar">
-            <div class="delivery-info" onclick="alert('배송일 변경 달력 팝업')">
+            <div class="delivery-info" onclick="showToast('배송일 변경 캘린더 팝업')">
                 <div class="delivery-label">배송예정일</div>
                 <div class="delivery-date">10월 20일 (월)</div>
             </div>
-            <button class="order-btn" id="mainOrderBtn" onclick="alert('주문서 확인')">주문하기</button>
+            <button class="order-btn" id="mainOrderBtn" onclick="alert('주문서가 생성되었습니다!')">주문하기</button>
         </div>
 
         <!-- 5. GNB (3 Buttons) -->
@@ -232,15 +240,17 @@
                 <div class="nav-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                 <div class="nav-label">검색</div>
             </button>
-            <button class="nav-item" onclick="alert('편집 모드 진입')">
+            <button class="nav-item" onclick="showToast('편집 모드')">
                 <div class="nav-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></div>
                 <div class="nav-label">편집</div>
             </button>
-            <button class="nav-item" onclick="alert('문의하기 (카카오톡)')">
+            <button class="nav-item" onclick="showToast('고객센터 연결')">
                 <div class="nav-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
                 <div class="nav-label">문의</div>
             </button>
         </nav>
+        
+        <div id="toast" class="toast-msg">메시지</div>
     </div>
 
     <!-- 6. UNIFIED SEARCH MODAL -->
@@ -294,7 +304,7 @@
                 <div class="global-results-area" id="globalResultsArea">
                     <div class="global-header">전체 상품 검색 결과</div>
                     <div id="globalResultList"></div>
-                    <button class="global-trigger-btn" style="background:#f9f9f9; border-color:#eee; color:#666;" onclick="alert('더보기 API 호출')">
+                    <button class="global-trigger-btn" style="background:#f9f9f9; border-color:#eee; color:#666;" onclick="showToast('API 더보기 요청')">
                         결과 더보기 ∨
                     </button>
                 </div>
@@ -322,6 +332,8 @@
             'global': [
                 { id: 901, name: "무우 10입 BOX", unit: "BOX", price: 22800, img: "📦", tag: "행사" },
                 { id: 902, name: "무우 (낱개)", unit: "EA", price: 2800, img: "🥣", tag: null },
+                { id: 903, name: "대파 1kg", unit: "PKG", price: 4500, img: "🎋", tag: null },
+                { id: 904, name: "햇감자 5kg", unit: "BOX", price: 12000, img: "🥔", tag: null },
             ]
         };
 
@@ -362,7 +374,7 @@
                     </div>
                     <div class="qty-control">
                         <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
-                        <div class="qty-val" id="qty-${item.id}">${qty}</div>
+                        <div class="qty-val qty-${item.id}">${qty}</div>
                         <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
                     </div>
                 `;
@@ -375,15 +387,23 @@
             cart[id] += delta;
             if(cart[id] < 0) cart[id] = 0;
 
-            // Sync all counters (Main List + Search Results)
-            document.querySelectorAll(`[id^="qty-${id}"]`).forEach(el => el.innerText = cart[id]);
+            // Sync all counters (Main List + Search Results) using Class Selector
+            // This handles cases where the same product is in both lists
+            const counters = document.querySelectorAll(`.qty-${id}`);
+            counters.forEach(el => el.innerText = cart[id]);
             
             updateOrderBtn();
         }
 
         function updateOrderBtn() {
             let total = 0;
-            Object.values(cart).forEach(v => { if(v > 0) total++; });
+            let totalPrice = 0;
+            
+            // Calculate total items (mock simple count)
+            Object.keys(cart).forEach(key => {
+                if(cart[key] > 0) total++;
+            });
+
             const btn = document.getElementById('mainOrderBtn');
             if(total > 0) {
                 btn.classList.add('active');
@@ -394,7 +414,7 @@
             }
         }
 
-        // --- Search Logic (New) ---
+        // --- Search Logic ---
         const modal = document.getElementById('searchModal');
         const input = document.getElementById('searchInput');
         const zeroState = document.getElementById('zeroState');
@@ -411,8 +431,10 @@
         function closeSearchModal() {
             modal.classList.remove('open');
             input.blur();
-            // Refresh main list in case global items were added (Mock)
+            // Refresh main list in case global items were added (Mock logic)
             renderList(currentList, document.getElementById('mainProductList'));
+            // Re-render to ensure counters are synced
+            document.getElementById('listCount').innerText = `전체 (${currentList.length})`;
         }
 
         input.addEventListener('input', (e) => {
@@ -452,13 +474,29 @@
             document.getElementById('globalTriggerBtn').style.display = 'none';
             document.getElementById('globalResultsArea').style.display = 'block';
             
-            const results = db['global'].filter(i => i.name.includes(searchQuery) || true); // Mock: return all global for demo
+            // Mock: return global items matching query or all for demo
+            const results = db['global'].filter(i => i.name.includes(searchQuery) || true); 
             renderList(results, document.getElementById('globalResultList'));
             
-            // Add found items to current list for persistence (Mock)
+            // In a real app, you might ask to add to list. 
+            // Here we just let them add quantity directly.
+            // If we wanted to "Add to List" implicitly when quantity > 0:
             results.forEach(r => {
-                if(!currentList.find(c => c.id === r.id)) currentList.push(r);
+                if(!currentList.find(c => c.id === r.id)) {
+                    // Temporarily track existence to allow main list update later
+                    // In this prototype, we don't strictly push to currentList until action taken,
+                    // but for visual sync we use shared cart state.
+                }
             });
+        }
+        
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
         }
 
         // Init
