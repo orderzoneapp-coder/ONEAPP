@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ko" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="google" content="notranslate">
+    <title>ORDERZ - NH라인 주문</title>
+    <style>
+        /* --- Reset & Base Styles --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: #f5f5f5; 
+            display: flex; 
+            justify-content: center; 
+            min-height: 100vh; 
+            color: #222; 
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            overflow: hidden;
+        }
+        
+        /* --- Mobile Container Layout --- */
+        .app-container {
+            width: 100%; max-width: 480px; background-color: #fff; position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; height: 100vh;
+        }
+
+        /* --- Colors & Vars --- */
+        :root { 
+            /* 요청하신 맑은 녹색 적용 */
+            --primary: #1faa5e;       
+            --primary-dark: #179c54;  /* 버튼 클릭 시 살짝 어두워지는 색 */
+            
+            --text-main: #111111;
+            --text-sub: #767676;
+            --border: #ececec;
+            --bg-base: #fff;
+            --bg-gray: #f8f9fa;
+            --nav-height: 56px;
+            --footer-height: 70px;
+        }
+
+        /* --- Icons (SVG) --- */
+        .icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* --- Header (유통사명: NH라인) --- */
+        header { 
+            height: 56px; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; 
+            background: #fff; z-index: 10; border-bottom: 1px solid var(--border);
+            position: relative; 
+        }
+        
+        .header-menu-btn, .header-btn { 
+            background: none; border: none; padding: 8px; cursor: pointer; color: #222; 
+            display: flex; align-items: center; justify-content: center; 
+            margin: 0 -8px; 
+        }
+
+        .header-center-title { 
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); 
+            font-size: 17px; font-weight: 700; color: var(--text-main); 
+            letter-spacing: -0.5px;
+        }
+
+        /* --- Tabs --- */
+        .tab-bar { display: flex; background: #fff; border-bottom: 1px solid var(--border); height: 48px; flex-shrink: 0; }
+        .tab { 
+            flex: 1; display: flex; align-items: center; justify-content: center; 
+            font-size: 15px; color: #888; cursor: pointer; font-weight: 500; 
+            transition: all 0.2s; position: relative; letter-spacing: -0.3px;
+        }
+        /* 활성화된 탭: 맑은 녹색 적용 */
+        .tab.active { color: var(--primary); font-weight: 700; }
+        .tab.active::after { 
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; 
+            background: var(--primary); 
+        }
+
+        /* --- Content Area --- */
+        .content-scroll { 
+            flex: 1; overflow-y: auto; background: #fff; 
+            padding-bottom: calc(var(--nav-height) + var(--footer-height)); 
+        }
+        
+        /* Viewer Sort Bar */
+        .viewer-sort-bar {
+            padding: 14px 16px; background: #fff; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .sort-bar-right { display: flex; align-items: center; gap: 8px; }
+
+        .list-count-info { font-size: 14px; font-weight: 700; color: #222; }
+
+        .viewer-sort-toggle {
+            display: inline-flex; background: #f2f4f6; border-radius: 6px; padding: 2px;
+        }
+        .v-sort-btn {
+            padding: 5px 10px; font-size: 12px; font-weight: 500; color: #888; 
+            border-radius: 4px; border: none; background: transparent; cursor: pointer;
+        }
+        .v-sort-btn.active {
+            background: #fff; color: #222; font-weight: 700; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .v-edit-btn {
+            display: flex; align-items: center; justify-content: center;
+            background: transparent; border: none; padding: 4px; 
+            cursor: pointer; color: #666; font-size: 13px; font-weight: 500;
+        }
+        .v-edit-btn span { margin-left: 2px; }
+
+        /* --- Product List Item --- */
+        .product-item { 
+            display: flex; padding: 20px 16px; 
+            border-bottom: 1px solid #f0f0f0; 
+            align-items: flex-start; 
+            background: #fff; 
+        }
+        
+        .prod-img { 
+            width: 72px; height: 72px; 
+            background: #f8f9fa; border: 1px solid #eee; border-radius: 8px; 
+            margin-right: 16px; display: flex; align-items: center; justify-content: center; 
+            font-size: 32px; flex-shrink: 0; 
+        }
+
+        .prod-info { flex: 1; min-width: 0; display: flex; flex-direction: column; padding-top: 2px; }
+        
+        .prod-name { 
+            font-size: 16px; font-weight: 600; color: #111; 
+            margin-bottom: 4px; line-height: 1.35; 
+            overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+            letter-spacing: -0.5px;
+        }
+        
+        .prod-unit { 
+            font-size: 12px; color: #999; margin-bottom: 8px; font-weight: 500; letter-spacing: 0;
+            text-transform: uppercase; 
+        }
+        
+        .prod-bottom { display: flex; align-items: flex-end; justify-content: space-between; margin-top: auto; }
+        .prod-price { font-size: 17px; font-weight: 800; color: #111; letter-spacing: -0.5px; }
+
+        .prod-tag { 
+            font-size: 11px; color: #f04452; background: #fff0f1; 
+            padding: 2px 5px; border-radius: 3px; margin-right: 4px; 
+            font-weight: 600; vertical-align: middle;
+        }
+
+        /* --- Quantity Control --- */
+        .qty-control { 
+            display: flex; align-items: center; 
+            border: 1px solid #e0e0e0; border-radius: 4px; 
+            height: 30px; background: #fff; 
+            margin-left: 12px; align-self: center; 
+        }
+        .qty-btn { 
+            width: 28px; height: 100%; border: none; background: #fff; 
+            cursor: pointer; display: flex; align-items: center; justify-content: center; 
+            color: #555; font-size: 16px;
+        }
+        .qty-btn:active { background-color: #f5f5f5; }
+        .qty-val { 
+            width: 32px; text-align: center; font-size: 14px; font-weight: 700; color: #111; 
+        }
+
+        /* --- Footer (Order Bar) --- */
+        .footer-bar { 
+            position: absolute; bottom: var(--nav-height); left: 0; right: 0; 
+            background: #fff; border-top: 1px solid #eee; 
+            padding: 10px 16px; display: flex; align-items: center; 
+            height: var(--footer-height); z-index: 50; 
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+        .delivery-info { margin-right: 12px; flex: 1; display:flex; flex-direction: column; justify-content: center; }
+        .delivery-label { font-size: 11px; color: #888; margin-bottom: 2px; }
+        .delivery-date { font-size: 15px; color: #111; font-weight: 700; letter-spacing: -0.5px; }
+        
+        .order-btn { 
+            background: #dcdcdc; color: #fff; border: none; 
+            padding: 0 20px; height: 46px; border-radius: 6px; 
+            font-weight: 700; font-size: 15px; cursor: not-allowed; 
+            min-width: 190px; transition: all 0.2s; letter-spacing: -0.5px;
+        }
+        /* 활성화 버튼: 맑은 녹색 적용 */
+        .order-btn.active { 
+            background: var(--primary); 
+            cursor: pointer; 
+            box-shadow: 0 4px 12px rgba(31, 170, 94, 0.25); /* 녹색 그림자 */
+        } 
+        .order-btn.active:active { background: var(--primary-dark); }
+
+        /* --- Bottom Navigation (브랜드: ORDERZ) --- */
+        .bottom-nav { 
+            position: absolute; bottom: 0; left: 0; width: 100%; height: var(--nav-height); 
+            background: #fff; border-top: 1px solid #eee; 
+            display: flex; justify-content: space-around; align-items: center; 
+            z-index: 3000; padding-bottom: env(safe-area-inset-bottom); 
+        }
+        .nav-item { 
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            height: 100%; color: #ccc; cursor: pointer; background: none; border: none; padding-top: 4px; 
+        }
+        .nav-item.active { color: #222; }
+        
+        .nav-icon svg { width: 22px; height: 22px; stroke-width: 1.8; }
+        .nav-label { font-size: 10px; font-weight: 600; margin-top: 4px; letter-spacing: -0.3px; }
+
+        /* ORDERZ 로고: 맑은 녹색 적용 */
+        .nav-logo-svg { width: 62px !important; height: auto !important; fill: var(--primary); } 
+
+        /* --- UNIFIED SEARCH MODAL --- */
+        .search-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #fff; z-index: 2000; 
+            display: flex; flex-direction: column; 
+            transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .search-modal.open { transform: translateY(0); }
+
+        .search-header {
+            height: 60px; padding: 0 16px; display: flex; align-items: center;
+            border-bottom: 1px solid #f2f4f6; flex-shrink: 0;
+        }
+        .search-back-btn { background: none; border: none; padding: 10px; margin-left: -10px; cursor: pointer; color: #222; }
+        
+        .search-input-wrap {
+            flex: 1; height: 40px; background: #f5f5f5; border-radius: 6px; 
+            display: flex; align-items: center; padding: 0 12px; margin-left: 8px;
+        }
+        .search-input-wrap input {
+            flex: 1; border: none; background: transparent; font-size: 15px; 
+            outline: none; margin-left: 8px; color: #222; font-weight: 500;
+        }
+
+        .search-body { flex: 1; overflow-y: auto; position: relative; padding-bottom: var(--nav-height); }
+
+        .discovery-view { padding: 24px 0; }
+        .discovery-title { font-size: 15px; font-weight: 700; color: #111; margin: 0 16px 14px; letter-spacing: -0.5px; }
+
+        /* Categories */
+        .category-scroll {
+            display: flex; overflow-x: auto; padding: 0 16px 10px; gap: 8px; scrollbar-width: none;
+        }
+        .category-scroll::-webkit-scrollbar { display: none; }
+        .cat-chip {
+            flex-shrink: 0; padding: 9px 16px; background: #fff; border: 1px solid #eee; 
+            border-radius: 20px; font-size: 14px; font-weight: 500; color: #444; 
+            display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+        }
+        .cat-chip:active { background: #f8f9fa; border-color: #ddd; }
+
+        /* Banners */
+        .banner-list { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
+        .mini-banner {
+            width: 100%; height: 74px; border-radius: 12px; background-color: #f0f0f0; 
+            display: flex; align-items: center; padding: 0 20px; overflow: hidden; position: relative;
+        }
+        .mini-banner-text { z-index: 1; font-weight: 700; color: #333; font-size: 15px; letter-spacing: -0.5px; }
+        .mini-banner-bg { position: absolute; right: -10px; bottom: -15px; font-size: 64px; opacity: 0.15; }
+
+        /* Search Results */
+        .search-result-view { display: none; padding-bottom: 40px; }
+        .empty-result-msg { padding: 60px 20px; text-align: center; color: #aaa; font-size: 14px; }
+        
+        .global-search-trigger {
+            margin: 10px 16px 30px; padding: 14px; 
+            background: #fff; border: 1px solid var(--primary); border-radius: 8px;
+            color: var(--primary); font-weight: 700; font-size: 14px; text-align: center;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        .global-divider {
+            display: flex; align-items: center; margin: 20px 16px 10px; color: #999; font-size: 12px; font-weight: 500;
+        }
+        .global-divider::before, .global-divider::after {
+            content: ''; flex: 1; height: 1px; background: #eee;
+        }
+        .global-divider span { padding: 0 10px; }
+
+        /* Editor Modal */
+        .editor-modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #fff; z-index: 2000; transform: translateY(100%); transition: transform 0.3s; 
+            display:flex; flex-direction:column;
+        }
+        .editor-modal.open { transform: translateY(0); }
+        .editor-header { 
+            height: 56px; border-bottom:1px solid #eee; display:flex; align-items:center; 
+            justify-content:center; font-weight:700; font-size: 17px; position:relative; color: #222;
+        }
+        .editor-close { position:absolute; right:16px; background:none; border:none; font-size:14px; color:#555; padding: 8px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <button class="header-menu-btn" onclick="alert('전체 메뉴')">
+                <svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <div class="header-center-title">NH라인</div>
+            <button class="header-btn" onclick="alert('마이페이지')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </button>
+        </header>
+
+        <div class="tab-bar">
+            <div class="tab" onclick="switchTab('special')" id="tab-special">단골특가</div>
+            <div class="tab active" onclick="switchTab('list1')" id="tab-list1">LIST 1</div>
+            <div class="tab" onclick="switchTab('list2')" id="tab-list2">LIST 2</div>
+            <div class="tab" onclick="switchTab('list3')" id="tab-list3">LIST 3</div>
+        </div>
+
+        <div class="viewer-sort-bar" id="viewerSortBar">
+            <span class="list-count-info" id="listCount">전체 (0)</span>
+            
+            <div class="sort-bar-right">
+                <div class="viewer-sort-toggle">
+                    <button class="v-sort-btn" id="v-sort-latest" onclick="switchViewerSort('latest')">최신순</button>
+                    <button class="v-sort-btn active" id="v-sort-custom" onclick="switchViewerSort('custom')">내 순서</button>
+                </div>
+                
+                <button class="v-edit-btn" onclick="openEditor()">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    <span>편집</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="content-scroll" id="scrollContainer">
+            <div id="mainProductList">
+                </div>
+        </div>
+
+        <div class="footer-bar">
+            <div class="delivery-info">
+                <div class="delivery-label">배송예정일</div>
+                <div class="delivery-date">10월 20일 (월)</div>
+            </div>
+            <button class="order-btn" id="mainOrderBtn" onclick="alert('주문서 확인')">주문할 상품을 담아주세요</button>
+        </div>
+
+        <nav class="bottom-nav">
+            <button class="nav-item" id="nav-btn-search" onclick="openSearchModal()">
+                <div class="nav-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                <div class="nav-label">검색</div>
+            </button>
+            
+            <button class="nav-item brand-active" id="nav-btn-order" onclick="handleOrderTabClick()">
+                <div class="nav-icon" style="height: 100%; display: flex; align-items: center;">
+                    <svg class="nav-logo-svg" viewBox="0 0 60 20">
+                        <text x="50%" y="15" font-family="Arial, sans-serif" font-weight="900" font-size="14" fill="currentColor" text-anchor="middle" letter-spacing="-1">ORDERZ</text>
+                    </svg>
+                </div>
+            </button>
+            
+            <button class="nav-item" id="nav-btn-inquiry" onclick="alert('문의하기')">
+                <div class="nav-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="nav-label">문의</div>
+            </button>
+        </nav>
+    </div>
+
+    <div class="search-modal" id="searchModal">
+        <div class="search-header">
+            <button class="search-back-btn" onclick="closeSearchModal()">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <div class="search-input-wrap">
+                <svg class="icon" style="width:18px; color:#999;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="searchInput" placeholder="상품명, 브랜드를 검색해보세요" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="search-body">
+            <div class="discovery-view" id="discoveryView">
+                <div class="discovery-title">카테고리로 찾기</div>
+                <div class="category-scroll">
+                    <div class="cat-chip" onclick="alert('전체 카테고리 이동')">📦 전체</div>
+                    <div class="cat-chip" onclick="alert('농산 이동')">🥦 농산</div>
+                    <div class="cat-chip" onclick="alert('수산 이동')">🐟 수산</div>
+                    <div class="cat-chip" onclick="alert('축산 이동')">🥩 축산</div>
+                    <div class="cat-chip" onclick="alert('가공 이동')">🥫 가공</div>
+                    <div class="cat-chip" onclick="alert('냉동 이동')">🧊 냉동</div>
+                </div>
+
+                <div style="height:20px;"></div> <div class="discovery-title">진행 중인 행사</div>
+                <div class="banner-list">
+                    <div class="mini-banner" style="background:#e0f7fa;">
+                        <span class="mini-banner-text">🔥 사장님 베스트 상품</span>
+                        <div class="mini-banner-bg">🏆</div>
+                    </div>
+                    <div class="mini-banner" style="background:#fff3e0;">
+                        <span class="mini-banner-text">⏰ 유통기한 임박! 최대 80%</span>
+                        <div class="mini-banner-bg">⚡</div>
+                    </div>
+                    <div class="mini-banner" style="background:#f3e5f5;">
+                        <span class="mini-banner-text">🆕 신규 입점 브랜드 모음</span>
+                        <div class="mini-banner-bg">✨</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-result-view" id="searchResultView">
+                <div id="localResultContainer">
+                    </div>
+                
+                <div id="globalTriggerArea" style="display:none;">
+                    <button class="global-search-trigger" onclick="executeGlobalSearch()">
+                        <svg class="icon" style="width:16px;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        전체 상품에서 '<span id="queryText"></span>' 검색하기
+                    </button>
+                </div>
+
+                <div id="globalResultContainer" style="display:none;">
+                    <div class="global-divider">
+                        <span>전체 상품 검색 결과</span>
+                    </div>
+                    <div id="globalList"></div>
+                    <button class="global-search-trigger" style="background:#f9f9f9; border-color:#eee; color:#666; margin-top:0;" onclick="alert('더보기 API 호출 (offset+30)')">
+                        검색 결과 더보기 ∨
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="editor-modal" id="editorModal">
+        <div class="editor-header">
+            편집하기
+            <button class="editor-close" onclick="closeEditor()">닫기</button>
+        </div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center; color:#999; font-size:14px;">
+            편집 기능 화면
+        </div>
+    </div>
+
+    <script>
+        // --- Data Mockup ---
+        const productsData = {
+            'special': [
+                { id: 1001, name: "[특가] 다부리 배추 4포기 BOX", unit: "BOX", price: 12500, img: "🥬", tag: "단골특가" },
+                { id: 1002, name: "[특가] 햇감자 10kg BOX", unit: "BOX", price: 18000, img: "🥔", tag: "한정수량" },
+            ],
+            'list1': [
+                { id: 1, name: "양배추(대) 42망(3입) BOX", unit: "BOX", price: 10900, img: "🥦", tag: null },
+                { id: 2, name: "양파 왕 20kg망 BOX", unit: "BOX", price: 22000, img: "🧅", tag: null },
+                { id: 3, name: "깐양파 10kg BOX", unit: "BOX", price: 20500, img: "🧅", tag: null },
+                { id: 4, name: "대파 (단) EA", unit: "EA", price: 3200, img: "🎋", tag: "추천" },
+            ],
+            'list2': [
+                { id: 2001, name: "사과(부사) 10kg 32과", unit: "BOX", price: 42000, img: "🍎", tag: "신선" },
+                { id: 2002, name: "신고 배 7.5kg 10과", unit: "BOX", price: 38000, img: "🍐", tag: null },
+            ],
+            'list3': [
+                { id: 3001, name: "CJ 햇반 210g x 24", unit: "BOX", price: 21900, img: "🍚", tag: null },
+            ]
+        };
+
+        const globalDatabase = [
+            { id: 9101, name: "무우 특박스 10입 BOX", unit: "BOX", price: 22800, img: "📦", tag: "행사" },
+            { id: 9102, name: "무우 상박스 BOX", unit: "BOX", price: 17000, img: "📦", tag: null },
+            { id: 9103, name: "무우 (낱개)", unit: "EA", price: 2800, img: "🥣", tag: null },
+        ];
+
+        let currentTab = 'list1';
+        let currentList = []; 
+        let cart = {}; 
+        let currentSearchQuery = '';
+
+        // --- Elements ---
+        const mainListEl = document.getElementById('mainProductList');
+        const listCountEl = document.getElementById('listCount');
+        const orderBtn = document.getElementById('mainOrderBtn');
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const discoveryView = document.getElementById('discoveryView');
+        const searchResultView = document.getElementById('searchResultView');
+        const localResultContainer = document.getElementById('localResultContainer');
+        const globalTriggerArea = document.getElementById('globalTriggerArea');
+        const queryTextEl = document.getElementById('queryText');
+        const globalResultContainer = document.getElementById('globalResultContainer');
+        const globalListEl = document.getElementById('globalList');
+
+        // --- Init ---
+        function init() {
+            currentList = productsData['list1'];
+            renderMainList();
+        }
+
+        // --- Core Functions ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            
+            currentTab = tabName;
+            currentList = productsData[tabName] || [];
+            
+            // UI Reset
+            document.getElementById('viewerSortBar').style.display = (tabName === 'special') ? 'none' : 'flex';
+            renderMainList();
+        }
+
+        function renderMainList() {
+            renderProductList(currentList, mainListEl);
+            listCountEl.innerText = `전체 (${currentList.length})`;
+        }
+
+        function renderProductList(items, container) {
+            container.innerHTML = '';
+            if(items.length === 0) {
+                container.innerHTML = `<div style="padding:40px; text-align:center; color:#ccc; font-size:14px;">상품이 없습니다.</div>`;
+                return;
+            }
+            items.forEach(item => {
+                const qty = cart[item.id] || 0;
+                const div = document.createElement('div');
+                div.className = 'product-item';
+                div.innerHTML = `
+                    <div class="prod-img">${item.img}</div>
+                    <div class="prod-info">
+                        <div class="prod-name">
+                             ${item.tag ? `<span class="prod-tag">${item.tag}</span>` : ''} 
+                             ${item.name}
+                        </div>
+                        <div class="prod-unit">${item.unit}</div>
+                        <div class="prod-bottom">
+                            <div class="prod-price">${item.price.toLocaleString()}원</div>
+                        </div>
+                    </div>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
+                        <div class="qty-val" id="qty-${item.id}">${qty}</div>
+                        <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateQty(id, delta) {
+            if(!cart[id]) cart[id] = 0;
+            cart[id] += delta;
+            if(cart[id] < 0) cart[id] = 0;
+            
+            // Update all rendered instances of this product (Main list + Search list)
+            const qtyEls = document.querySelectorAll(`[id^="qty-${id}"]`);
+            qtyEls.forEach(el => el.innerText = cart[id]);
+            
+            updateOrderButton();
+        }
+
+        function updateOrderButton() {
+            let totalCount = 0;
+            Object.values(cart).forEach(qty => { if(qty > 0) totalCount++; });
+            if (totalCount > 0) {
+                orderBtn.classList.add('active');
+                orderBtn.innerHTML = `(${totalCount}) 담은상품 확인하기`;
+            } else {
+                orderBtn.classList.remove('active');
+                orderBtn.innerText = '주문할 상품을 담아주세요';
+            }
+        }
+
+        // --- SEARCH LOGIC (Updated) ---
+
+        function openSearchModal() {
+            searchModal.classList.add('open');
+            searchInput.value = '';
+            toggleSearchState(false); // Show Discovery View
+            
+            // Update Tab Active State
+            document.getElementById('nav-btn-order').classList.remove('brand-active');
+            document.getElementById('nav-btn-search').classList.add('active');
+
+            // Auto Focus Logic (Simulated)
+            setTimeout(() => {
+                searchInput.focus();
+            }, 300);
+        }
+
+        function closeSearchModal() {
+            searchModal.classList.remove('open');
+            searchInput.blur();
+            
+            // Update Tab Active State
+            document.getElementById('nav-btn-search').classList.remove('active');
+            document.getElementById('nav-btn-order').classList.add('brand-active');
+
+            // Refresh main list in case items were added via global search
+            renderMainList();
+        }
+
+        // NEW: Smart Handler for Order Tab
+        function handleOrderTabClick() {
+            // Only if search modal is open, we close it and refresh (to sync data)
+            if (searchModal.classList.contains('open')) {
+                closeSearchModal();
+            } 
+            // If already on the main screen (modal closed), do NOTHING.
+            // This prevents screen flashing or scroll reset.
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            currentSearchQuery = val;
+            if(val.length > 0) {
+                toggleSearchState(true);
+                doLocalSearch(val);
+            } else {
+                toggleSearchState(false);
+            }
+        });
+
+        function toggleSearchState(isTyping) {
+            if(isTyping) {
+                discoveryView.style.display = 'none';
+                searchResultView.style.display = 'block';
+            } else {
+                discoveryView.style.display = 'block';
+                searchResultView.style.display = 'none';
+                localResultContainer.innerHTML = '';
+                globalResultContainer.style.display = 'none';
+                globalTriggerArea.style.display = 'none';
+            }
+        }
+
+        function doLocalSearch(query) {
+            // Filter current tab list
+            const filtered = currentList.filter(p => p.name.includes(query));
+            
+            if(filtered.length > 0) {
+                renderProductList(filtered, localResultContainer);
+            } else {
+                localResultContainer.innerHTML = `<div class="empty-result-msg">리스트에 검색 결과가 없습니다.</div>`;
+            }
+
+            // Show Global Search Trigger
+            queryTextEl.innerText = query;
+            globalTriggerArea.style.display = 'block';
+            globalResultContainer.style.display = 'none'; // Hide previous global results until clicked
+        }
+
+        function executeGlobalSearch() {
+            // Mock API Call
+            globalTriggerArea.style.display = 'none'; // Hide trigger button
+            globalResultContainer.style.display = 'block'; // Show result area
+            
+            const results = globalDatabase.filter(p => p.name.includes(currentSearchQuery));
+            
+            if(results.length > 0) {
+                renderProductList(results, globalListEl);
+                
+                // Add found global items to current list for persistence (Mock logic)
+                results.forEach(gItem => {
+                   if(!currentList.find(c => c.id === gItem.id)) {
+                       currentList.push(gItem); // Add to local list state
+                   }
+                });
+            } else {
+                globalListEl.innerHTML = `<div class="empty-result-msg">전체 상품에도 결과가 없습니다.</div>`;
+            }
+        }
+
+        // --- Editor ---
+        const editorModal = document.getElementById('editorModal');
+        function openEditor() { editorModal.classList.add('open'); }
+        function closeEditor() { editorModal.classList.remove('open'); }
+
+        // Start
+        init();
+
+    </script>
+</body>
+</html>
