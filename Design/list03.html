@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>리스트 관리 시뮬레이션</title>
+    <style>
+        /* --- Base & Reset --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: #f5f5f5; 
+            display: flex; justify-content: center; 
+            height: 100vh; color: #222; 
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; 
+            overflow: hidden;
+        }
+
+        /* --- App Container (Standalone Editor) --- */
+        .app-container {
+            width: 100%; max-width: 480px; background-color: #fff;
+            position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; height: 100%;
+        }
+
+        /* --- Colors --- */
+        :root { --primary: #1faa5e; --border: #ececec; --bg-gray: #f8f9fa; }
+
+        /* --- Header --- */
+        .editor-header {
+            height: 56px; border-bottom: 1px solid #eee; display: flex;
+            align-items: center; justify-content: center;
+            font-weight: 700; font-size: 17px; color: #222; flex-shrink: 0;
+        }
+
+        /* --- Top Control Area --- */
+        .editor-top-area { background: #fff; z-index: 10; flex-shrink: 0; }
+        .editor-sort-bar {
+            display: flex; height: 50px; padding: 0 16px;
+            background: #fff; border-bottom: 1px solid #eee;
+            align-items: center; justify-content: flex-end; gap: 12px;
+        }
+        .sort-left { margin-right: auto; }
+
+        /* View Toggle (Category vs Manual) */
+        .editor-view-toggle-group {
+            display: flex; align-items: center; background: #f0f2f5;
+            border-radius: 8px; padding: 2px;
+        }
+        .ev-btn {
+            border: none; background: transparent;
+            font-size: 12px; font-weight: 500; color: #888;
+            padding: 6px 12px; cursor: pointer; border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .ev-btn.active {
+            background: #fff; color: #111; font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        /* Column Headers */
+        .sort-right-headers {
+            display: grid; grid-template-columns: 50px 50px 50px 32px;
+            gap: 4px; text-align: center;
+        }
+        .col-header-lbl {
+            width: 100%; height: 34px; display: flex; align-items: center;
+            justify-content: center; font-size: 11px; font-weight: 800;
+            color: #888; user-select: none;
+        }
+
+        /* --- List Content --- */
+        .editor-content-scroll { flex: 1; overflow-y: auto; background: #fff; }
+
+        /* Section Header (List Name or Category) */
+        .editor-section-header {
+            background-color: #f1f3f5; color: #555;
+            font-size: 12px; font-weight: 800; padding: 8px 16px;
+            border-bottom: 1px solid #eee; border-top: 1px solid #eee;
+            margin-top: -1px; display: flex; align-items: center;
+            position: sticky; top: 0; z-index: 5;
+        }
+        .editor-section-header.category-header {
+            background-color: #fff; font-size: 13px; color: #333;
+        }
+        .editor-section-header.category-header::before {
+            content: ''; display: inline-block; width: 4px; height: 12px;
+            background: var(--primary); margin-right: 8px; border-radius: 2px;
+        }
+
+        /* Row Item */
+        .editor-row {
+            display: grid; grid-template-columns: 32px 1fr 50px 50px 50px 32px;
+            gap: 4px; padding: 10px; border-bottom: 1px solid #f2f4f6;
+            background: #fff; align-items: center;
+        }
+        .editor-row.is-new { background: #fffce0; }
+
+        /* Delete Button */
+        .editor-del-btn {
+            width: 100%; height: 100%; display: flex; align-items: center;
+            justify-content: center; color: #ccc; cursor: pointer;
+        }
+        .editor-del-btn:hover { color: #f04452; }
+
+        /* Product Name Area */
+        .editor-name-area {
+            font-size: 13px; font-weight: 600; color: #333;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            padding: 0 4px; display: flex; flex-direction: column; justify-content: center;
+        }
+        .editor-cat-sub { font-size: 10px; color: #999; font-weight: 400; margin-top: 2px; }
+        .new-badge {
+            font-size: 9px; color: #fff; background: #f04452;
+            padding: 1px 3px; border-radius: 3px; margin-right: 4px;
+            vertical-align: middle; display: inline-block;
+        }
+
+        /* Inputs & Move Buttons */
+        .editor-input {
+            width: 100%; height: 36px; border: 1px solid #e0e0e0;
+            border-radius: 6px; text-align: center; font-size: 15px;
+            font-weight: 700; color: #333; outline: none; padding: 0;
+            background: #fff; transition: all 0.2s;
+        }
+        .editor-input.active-input {
+            border-color: var(--primary); color: var(--primary); background: #f0fdf4;
+        }
+        .editor-input:focus { border-color: var(--primary); background: #f0fdf4; }
+
+        /* Move Button (when item is not in this list) */
+        .editor-move-btn {
+            width: 100%; height: 36px; border: 1px dashed #e0e0e0;
+            border-radius: 6px; margin: 0 auto; background: #fafafa;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            color: #ccc; transition: all 0.2s;
+        }
+        .editor-move-btn:active { background: #eee; }
+        
+        .editor-drag-handle { color: #ccc; cursor: grab; display: flex; justify-content: center; }
+
+        /* --- Bottom Bar --- */
+        .editor-bottom-bar {
+            height: 60px; display: flex; padding: 8px 16px; gap: 10px;
+            background: #fff; border-top: 1px solid #eee; flex-shrink: 0;
+        }
+        .editor-btn-cancel {
+            flex: 1; border: 1px solid #d1d6db; background: #fff;
+            color: #333; border-radius: 8px; font-weight: 600; cursor: pointer;
+        }
+        .editor-btn-save {
+            flex: 1; border: none; background: #333;
+            color: #fff; border-radius: 8px; font-weight: 600; cursor: pointer;
+        }
+
+        /* Toast */
+        .toast-msg {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.85); color: white; padding: 14px 24px;
+            border-radius: 30px; font-size: 14px; z-index: 3000;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
+        }
+        .toast-msg.show { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="editor-header">리스트 관리</div>
+        
+        <div class="editor-top-area">
+            <div class="editor-sort-bar">
+                <div class="sort-left">
+                    <div class="editor-view-toggle-group">
+                        <button class="ev-btn" id="ev-btn-category" onclick="setEditorViewMode('category')">카테고리</button>
+                        <button class="ev-btn active" id="ev-btn-manual" onclick="setEditorViewMode('manual')">내 순서</button>
+                    </div>
+                </div>
+                <div class="sort-right-headers">
+                    <div class="col-header-lbl">L1</div>
+                    <div class="col-header-lbl">L2</div>
+                    <div class="col-header-lbl">L3</div>
+                    <span></span> </div>
+            </div>
+        </div>
+
+        <div class="editor-content-scroll" id="editorList"></div>
+
+        <div class="editor-bottom-bar">
+            <button class="editor-btn-cancel" onclick="alert('취소되었습니다.')">취소</button>
+            <button class="editor-btn-save" onclick="saveSort()">저장하기</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Mock Data: Initial State ---
+        // 원래는 userSortData와 productsData가 분리되어 있지만, 시뮬레이션을 위해 합쳐서 초기화합니다.
+        let allEditorItems = [
+            // List 1 Items
+            { id: 1, name: "양배추(대) 3입", category: "채소/과일", tempListId: 'list1', tempOrder: 1, isNew: false },
+            { id: 2, name: "양파 왕 20kg", category: "채소/과일", tempListId: 'list1', tempOrder: 2, isNew: false },
+            { id: 3, name: "CJ 햇반 210g", category: "가공식품", tempListId: 'list1', tempOrder: null, isNew: true }, // 신규 상품 (순서 없음)
+            
+            // List 2 Items
+            { id: 4, name: "사과(부사) 10kg", category: "채소/과일", tempListId: 'list2', tempOrder: 1, isNew: false },
+            { id: 5, name: "바나나 13kg", category: "채소/과일", tempListId: 'list2', tempOrder: null, isNew: false },
+
+            // List 3 Items
+            { id: 6, name: "신라면 30입", category: "가공식품", tempListId: 'list3', tempOrder: 1, isNew: false },
+            { id: 7, name: "곰표 밀가루 20kg", category: "가공식품", tempListId: 'list3', tempOrder: 2, isNew: false },
+        ];
+
+        let editorSortMode = 'manual'; // 'category' or 'manual'
+
+        // --- Logic: Rendering ---
+        function renderEditorList() {
+            const listEl = document.getElementById('editorList');
+            listEl.innerHTML = '';
+            
+            // 1. Sort Logic
+            // 리스트별 그룹핑 -> (카테고리 or 사용자 지정 순서) 정렬
+            let visibleItems = [...allEditorItems];
+            const isCategoryMode = (editorSortMode === 'category');
+
+            visibleItems.sort((a, b) => {
+                // Primary: List ID Grouping (L1 -> L2 -> L3)
+                if (a.tempListId !== b.tempListId) {
+                    return a.tempListId.localeCompare(b.tempListId);
+                }
+                // Secondary: Internal Sort
+                if (isCategoryMode) {
+                    const catA = a.category || "기타";
+                    const catB = b.category || "기타";
+                    if (catA !== catB) return catA.localeCompare(catB);
+                    return a.name.localeCompare(b.name);
+                } else {
+                    // Manual Order Priority: New > Order Number > Name
+                    const aIsNew = a.isNew; 
+                    const bIsNew = b.isNew;
+                    if (aIsNew && !bIsNew) return -1; // New items float top
+                    if (!aIsNew && bIsNew) return 1;
+
+                    const orderA = (a.tempOrder === null || a.tempOrder === '') ? Infinity : parseInt(a.tempOrder);
+                    const orderB = (b.tempOrder === null || b.tempOrder === '') ? Infinity : parseInt(b.tempOrder);
+
+                    if (orderA !== orderB) return orderA - orderB;
+                    return a.name.localeCompare(b.name);
+                }
+            });
+
+            let lastListId = null;
+            let lastCategory = null;
+
+            visibleItems.forEach((item) => {
+                // Render List Headers (L1, L2, L3)
+                if (item.tempListId !== lastListId) {
+                    const listHeader = document.createElement('div');
+                    listHeader.className = 'editor-section-header';
+                    const listNameMap = {'list1': 'LIST 1', 'list2': 'LIST 2', 'list3': 'LIST 3'};
+                    listHeader.innerText = listNameMap[item.tempListId] || item.tempListId;
+                    listEl.appendChild(listHeader);
+                    
+                    lastListId = item.tempListId;
+                    lastCategory = null; 
+                }
+
+                // Render Category Headers (Only in Category Mode)
+                if (isCategoryMode) {
+                    const currentCategory = item.category || "기타";
+                    if (currentCategory !== lastCategory) {
+                        const headerDiv = document.createElement('div');
+                        headerDiv.className = 'editor-section-header category-header';
+                        headerDiv.innerText = currentCategory;
+                        listEl.appendChild(headerDiv);
+                        lastCategory = currentCategory;
+                    }
+                }
+
+                // Render Item Row
+                const row = document.createElement('div');
+                row.className = `editor-row ${item.isNew ? 'is-new' : ''}`;
+                
+                // --- Slot Logic: Draw Input or Move Button ---
+                const renderSlot = (targetListId) => {
+                    // 카테고리 모드에서는 수정 불가 (비활성화 처리)
+                    if(isCategoryMode) return `<div class="editor-move-btn" style="opacity:0.3; cursor:default;">-</div>`;
+
+                    if (item.tempListId === targetListId) {
+                        // Current List: Show Number Input
+                        const displayVal = (item.tempOrder === Infinity || item.tempOrder === null) ? '' : item.tempOrder;
+                        return `<input type="number" class="editor-input active-input" value="${displayVal}" 
+                                onfocus="this.select()" 
+                                onchange="updateEditorOrder(${item.id}, this.value)">`;
+                    } else {
+                        // Other List: Show Move Button
+                        return `<div class="editor-move-btn" onclick="moveItemList(${item.id}, '${targetListId}')">
+                                    <svg style="width:18px; height:18px; color:#ccc;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>`;
+                    }
+                };
+
+                const delOnclick = `onclick="deleteEditorItem(${item.id})"`;
+
+                row.innerHTML = `
+                    <div class="editor-del-btn" ${delOnclick}>
+                        <svg style="width:20px; height:20px; stroke-width:2;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </div>
+                    <div class="editor-name-area">
+                        <span>${item.isNew ? '<span class="new-badge">NEW</span>' : ''}${item.name}</span>
+                        <div class="editor-cat-sub">${item.category}</div>
+                    </div>
+                    <div>${renderSlot('list1')}</div>
+                    <div>${renderSlot('list2')}</div>
+                    <div>${renderSlot('list3')}</div>
+                    <div class="editor-drag-handle">
+                        <svg style="width:20px; height:20px; stroke-width:2;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    </div>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        // --- User Actions ---
+
+        // 1. Switch View Mode
+        function setEditorViewMode(mode) {
+            editorSortMode = mode;
+            document.querySelectorAll('.ev-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`ev-btn-${mode}`).classList.add('active');
+            renderEditorList();
+        }
+
+        // 2. Update Order Number
+        function updateEditorOrder(id, newVal) {
+            const item = allEditorItems.find(i => i.id === id);
+            if (!item) return;
+
+            if (newVal === '' || newVal === null) {
+                item.tempOrder = null;
+            } else {
+                item.tempOrder = parseInt(newVal);
+            }
+        }
+
+        // 3. Move Item to Another List
+        function moveItemList(id, targetListId) {
+            const item = allEditorItems.find(i => i.id === id);
+            if (!item) return;
+
+            item.tempListId = targetListId;
+            item.tempOrder = null; // Reset order when moving
+            item.isNew = true; // Mark as new in the destination list visually
+            
+            showToast(`${item.name} 이동 완료`);
+            renderEditorList();
+        }
+
+        // 4. Delete Item
+        function deleteEditorItem(id) {
+            if (editorSortMode === 'category') {
+                alert('카테고리 뷰에서는 삭제할 수 없습니다.');
+                return;
+            }
+            if (!confirm('리스트에서 제외하시겠습니까?')) return;
+            
+            const idx = allEditorItems.findIndex(i => i.id === id);
+            if (idx > -1) allEditorItems.splice(idx, 1);
+            renderEditorList();
+        }
+
+        // 5. Save
+        function saveSort() {
+            // In a real app, this would send data to server
+            console.log("Saved Data:", allEditorItems);
+            showToast('설정이 저장되었습니다.');
+        }
+
+        // Helper: Toast
+        function showToast(msg) {
+            let toast = document.createElement('div');
+            toast.className = 'toast-msg show';
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(()=>toast.remove(), 300); }, 2000);
+        }
+
+        // Initialize
+        renderEditorList();
+
+    </script>
+</body>
+</html>
