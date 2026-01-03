@@ -297,16 +297,29 @@
             display:flex; flex-direction:column;
         }
         .editor-modal.open { transform: translateY(0); }
+        
+        /* Row 1: Main Header (Toggles - Title - Close) */
         .editor-header { 
             height: 56px; border-bottom:1px solid #eee; display:flex; align-items:center; 
-            justify-content:center; font-weight:700; font-size: 17px; position:relative; color: #222;
+            justify-content: space-between; 
+            padding: 0 12px; 
+            font-weight:700; font-size: 17px; position:relative; color: #222;
+            background: #fff; flex-shrink: 0;
         }
-        .editor-close { position:absolute; right:16px; background:none; border:none; font-size:14px; color:#555; padding: 8px; cursor: pointer; }
         
-        .editor-top-area { flex-shrink: 0; background: #fff; z-index: 10; }
-        .editor-sort-bar { display: flex; height: 50px; padding: 0 16px; background: #fff; border-bottom: 1px solid #eee; align-items: center; justify-content: flex-end; gap: 12px; position: relative; }
-        .sort-left { display: flex; align-items: center; margin-right: auto; }
+        /* Centered Title using Absolute Positioning */
+        .editor-header-title {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            white-space: nowrap; font-size: 16px; font-weight: 800; color: #111;
+        }
 
+        .editor-close { 
+            background:none; border:none; font-size:14px; color:#555; 
+            padding: 8px; cursor: pointer; margin-right: -4px; z-index: 2;
+        }
+        
+        .editor-top-area { flex-shrink: 0; background: #fff; z-index: 10; border-bottom: 1px solid #eee; }
+        
         /* Editor View Toggle Group Styles */
         .editor-view-toggle-group {
             display: flex;
@@ -314,46 +327,84 @@
             background: #f0f2f5;
             border-radius: 8px;
             padding: 2px;
+            z-index: 2;
         }
         .ev-btn {
             border: none;
             background: transparent;
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 11px;
+            font-weight: 600;
             color: #888;
-            padding: 6px 12px;
+            padding: 6px 10px;
             cursor: pointer;
             border-radius: 6px;
             transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            white-space: nowrap;
         }
         .ev-btn.active {
             background: #fff;
             color: #111;
             font-weight: 700;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .sort-right-headers { display: grid; grid-template-columns: 50px 50px 50px 32px; gap: 4px; text-align: center; }
-        
-        /* Changed from tab-like buttons to simple labels */
-        .col-header-lbl { 
-            width: 100%; height: 34px; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 11px; font-weight: 800; color: #888; 
-            user-select: none;
+        /* Row 2: Column Headers (Table Style) */
+        .editor-header-bar { 
+            display: grid; 
+            /* Grid layout: [Left Content (1fr)] [L1] [L2] [L3] [Guide] */
+            grid-template-columns: 1fr 50px 50px 50px 32px; 
+            gap: 0; 
+            padding: 0 10px; 
+            height: 40px; /* Reduced height for cleaner look */
+            background: #fff; 
+            align-items: center; 
         }
         
+        /* Left Area (Toggles + Title) spanning remaining space */
+        .header-left-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; 
+            padding-right: 12px;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .editor-title-text {
+            font-size: 16px; font-weight: 800; color: #222;
+            white-space: nowrap;
+            margin: 0 auto; 
+        }
+
+        /* Column Header Labels - CLEAN VERSION (No BG, No Borders) */
+        .col-header-lbl { 
+            width: 100%; height: 100%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 11px; font-weight: 800; color: #888; /* Lighter text color */
+            user-select: none;
+            background-color: transparent; 
+            border: none;
+        }
+        
+        /* Guide Icon Area */
+        .header-guide-btn {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer;
+            color: #ccc;
+        }
+        .header-guide-btn svg { width: 18px; height: 18px; }
+
         .editor-content-scroll { flex:1; overflow-y:auto; }
         
         /* Editor List Header (L1, L2, L3 separator) */
         .editor-list-header {
-            background-color: #f1f3f5;
+            background-color: #f9f9f9; /* Subtle section bg */
             color: #555;
             font-size: 12px;
             font-weight: 800;
             padding: 8px 16px;
             border-bottom: 1px solid #eee;
-            border-top: 1px solid #eee;
             margin-top: -1px;
             display: flex;
             align-items: center;
@@ -383,29 +434,66 @@
             border-radius: 2px;
         }
 
-        .editor-row { display: grid; grid-template-columns: 32px 1fr 50px 50px 50px 32px; gap: 4px; padding: 10px; border-bottom: 1px solid #f2f4f6; background: #fff; align-items: center; }
+        /* Editor Row: Matches Header Grid */
+        .editor-row { 
+            display: grid; 
+            /* Grid layout: [Delete(32) + Name(1fr)] [L1(50)] [L2(50)] [L3(50)] [Drag(32)] */
+            grid-template-columns: 32px 1fr 50px 50px 50px 32px; 
+            gap: 0; 
+            padding: 0 10px; 
+            height: 56px; 
+            border-bottom: 1px solid #f2f4f6; 
+            background: #fff; 
+            align-items: center; 
+        }
         .editor-row.is-new { background: #fffce0; }
+        
         .editor-del-btn { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #ccc; cursor: pointer; }
         .editor-del-btn.disabled { opacity: 0.3; pointer-events: none; }
 
-        .editor-name-area { font-size: 13px; font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px; display: flex; flex-direction: column; justify-content: center; }
+        .editor-name-area { 
+            font-size: 13px; font-weight: 600; color: #333; 
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+            padding: 0 8px; display: flex; flex-direction: column; justify-content: center; 
+            height: 100%;
+        }
         .editor-cat-sub { font-size: 10px; color: #999; font-weight: 400; margin-top: 2px; }
+        
+        /* New Style for Editor List Slot: CLEAN VERSION (No BG, No Borders) */
+        .editor-col-slot {
+            background-color: transparent; 
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%; 
+            padding: 0 4px;
+        }
 
-        .editor-input { width: 100%; height: 36px; border: 1px solid #e0e0e0; border-radius: 6px; text-align: center; font-size: 15px; font-weight: 700; color: #333; outline: none; padding: 0; background: #fff; transition: all 0.2s; }
+        .editor-input { 
+            width: 100%; height: 32px; 
+            border: 1px solid #e0e0e0; border-radius: 6px; 
+            text-align: center; font-size: 14px; font-weight: 700; color: #333; 
+            outline: none; padding: 0; background: #fff; 
+            transition: all 0.2s; 
+        }
         .editor-input.active-input { border-color: var(--primary); color: var(--primary); background: #f0fdf4; }
         .editor-input:focus { border-color: var(--primary); background: #f0fdf4; }
-        .editor-input::-webkit-outer-spin-button, .editor-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        .editor-input[type=number] { -moz-appearance: textfield; }
         .editor-input:disabled { background: #f5f5f5; color: #aaa; border-color: #eee; }
-        .editor-input.active-input:disabled { background: #f0fdf4; opacity: 0.6; } 
         
-        .editor-move-btn { width: 100%; height: 36px; border: 1px dashed #e0e0e0; border-radius: 6px; margin: 0 auto; background: #fafafa; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ccc; transition: all 0.2s; }
+        .editor-move-btn { 
+            width: 100%; height: 32px; 
+            border: 1px dashed #e0e0e0; border-radius: 6px; 
+            margin: 0 auto; background: #fafafa; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; 
+            color: #ccc; transition: all 0.2s; 
+        }
         .editor-move-btn:active { background: #eee; }
         .editor-move-btn.active { border: 1px solid var(--primary); background: var(--primary); color: #fff !important; }
         .editor-move-btn.active svg { color: #fff !important; }
         .editor-move-btn.disabled { opacity: 0.3; pointer-events: none; background: #eee; border-style: solid; }
 
-        .editor-drag-handle { color: #ccc; cursor: grab; display: flex; align-items: center; justify-content: center; }
+        .editor-drag-handle { color: #ccc; cursor: grab; display: flex; align-items: center; justify-content: center; height: 100%; }
         .editor-drag-handle.disabled { opacity: 0.3; cursor: default; }
 
         .new-badge { font-size:9px; color:#fff; background:#f04452; padding:1px 3px; border-radius:3px; margin-right:4px; flex-shrink:0; vertical-align: middle; display: inline-block; }
@@ -504,26 +592,29 @@
 
     <!-- Editor Modal -->
     <div class="editor-modal" id="editorModal">
-        <div class="editor-header">
-            리스트 관리
-            <button class="editor-close" onclick="closeEditor()">닫기</button>
-        </div>
-        
+        <!-- Unified Header Bar -->
         <div class="editor-top-area">
-            <div class="editor-sort-bar">
-                <div class="sort-left">
+            <div class="editor-header-bar">
+                <div class="header-left-content">
                     <div class="editor-view-toggle-group">
                         <button class="ev-btn" id="ev-btn-category" onclick="setEditorViewMode('category')">분류 순</button>
                         <button class="ev-btn active" id="ev-btn-manual" onclick="setEditorViewMode('manual')">번호 순</button>
                     </div>
+                    <div class="editor-title-text">리스트 관리</div>
                 </div>
-                <div class="sort-right-headers">
-                    <!-- Replaced Tabs with static Column Labels -->
-                    <div class="col-header-lbl">L1</div>
-                    <div class="col-header-lbl">L2</div>
-                    <div class="col-header-lbl">L3</div>
-                    <span></span>
-                </div>
+                <!-- Right Columns matching list grid -->
+                <div class="col-header-lbl">L1</div>
+                <div class="col-header-lbl">L2</div>
+                <div class="col-header-lbl">L3</div>
+                
+                <!-- Guide Icon (Replaces Close) -->
+                <button class="header-guide-btn" onclick="showToast('편집 가이드 팝업')">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
             </div>
         </div>
 
@@ -924,15 +1015,15 @@
                     if (item.tempListId === targetListId) {
                         const inputClass = "editor-input active-input";
                         const displayVal = (item.tempOrder === Infinity || item.tempOrder === null) ? '' : item.tempOrder;
-                        return `<input type="number" class="${inputClass}" value="${displayVal}" ${disabledAttr} onfocus="this.select()" onchange="updateEditorOrder(${item.id}, this.value)">`;
+                        return `<div class="editor-col-slot"><input type="number" class="${inputClass}" value="${displayVal}" ${disabledAttr} onfocus="this.select()" onchange="updateEditorOrder(${item.id}, this.value)"></div>`;
                     } else {
                         // Click to move
                         const onclickAction = `onclick="moveItemList(${item.id}, '${targetListId}')"`;
-                        return `<div class="editor-move-btn" ${onclickAction}>
+                        return `<div class="editor-col-slot"><div class="editor-move-btn" ${onclickAction}>
                                     <svg style="width:18px; height:18px; color:#ccc;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
-                                </div>`;
+                                </div></div>`;
                     }
                 };
 
@@ -946,9 +1037,9 @@
                         <span>${item.isNew ? '<span class="new-badge">NEW</span>' : ''}${item.name}</span>
                         <div class="editor-cat-sub">${item.category || ''}</div>
                     </div>
-                    <div>${renderSlot('list1')}</div>
-                    <div>${renderSlot('list2')}</div>
-                    <div>${renderSlot('list3')}</div>
+                    ${renderSlot('list1')}
+                    ${renderSlot('list2')}
+                    ${renderSlot('list3')}
                     <div class="editor-drag-handle">
                         <svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                     </div>
