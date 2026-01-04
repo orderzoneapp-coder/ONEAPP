@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="google" content="notranslate">
-    <title>ORDERZ - NH라인 주문 시뮬레이션</title>
+    <title>ORDERZ - 리스트 관리 시뮬레이션</title>
     <style>
         /* --- Reset & Base Styles --- */
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -459,7 +459,6 @@
         .editor-drag-handle { 
             color: #ccc; cursor: default; display: flex; align-items: center; justify-content: center; 
             border-radius: 4px; height: 32px; 
-            /* By default hidden/disabled for Manual mode in CSS, but we override in JS/CSS logic below */
             visibility: hidden; pointer-events: none;
         }
 
@@ -485,6 +484,11 @@
         .mode-category .editor-input { display: block; } 
         /* Show List Move buttons in category mode too */
         .mode-category .editor-move-btn { display: flex; }
+
+        /* Draggable visual cues */
+        .editor-row.dragging { opacity: 0.5; background: #f0f9ff; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .editor-row.valid-target { background-color: #ecfdf5 !important; border: 1px solid #10b981 !important; transform: translateY(-2px); z-index: 10; }
+        .editor-row.invalid-target { background-color: #fef2f2 !important; border: 1px solid #ef4444 !important; opacity: 0.8; z-index: 5; }
 
         .new-badge { font-size:9px; color:#fff; background:#f04452; padding:1px 3px; border-radius:3px; margin-right:4px; flex-shrink:0; vertical-align: middle; display: inline-block; }
         
@@ -633,35 +637,49 @@
             document.body.appendChild(toast);
             setTimeout(() => { toast.classList.remove('show'); setTimeout(()=>toast.remove(), 300); }, 3000);
         }
+
+        // --- Category Sort Order Configuration ---
+        // 낮은 숫자가 먼저 나옵니다.
+        const categorySortOrder = {
+            "농산": 1,
+            "축/수산": 2,
+            "가공": 3,
+            "기타": 99
+        };
+        
+        // Helper to get sort order
+        function getCategoryOrder(catName) {
+            return categorySortOrder[catName] || 99;
+        }
         
         // --- Data Mockup (With Category) ---
         const productsData = {
             'special': [
-                { id: 1001, name: "[특가] 다부리 배추 4포기 BOX", unit: "BOX", price: 12500, img: "🥬", tag: "단골특가", category: "채소/과일" },
-                { id: 1002, name: "[특가] 햇감자 10kg BOX", unit: "BOX", price: 18000, img: "🥔", tag: "한정수량", category: "채소/과일" },
+                { id: 1001, name: "[특가] 다부리 배추 4포기 BOX", unit: "BOX", price: 12500, img: "🥬", tag: "단골특가", category: "농산" },
+                { id: 1002, name: "[특가] 햇감자 10kg BOX", unit: "BOX", price: 18000, img: "🥔", tag: "한정수량", category: "농산" },
             ],
             'list1': [
-                { id: 1, name: "양배추(대) 42망(3입) BOX", unit: "BOX", price: 10900, img: "🥦", tag: null, category: "채소/과일" },
-                { id: 2, name: "양파 왕 20kg망 BOX", unit: "BOX", price: 22000, img: "🧅", tag: null, category: "채소/과일" },
-                { id: 3, name: "깐양파 10kg BOX", unit: "BOX", price: 20500, img: "🧅", tag: null, category: "채소/과일" },
-                { id: 3001, name: "CJ 햇반 210g x 24", unit: "BOX", price: 21900, img: "🍚", tag: null, category: "가공식품" },
-                { id: 3003, name: "동원 참치 150g x 10", unit: "EA", price: 19800, img: "🐟", tag: null, category: "수산/축산" },
-                { id: 5, name: "청양고추 10kg BOX", unit: "BOX", price: 45000, img: "🌶️", tag: "매움", category: "채소/과일" },
-                { id: 6, name: "애호박 인큐 20개 BOX", unit: "BOX", price: 18500, img: "🥒", tag: null, category: "채소/과일" },
-                { id: 3004, name: "해표 식용유 1.8L EA", unit: "EA", price: 6500, img: "🌻", tag: null, category: "가공식품" },
-                { id: 9, name: "깐마늘 1kg EA", unit: "EA", price: 8500, img: "🧄", tag: null, category: "채소/과일" },
-                { id: 10, name: "적상추 4kg BOX", unit: "BOX", price: 12000, img: "🥗", tag: null, category: "채소/과일" },
-                { id: 11, name: "시금치 4kg BOX", unit: "BOX", price: 15000, img: "🥬", tag: "신선", category: "채소/과일" },
+                { id: 1, name: "양배추(대) 42망(3입) BOX", unit: "BOX", price: 10900, img: "🥦", tag: null, category: "농산" },
+                { id: 2, name: "양파 왕 20kg망 BOX", unit: "BOX", price: 22000, img: "🧅", tag: null, category: "농산" },
+                { id: 3, name: "깐양파 10kg BOX", unit: "BOX", price: 20500, img: "🧅", tag: null, category: "농산" },
+                { id: 3001, name: "CJ 햇반 210g x 24", unit: "BOX", price: 21900, img: "🍚", tag: null, category: "가공" },
+                { id: 3003, name: "동원 참치 150g x 10", unit: "EA", price: 19800, img: "🐟", tag: null, category: "축/수산" },
+                { id: 5, name: "청양고추 10kg BOX", unit: "BOX", price: 45000, img: "🌶️", tag: "매움", category: "농산" },
+                { id: 6, name: "애호박 인큐 20개 BOX", unit: "BOX", price: 18500, img: "🥒", tag: null, category: "농산" },
+                { id: 3004, name: "해표 식용유 1.8L EA", unit: "EA", price: 6500, img: "🌻", tag: null, category: "가공" },
+                { id: 9, name: "깐마늘 1kg EA", unit: "EA", price: 8500, img: "🧄", tag: null, category: "농산" },
+                { id: 10, name: "적상추 4kg BOX", unit: "BOX", price: 12000, img: "🥗", tag: null, category: "농산" },
+                { id: 11, name: "시금치 4kg BOX", unit: "BOX", price: 15000, img: "🥬", tag: "신선", category: "농산" },
             ],
             'list2': [
-                { id: 2001, name: "사과(부사) 10kg 32과", unit: "BOX", price: 42000, img: "🍎", tag: "신선", category: "채소/과일" },
-                { id: 2003, name: "제주 감귤 10kg BOX", unit: "BOX", price: 25000, img: "🍊", tag: "제철", category: "채소/과일" },
-                { id: 2004, name: "바나나 13kg BOX", unit: "BOX", price: 28000, img: "🍌", tag: null, category: "채소/과일" },
+                { id: 2001, name: "사과(부사) 10kg 32과", unit: "BOX", price: 42000, img: "🍎", tag: "신선", category: "농산" },
+                { id: 2003, name: "제주 감귤 10kg BOX", unit: "BOX", price: 25000, img: "🍊", tag: "제철", category: "농산" },
+                { id: 2004, name: "바나나 13kg BOX", unit: "BOX", price: 28000, img: "🍌", tag: null, category: "농산" },
             ],
             'list3': [
-                { id: 3002, name: "신라면 30입 BOX", unit: "BOX", price: 24500, img: "🍜", tag: null, category: "가공식품" },
-                { id: 3005, name: "곰표 밀가루 20kg", unit: "EA", price: 22000, img: "🌾", tag: null, category: "가공식품" },
-                { id: 3006, name: "백설 설탕 15kg", unit: "EA", price: 18000, img: "🧂", tag: null, category: "가공식품" },
+                { id: 3002, name: "신라면 30입 BOX", unit: "BOX", price: 24500, img: "🍜", tag: null, category: "가공" },
+                { id: 3005, name: "곰표 밀가루 20kg", unit: "EA", price: 22000, img: "🌾", tag: null, category: "가공" },
+                { id: 3006, name: "백설 설탕 15kg", unit: "EA", price: 18000, img: "🧂", tag: null, category: "가공" },
             ]
         };
 
@@ -804,7 +822,12 @@
                         displayList.sort((a, b) => {
                             const catA = a.category || "기타";
                             const catB = b.category || "기타";
-                            if (catA !== catB) return catA.localeCompare(catB);
+                            
+                            // CODE BASED SORT
+                            const orderA = getCategoryOrder(catA);
+                            const orderB = getCategoryOrder(catB);
+                            
+                            if (orderA !== orderB) return orderA - orderB;
                             
                             // Inside Category, respect Number if exists
                             return compareItems(a, b);
@@ -1006,6 +1029,113 @@
             // renderEditorList(); 
         }
 
+        // --- DRAG AND DROP LOGIC ---
+        let dragSrcEl = null;
+
+        function handleDragStart(e, id) {
+            // Manual Mode: Drag DISABLED
+            if (editorSortMode === 'manual') return false; 
+
+            dragSrcEl = e.currentTarget; 
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', id);
+            e.currentTarget.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) e.preventDefault(); 
+            
+            const targetRow = e.target.closest('.editor-row');
+            if (!targetRow || !dragSrcEl) return false;
+
+            // Visual feedback Logic
+            const srcCategory = dragSrcEl.dataset.category;
+            const targetCategory = targetRow.dataset.category;
+            
+            if (srcCategory === targetCategory) {
+                // ALLOWED (Green)
+                targetRow.classList.add('valid-target');
+                targetRow.classList.remove('invalid-target');
+                e.dataTransfer.dropEffect = 'move';
+            } else {
+                // FORBIDDEN (Red)
+                targetRow.classList.add('invalid-target');
+                targetRow.classList.remove('valid-target');
+                e.dataTransfer.dropEffect = 'none';
+            }
+            return false;
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) e.stopPropagation(); 
+            const targetRow = e.target.closest('.editor-row');
+            
+            // Clean up styles
+            if(targetRow) {
+                targetRow.classList.remove('valid-target');
+                targetRow.classList.remove('invalid-target');
+            }
+            
+            if (!targetRow || !dragSrcEl) return false;
+
+            const srcId = parseInt(e.dataTransfer.getData('text/plain'));
+            const targetId = parseInt(targetRow.dataset.id);
+
+            if (srcId === targetId) return false;
+
+            const srcIdx = allEditorItems.findIndex(i => i.id === srcId);
+            const targetIdx = allEditorItems.findIndex(i => i.id === targetId);
+            
+            if (srcIdx === -1 || targetIdx === -1) return false;
+
+            const srcItem = allEditorItems[srcIdx];
+            const targetItem = allEditorItems[targetIdx];
+
+            // Strict Check: Same Category Only
+            const catA = srcItem.category || "기타";
+            const catB = targetItem.category || "기타";
+            
+            if (catA !== catB) {
+                showToast(`'${catA}' 상품은 '${catB}' 카테고리로 이동할 수 없습니다.`);
+                return false;
+            }
+
+            // Move in Array
+            allEditorItems.splice(srcIdx, 1);
+            allEditorItems.splice(targetIdx, 0, srcItem);
+
+            // AUTO RENUMBERING (Crucial for Category Mode)
+            renumberItemsInList(srcItem.listId);
+
+            renderEditorList();
+            return false;
+        }
+
+        // Helper: Re-calculate numbers for a specific list
+        function renumberItemsInList(listId) {
+            const items = allEditorItems.filter(i => i.tempListId === listId);
+            // Assign numbers: 10, 20, 30... based on current visual array order
+            items.forEach((item, index) => {
+                item.tempOrder = (index + 1) * 10;
+            });
+        }
+
+        function handleDragLeave(e) {
+            const targetRow = e.target.closest('.editor-row');
+            if(targetRow) {
+                targetRow.classList.remove('valid-target');
+                targetRow.classList.remove('invalid-target');
+            }
+        }
+
+        function handleDragEnd(e) {
+            e.currentTarget.classList.remove('dragging');
+            document.querySelectorAll('.editor-row').forEach(row => {
+                row.classList.remove('valid-target');
+                row.classList.remove('invalid-target');
+            });
+        }
+
         function renderEditorList() {
             editorListEl.innerHTML = '';
             let visibleItems = [...allEditorItems];
@@ -1023,7 +1153,13 @@
                     // Category Mode: Category(1) -> Number(2) -> Name(3)
                     const catA = a.category || "기타";
                     const catB = b.category || "기타";
-                    if (catA !== catB) return catA.localeCompare(catB);
+                    
+                    // CODE BASED SORT
+                    const orderA = getCategoryOrder(catA);
+                    const orderB = getCategoryOrder(catB);
+                    
+                    if (orderA !== orderB) return orderA - orderB;
+                    
                     return compareEditorItems(a, b);
                 } else {
                     // Manual Mode: Number(1) -> Name(2)
@@ -1058,14 +1194,24 @@
                     }
                 }
 
+                const isDraggable = (editorSortMode === 'category');
                 const row = document.createElement('div');
                 row.className = `editor-row ${item.isNew ? 'is-new' : ''}`;
+                row.draggable = isDraggable; 
+                row.dataset.id = item.id;
+                row.dataset.category = item.category || "기타"; 
+                
+                row.ondragstart = (e) => handleDragStart(e, item.id);
+                row.ondragover = handleDragOver;
+                row.ondragleave = handleDragLeave;
+                row.ondrop = handleDrop;
+                row.ondragend = handleDragEnd;
                 
                 const renderSlot = (targetListId) => {
                     if (item.tempListId === targetListId) {
                         const inputClass = "editor-input active-input";
                         const displayVal = (item.tempOrder === Infinity || item.tempOrder === null) ? '' : item.tempOrder;
-                        // Focus trigger added
+                        
                         return `<input type="number" class="${inputClass}" value="${displayVal}" data-id="${item.id}" onfocus="handleInputFocus();this.select()" onchange="updateEditorOrder(${item.id}, this.value)">`;
                     } else {
                         const isActive = (item.tempListId === targetListId); 
