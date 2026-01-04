@@ -617,8 +617,8 @@
             <span class="list-count-info" id="listCount">총 0개</span>
             
             <div class="viewer-sort-toggle">
-                <button class="v-sort-btn" id="v-sort-latest" onclick="switchViewerSort('latest')">최신순</button>
-                <button class="v-sort-btn active" id="v-sort-custom" onclick="switchViewerSort('custom')">내 순서</button>
+                <button class="v-sort-btn active" id="v-sort-latest" onclick="switchViewerSort('latest')">최신순</button>
+                <button class="v-sort-btn" id="v-sort-custom" onclick="switchViewerSort('custom')">내 순서</button>
             </div>
             
             <button class="v-edit-btn" onclick="openEditor()">
@@ -886,7 +886,7 @@
         let currentSearchQuery = '';
         let editorActiveTab = 'list1'; 
         let editorSortMode = 'manual'; 
-        let viewerSortMode = 'custom'; 
+        let viewerSortMode = 'latest'; 
         let selectedGlobalIds = new Set(); 
 
         // --- Elements ---
@@ -970,7 +970,7 @@
             sortBar.style.display = (tabName === 'special') ? 'none' : 'grid';
             sortBar.classList.remove('scrolled-hide');
             
-            switchViewerSort('custom'); 
+            switchViewerSort('latest'); 
             document.getElementById('scrollContainer').scrollTop = 0;
         }
 
