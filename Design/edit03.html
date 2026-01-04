@@ -242,6 +242,19 @@
         .qty-btn:active { background-color: #f5f5f5; }
         .qty-val { width: 32px; text-align: center; font-size: 14px; font-weight: 700; color: #111; }
 
+        /* --- Floating Date Text --- */
+        .floating-text-date {
+            position: absolute; bottom: calc(var(--unified-bar-height) + 8px + env(safe-area-inset-bottom));
+            left: 50%; transform: translateX(-50%); z-index: 900; 
+            font-size: 13px; font-weight: 600; color: #333;
+            text-shadow: 0 1px 4px rgba(255,255,255,0.9);
+            background: transparent; padding: 4px 8px;
+            display: flex; align-items: center; gap: 4px;
+            cursor: pointer; transition: opacity 0.3s;
+        }
+        .floating-text-date:active { opacity: 0.7; }
+        .floating-text-date svg { width: 12px; height: 12px; stroke-width: 2.5; color: #666; }
+
         /* --- Unified Bottom Bar --- */
         .unified-bottom-bar {
             position: absolute; bottom: 0; left: 0; width: 100%;
@@ -421,21 +434,63 @@
             border-radius: 2px;
         }
 
-        .editor-row { display: grid; grid-template-columns: 32px 1fr 50px 50px 50px 32px; gap: 4px; padding: 10px; border-bottom: 1px solid #f2f4f6; background: #fff; align-items: center; }
+        /* Draggable Styles */
+        .editor-row { 
+            display: grid; grid-template-columns: 32px 1fr 50px 50px 50px 32px; gap: 4px; 
+            padding: 10px; border-bottom: 1px solid #f2f4f6; background: #fff; align-items: center; 
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s, border-color 0.2s;
+            border: 1px solid transparent; 
+        }
         .editor-row.is-new { background: #fffce0; }
+        
+        .editor-row.dragging { 
+            opacity: 0.5; background: #f0f9ff; z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        }
+
+        /* Valid Drop Target (Green) */
+        .editor-row.valid-target {
+            background-color: #ecfdf5 !important; /* Green-50 */
+            border: 1px solid #10b981 !important; /* Emerald-500 */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1), 0 2px 4px -1px rgba(16, 185, 129, 0.06);
+            z-index: 10;
+        }
+
+        /* Invalid Drop Target (Red) */
+        .editor-row.invalid-target {
+            background-color: #fef2f2 !important; /* Red-50 */
+            border: 1px solid #ef4444 !important; /* Red-500 */
+            opacity: 0.8;
+            z-index: 5;
+        }
+
         .editor-del-btn { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #ccc; cursor: pointer; }
         .editor-del-btn.disabled { opacity: 0.3; pointer-events: none; }
 
-        .editor-name-area { font-size: 13px; font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px; display: flex; flex-direction: column; justify-content: center; }
-        .editor-cat-sub { font-size: 10px; color: #999; font-weight: 400; margin-top: 2px; }
+        .editor-name-area { 
+            font-size: 13px; font-weight: 600; color: #333; 
+            padding: 0 4px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+        }
+        .editor-prod-main {
+            font-size: 13px; font-weight: 600; color: #333;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%;
+            margin-bottom: 2px;
+        }
+        .editor-unit-text { font-weight: 400; color: #666; font-size: 13px; }
+        .editor-price-text { font-size: 13px; font-weight: 700; color: #111; }
 
         .editor-input { width: 100%; height: 36px; border: 1px solid #e0e0e0; border-radius: 6px; text-align: center; font-size: 15px; font-weight: 700; color: #333; outline: none; padding: 0; background: #fff; transition: all 0.2s; }
         .editor-input.active-input { border-color: var(--primary); color: var(--primary); background: #f0fdf4; }
         .editor-input:focus { border-color: var(--primary); background: #f0fdf4; }
+        
+        /* Disabled Input Style for Category Mode */
+        .editor-input:disabled { 
+            background: #f3f4f6; color: #d1d5db; border-color: #f3f4f6; cursor: not-allowed; 
+        }
+        
         .editor-input::-webkit-outer-spin-button, .editor-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .editor-input[type=number] { -moz-appearance: textfield; }
-        .editor-input:disabled { background: #f5f5f5; color: #aaa; border-color: #eee; }
-        .editor-input.active-input:disabled { background: #f0fdf4; opacity: 0.6; } 
         
         .editor-move-btn { width: 100%; height: 36px; border: 1px dashed #e0e0e0; border-radius: 6px; margin: 0 auto; background: #fafafa; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ccc; transition: all 0.2s; }
         .editor-move-btn:active { background: #eee; }
@@ -443,8 +498,28 @@
         .editor-move-btn.active svg { color: #fff !important; }
         .editor-move-btn.disabled { opacity: 0.3; pointer-events: none; background: #eee; border-style: solid; }
 
-        .editor-drag-handle { color: #ccc; cursor: grab; display: flex; align-items: center; justify-content: center; }
-        .editor-drag-handle.disabled { opacity: 0.3; cursor: default; }
+        /* Drag Handle Styling */
+        .editor-drag-handle { 
+            color: #e5e7eb; /* Default disabled color (Gray-200) */
+            cursor: default;
+            display: flex; align-items: center; justify-content: center; 
+            transition: all 0.2s;
+            border-radius: 4px;
+            margin: 4px;
+            height: 32px; 
+        }
+        
+        /* Active (Green) Handle for Category Mode */
+        .editor-drag-handle.active-mode {
+            color: #10b981; /* Green (Emerald-500) */
+            cursor: grab;
+            background-color: #ecfdf5; /* Light Green Bg */
+        }
+        .editor-drag-handle.active-mode:active { 
+            color: #059669; 
+            background-color: #d1fae5; 
+            cursor: grabbing;
+        }
 
         .new-badge { font-size:9px; color:#fff; background:#f04452; padding:1px 3px; border-radius:3px; margin-right:4px; flex-shrink:0; vertical-align: middle; display: inline-block; }
         
@@ -592,35 +667,50 @@
             document.body.appendChild(toast);
             setTimeout(() => { toast.classList.remove('show'); setTimeout(()=>toast.remove(), 300); }, 2000);
         }
+
+        // --- Category Sort Order Configuration ---
+        // 낮은 숫자가 먼저 나옵니다.
+        const categorySortOrder = {
+            "농산": 1,
+            "축/수산": 2,
+            "가공": 3,
+            "기타": 99
+        };
         
-        // --- Data Mockup (With Category) ---
+        // Helper to get sort order
+        function getCategoryOrder(catName) {
+            return categorySortOrder[catName] || 99;
+        }
+        
+        // --- Data Mockup ---
+        // 카테고리명 수정: 채소/과일 -> 농산, 수산/축산 -> 축/수산, 가공식품 -> 가공
         const productsData = {
             'special': [
-                { id: 1001, name: "[특가] 다부리 배추 4포기 BOX", unit: "BOX", price: 12500, img: "🥬", tag: "단골특가", category: "채소/과일" },
-                { id: 1002, name: "[특가] 햇감자 10kg BOX", unit: "BOX", price: 18000, img: "🥔", tag: "한정수량", category: "채소/과일" },
+                { id: 1001, name: "[특가] 다부리 배추 4포기 BOX", unit: "BOX", price: 12500, img: "🥬", tag: "단골특가", category: "농산" },
+                { id: 1002, name: "[특가] 햇감자 10kg BOX", unit: "BOX", price: 18000, img: "🥔", tag: "한정수량", category: "농산" },
             ],
             'list1': [
-                { id: 1, name: "양배추(대) 42망(3입) BOX", unit: "BOX", price: 10900, img: "🥦", tag: null, category: "채소/과일" },
-                { id: 2, name: "양파 왕 20kg망 BOX", unit: "BOX", price: 22000, img: "🧅", tag: null, category: "채소/과일" },
-                { id: 3, name: "깐양파 10kg BOX", unit: "BOX", price: 20500, img: "🧅", tag: null, category: "채소/과일" },
-                { id: 3001, name: "CJ 햇반 210g x 24", unit: "BOX", price: 21900, img: "🍚", tag: null, category: "가공식품" },
-                { id: 3003, name: "동원 참치 150g x 10", unit: "EA", price: 19800, img: "🐟", tag: null, category: "수산/축산" },
-                { id: 5, name: "청양고추 10kg BOX", unit: "BOX", price: 45000, img: "🌶️", tag: "매움", category: "채소/과일" },
-                { id: 6, name: "애호박 인큐 20개 BOX", unit: "BOX", price: 18500, img: "🥒", tag: null, category: "채소/과일" },
-                { id: 3004, name: "해표 식용유 1.8L EA", unit: "EA", price: 6500, img: "🌻", tag: null, category: "가공식품" },
-                { id: 9, name: "깐마늘 1kg EA", unit: "EA", price: 8500, img: "🧄", tag: null, category: "채소/과일" },
-                { id: 10, name: "적상추 4kg BOX", unit: "BOX", price: 12000, img: "🥗", tag: null, category: "채소/과일" },
-                { id: 11, name: "시금치 4kg BOX", unit: "BOX", price: 15000, img: "🥬", tag: "신선", category: "채소/과일" },
+                { id: 1, name: "양배추(대) 42망(3입) BOX", unit: "BOX", price: 10900, img: "🥦", tag: null, category: "농산" },
+                { id: 2, name: "양파 왕 20kg망 BOX", unit: "BOX", price: 22000, img: "🧅", tag: null, category: "농산" },
+                { id: 3, name: "깐양파 10kg BOX", unit: "BOX", price: 20500, img: "🧅", tag: null, category: "농산" },
+                { id: 3001, name: "CJ 햇반 210g x 24", unit: "BOX", price: 21900, img: "🍚", tag: null, category: "가공" },
+                { id: 3003, name: "동원 참치 150g x 10", unit: "EA", price: 19800, img: "🐟", tag: null, category: "축/수산" },
+                { id: 5, name: "청양고추 10kg BOX", unit: "BOX", price: 45000, img: "🌶️", tag: "매움", category: "농산" },
+                { id: 6, name: "애호박 인큐 20개 BOX", unit: "BOX", price: 18500, img: "🥒", tag: null, category: "농산" },
+                { id: 3004, name: "해표 식용유 1.8L EA", unit: "EA", price: 6500, img: "🌻", tag: null, category: "가공" },
+                { id: 9, name: "깐마늘 1kg EA", unit: "EA", price: 8500, img: "🧄", tag: null, category: "농산" },
+                { id: 10, name: "적상추 4kg BOX", unit: "BOX", price: 12000, img: "🥗", tag: null, category: "농산" },
+                { id: 11, name: "시금치 4kg BOX", unit: "BOX", price: 15000, img: "🥬", tag: "신선", category: "농산" },
             ],
             'list2': [
-                { id: 2001, name: "사과(부사) 10kg 32과", unit: "BOX", price: 42000, img: "🍎", tag: "신선", category: "채소/과일" },
-                { id: 2003, name: "제주 감귤 10kg BOX", unit: "BOX", price: 25000, img: "🍊", tag: "제철", category: "채소/과일" },
-                { id: 2004, name: "바나나 13kg BOX", unit: "BOX", price: 28000, img: "🍌", tag: null, category: "채소/과일" },
+                { id: 2001, name: "사과(부사) 10kg 32과", unit: "BOX", price: 42000, img: "🍎", tag: "신선", category: "농산" },
+                { id: 2003, name: "제주 감귤 10kg BOX", unit: "BOX", price: 25000, img: "🍊", tag: "제철", category: "농산" },
+                { id: 2004, name: "바나나 13kg BOX", unit: "BOX", price: 28000, img: "🍌", tag: null, category: "농산" },
             ],
             'list3': [
-                { id: 3002, name: "신라면 30입 BOX", unit: "BOX", price: 24500, img: "🍜", tag: null, category: "가공식품" },
-                { id: 3005, name: "곰표 밀가루 20kg", unit: "EA", price: 22000, img: "🌾", tag: null, category: "가공식품" },
-                { id: 3006, name: "백설 설탕 15kg", unit: "EA", price: 18000, img: "🧂", tag: null, category: "가공식품" },
+                { id: 3002, name: "신라면 30입 BOX", unit: "BOX", price: 24500, img: "🍜", tag: null, category: "가공" },
+                { id: 3005, name: "곰표 밀가루 20kg", unit: "EA", price: 22000, img: "🌾", tag: null, category: "가공" },
+                { id: 3006, name: "백설 설탕 15kg", unit: "EA", price: 18000, img: "🧂", tag: null, category: "가공" },
             ]
         };
 
@@ -637,6 +727,7 @@
         let editorFocusList = 'list1'; 
         let isGuideOpen = false; // Guide State
         let viewerSortMode = 'latest'; 
+        let dragSrcEl = null;
 
         // --- Elements ---
         const mainListEl = document.getElementById('mainProductList');
@@ -672,8 +763,11 @@
                 const sortInfo = sortInfoMap[pid];
                 let product = null;
                 for (const key of ['special', 'list1', 'list2', 'list3']) {
-                    const found = productsData[key].find(p => p.id === pid);
-                    if (found) { product = found; break; }
+                    const products = productsData[key];
+                    if(products) {
+                        const found = products.find(p => p.id === pid);
+                        if (found) { product = found; break; }
+                    }
                 }
                 if(product) {
                     items.push({ ...product, order: sortInfo.order, isNew: sortInfo.isNew, addedAt: sortInfo.addedAt || 0 });
@@ -742,7 +836,14 @@
                         displayList.sort((a, b) => {
                             const catA = a.category || "기타";
                             const catB = b.category || "기타";
-                            if (catA !== catB) return catA.localeCompare(catB);
+                            
+                            // CODE BASED SORT
+                            const orderA = getCategoryOrder(catA);
+                            const orderB = getCategoryOrder(catB);
+                            
+                            if (orderA !== orderB) return orderA - orderB;
+                            
+                            // If same category, use user order or name
                             return compareItems(a, b);
                         });
                     } else {
@@ -843,8 +944,6 @@
 
             setEditorViewMode(savedMode);
             updateEditorHeaderState();
-            
-            // Ensure guide content is correct on open
             updateGuideContent();
             
             editorModal.classList.add('open');
@@ -861,7 +960,7 @@
             if(isGuideOpen) {
                 btn.classList.add('active');
                 box.classList.add('open');
-                updateGuideContent(); // Ensure fresh content
+                updateGuideContent(); 
             } else {
                 btn.classList.remove('active');
                 box.classList.remove('open');
@@ -874,21 +973,21 @@
             
             if (editorSortMode === 'category') {
                 titleEl.innerHTML = `
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                    <span>분류순 편집 가이드</span>`;
+                    <svg class="icon" viewBox="0 0 24 24" style="color:#10b981;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <span style="color:#10b981;">분류순 편집 가이드</span>`;
                 contentEl.innerHTML = `
-                    <div class="cm-row"><div class="cm-label">정의</div><div>상품을 종류(카테고리)별로 묶어 정렬합니다.</div></div>
-                    <div class="cm-row"><div class="cm-label">L1~L3</div><div>버튼을 누르면 해당 리스트 상품이 <strong>맨 위</strong>로 올라옵니다.</div></div>
-                    <div class="cm-row"><div class="cm-label">순번</div><div>번호 입력 시 전체 순위가 변경되어 적용됩니다.</div></div>
+                    <div class="cm-row"><div class="cm-label" style="background:#ecfdf5; color:#059669;">드래그</div><div>초록색 핸들을 사용해 순서를 변경하세요.</div></div>
+                    <div class="cm-row"><div class="cm-label" style="background:#ecfdf5; color:#059669;">제약</div><div><strong>같은 분류 내에서만</strong> 이동 가능합니다.</div></div>
+                    <div class="cm-row"><div class="cm-label" style="background:#ecfdf5; color:#059669;">경고</div><div>다른 분류로 이동 시 빨간색 경고가 뜹니다.</div></div>
                 `;
             } else {
                 titleEl.innerHTML = `
                     <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                     <span>번호순 편집 가이드</span>`;
                 contentEl.innerHTML = `
-                    <div class="cm-row"><div class="cm-label">정의</div><div>내가 설정한 번호 순서대로 나열됩니다.</div></div>
+                    <div class="cm-row"><div class="cm-label">입력 가능</div><div>번호를 입력하여 자유롭게 순서를 바꿉니다.</div></div>
+                    <div class="cm-row"><div class="cm-label">드래그 불가</div><div>번호 순서는 입력값으로만 조정 가능합니다.</div></div>
                     <div class="cm-row"><div class="cm-label">L1~L3</div><div>편집할 리스트를 선택해 최상단에서 모아볼 수 있습니다.</div></div>
-                    <div class="cm-row"><div class="cm-label">순서</div><div><strong>번호 입력</strong> 또는 <strong>우측 핸들 드래그</strong>로 순서를 바꿉니다.</div></div>
                 `;
             }
         }
@@ -896,6 +995,7 @@
         function focusEditorList(listId) {
             editorFocusList = listId;
             updateEditorHeaderState();
+            sortAllEditorItems(); 
             renderEditorList();
             editorListEl.scrollTop = 0;
         }
@@ -911,9 +1011,9 @@
             document.querySelectorAll('.ev-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`ev-btn-${mode}`).classList.add('active');
             
-            // Update Guide Text when mode changes
             if(isGuideOpen) updateGuideContent();
             
+            sortAllEditorItems();
             renderEditorList();
         }
 
@@ -925,29 +1025,138 @@
             } else {
                 item.tempOrder = parseInt(newVal);
             }
+            sortAllEditorItems();
+            renderEditorList();
         }
 
-        function renderEditorList() {
-            editorListEl.innerHTML = '';
-            let visibleItems = [...allEditorItems];
+        // --- SORTING LOGIC ---
+        function sortAllEditorItems() {
             const isCategoryMode = (editorSortMode === 'category');
 
-            visibleItems.sort((a, b) => {
+            allEditorItems.sort((a, b) => {
+                // Priority 1: Focused List to TOP
                 const aIsFocused = (a.listId === editorFocusList);
                 const bIsFocused = (b.listId === editorFocusList);
                 if (aIsFocused && !bIsFocused) return -1;
                 if (!aIsFocused && bIsFocused) return 1;
+                
+                // Priority 2: Group by List ID
                 if (a.listId !== b.listId) return a.listId.localeCompare(b.listId);
                 
                 if (isCategoryMode) {
                     const catA = a.category || "기타";
                     const catB = b.category || "기타";
-                    if (catA !== catB) return catA.localeCompare(catB);
+                    
+                    // CODE BASED SORT (Editor)
+                    const orderA = getCategoryOrder(catA);
+                    const orderB = getCategoryOrder(catB);
+                    
+                    if (orderA !== orderB) return orderA - orderB;
+                    
                     return compareEditorItems(a, b);
                 } else {
                     return compareEditorItems(a, b);
                 }
             });
+        }
+
+        // --- DRAG AND DROP LOGIC (Updated for Green/Red feedback) ---
+        function handleDragStart(e, id) {
+            if (editorSortMode === 'manual') return false; 
+
+            dragSrcEl = e.currentTarget; 
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', id);
+            e.currentTarget.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) e.preventDefault(); 
+            
+            const targetRow = e.target.closest('.editor-row');
+            if (!targetRow || !dragSrcEl) return false;
+
+            // Visual feedback Logic
+            const srcCategory = dragSrcEl.dataset.category;
+            const targetCategory = targetRow.dataset.category;
+            
+            if (srcCategory === targetCategory) {
+                // ALLOWED (Green)
+                targetRow.classList.add('valid-target');
+                targetRow.classList.remove('invalid-target');
+                e.dataTransfer.dropEffect = 'move';
+            } else {
+                // FORBIDDEN (Red)
+                targetRow.classList.add('invalid-target');
+                targetRow.classList.remove('valid-target');
+                e.dataTransfer.dropEffect = 'none';
+            }
+            return false;
+        }
+
+        function handleDragLeave(e) {
+            const targetRow = e.target.closest('.editor-row');
+            if(targetRow) {
+                targetRow.classList.remove('valid-target');
+                targetRow.classList.remove('invalid-target');
+            }
+        }
+
+        function handleDragEnd(e) {
+            e.currentTarget.classList.remove('dragging');
+            document.querySelectorAll('.editor-row').forEach(row => {
+                row.classList.remove('valid-target');
+                row.classList.remove('invalid-target');
+            });
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) e.stopPropagation(); 
+            const targetRow = e.target.closest('.editor-row');
+            
+            // Clean up styles immediately
+            if(targetRow) {
+                targetRow.classList.remove('valid-target');
+                targetRow.classList.remove('invalid-target');
+            }
+            
+            if (!targetRow || !dragSrcEl) return false;
+
+            const srcId = parseInt(e.dataTransfer.getData('text/plain'));
+            const targetId = parseInt(targetRow.dataset.id);
+
+            if (srcId === targetId) return false;
+
+            const srcIdx = allEditorItems.findIndex(i => i.id === srcId);
+            const targetIdx = allEditorItems.findIndex(i => i.id === targetId);
+            
+            if (srcIdx === -1 || targetIdx === -1) return false;
+
+            const srcItem = allEditorItems[srcIdx];
+            const targetItem = allEditorItems[targetIdx];
+
+            // Strict Check
+            if (editorSortMode === 'category') {
+                const catA = srcItem.category || "기타";
+                const catB = targetItem.category || "기타";
+                if (catA !== catB) {
+                    // Do nothing (drop prevented)
+                    return false;
+                }
+            }
+
+            // Move
+            allEditorItems.splice(srcIdx, 1);
+            allEditorItems.splice(targetIdx, 0, srcItem);
+            srcItem.tempOrder = targetItem.tempOrder;
+
+            renderEditorList();
+            return false;
+        }
+
+        function renderEditorList() {
+            editorListEl.innerHTML = '';
+            let visibleItems = allEditorItems; 
 
             let lastListId = null;
             let lastCategory = null;
@@ -963,7 +1172,7 @@
                     lastCategory = null; 
                 }
 
-                if (isCategoryMode) {
+                if (editorSortMode === 'category') {
                     const currentCategory = item.category || "기타";
                     if (currentCategory !== lastCategory) {
                         const headerDiv = document.createElement('div');
@@ -974,14 +1183,25 @@
                     }
                 }
 
+                const isDraggable = (editorSortMode === 'category');
                 const row = document.createElement('div');
                 row.className = `editor-row ${item.isNew ? 'is-new' : ''}`;
+                row.draggable = isDraggable; 
+                row.dataset.id = item.id;
+                row.dataset.category = item.category || "기타"; 
                 
+                row.ondragstart = (e) => handleDragStart(e, item.id);
+                row.ondragover = handleDragOver;
+                row.ondragleave = handleDragLeave;
+                row.ondrop = handleDrop;
+                row.ondragend = handleDragEnd;
+
                 const renderSlot = (targetListId) => {
                     if (item.tempListId === targetListId) {
                         const inputClass = "editor-input active-input";
                         const displayVal = (item.tempOrder === Infinity || item.tempOrder === null) ? '' : item.tempOrder;
-                        return `<input type="number" class="${inputClass}" value="${displayVal}" data-id="${item.id}" onfocus="this.select()" onchange="updateEditorOrder(${item.id}, this.value)">`;
+                        const disabledAttr = (editorSortMode === 'category') ? 'disabled' : ''; 
+                        return `<input type="number" class="${inputClass}" value="${displayVal}" data-id="${item.id}" ${disabledAttr} onfocus="this.select()" onchange="updateEditorOrder(${item.id}, this.value)">`;
                     } else {
                         const isActive = (item.tempListId === targetListId); 
                         const activeClass = isActive ? 'active' : '';
@@ -992,14 +1212,23 @@
                     }
                 };
 
+                // Handle class with Green Active state
+                const handleClass = isDraggable ? 'editor-drag-handle active-mode' : 'editor-drag-handle';
+
                 const delOnclick = `onclick="deleteEditorItem(${item.id})"`;
                 row.innerHTML = `
                     <div class="editor-del-btn" ${delOnclick}><svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></div>
-                    <div class="editor-name-area"><span>${item.isNew ? '<span class="new-badge">NEW</span>' : ''}${item.name}</span><div class="editor-cat-sub">${item.category || ''}</div></div>
+                    <div class="editor-name-area">
+                        <div class="editor-prod-main">
+                            ${item.isNew ? '<span class="new-badge">NEW</span>' : ''}
+                            ${item.name} <span class="editor-unit-text">(${item.unit})</span>
+                        </div>
+                        <div class="editor-price-text">${item.price.toLocaleString()}원</div>
+                    </div>
                     <div>${renderSlot('list1')}</div>
                     <div>${renderSlot('list2')}</div>
                     <div>${renderSlot('list3')}</div>
-                    <div class="editor-drag-handle"><svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div>
+                    <div class="${handleClass}"><svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div>
                 `;
                 editorListEl.appendChild(row);
             });
@@ -1010,11 +1239,15 @@
             if(!item) return; 
             item.tempListId = targetListId;
             item.tempOrder = ''; 
+            
             renderEditorList(); 
-            setTimeout(() => {
-                const input = document.querySelector(`.editor-input[data-id="${id}"]`);
-                if(input) input.focus();
-            }, 0);
+            
+            if (editorSortMode !== 'category') {
+                setTimeout(() => {
+                    const input = document.querySelector(`.editor-input[data-id="${id}"]`);
+                    if(input) input.focus();
+                }, 0);
+            }
         }
 
         function deleteEditorItem(id) { 
