@@ -178,6 +178,23 @@
         }
         .v-edit-btn span { margin-left: 3px; }
 
+        /* --- Category Header Style (New) --- */
+        .list-category-header {
+            background-color: #f8f9fa;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #222;
+            border-left: 4px solid var(--primary);
+            border-bottom: 1px solid #e0e0e0;
+            /* Sticky Positioning */
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+        }
+
         /* --- Product List Item --- */
         .product-item { 
             display: flex; padding: 20px 16px; 
@@ -831,50 +848,50 @@
     </div>
 
     <script>
-        // --- Data Mockup ---
+        // --- Data Mockup (Updated with Category) ---
         const productsData = {
             'special': [
-                { id: 1001, name: "[특가] 다부리 배추 4포기 BOX", unit: "BOX", price: 12500, img: "🥬", tag: "단골특가" },
-                { id: 1002, name: "[특가] 햇감자 10kg BOX", unit: "BOX", price: 18000, img: "🥔", tag: "한정수량" },
-                { id: 1003, name: "[특가] 제주 월동무 20kg BOX", unit: "BOX", price: 15000, img: "🥕", tag: "초특가" },
-                { id: 1004, name: "[특가] 흙당근 10kg BOX", unit: "BOX", price: 22000, img: "🥕", tag: "기획" },
+                { id: 1001, name: "[특가] 다부리 배추 4포기 BOX", unit: "BOX", price: 12500, img: "🥬", tag: "단골특가", category: "채소/과일" },
+                { id: 1002, name: "[특가] 햇감자 10kg BOX", unit: "BOX", price: 18000, img: "🥔", tag: "한정수량", category: "채소/과일" },
+                { id: 1003, name: "[특가] 제주 월동무 20kg BOX", unit: "BOX", price: 15000, img: "🥕", tag: "초특가", category: "채소/과일" },
+                { id: 1004, name: "[특가] 흙당근 10kg BOX", unit: "BOX", price: 22000, img: "🥕", tag: "기획", category: "채소/과일" },
             ],
             'list1': [
-                { id: 1, name: "양배추(대) 42망(3입) BOX", unit: "BOX", price: 10900, img: "🥦", tag: null },
-                { id: 2, name: "양파 왕 20kg망 BOX", unit: "BOX", price: 22000, img: "🧅", tag: null },
-                { id: 3, name: "깐양파 10kg BOX", unit: "BOX", price: 20500, img: "🧅", tag: null },
-                { id: 4, name: "대파 (단) EA", unit: "EA", price: 3200, img: "🎋", tag: "추천" },
-                { id: 5, name: "청양고추 10kg BOX", unit: "BOX", price: 45000, img: "🌶️", tag: "매움" },
-                { id: 6, name: "애호박 인큐 20개 BOX", unit: "BOX", price: 18500, img: "🥒", tag: null },
-                { id: 7, name: "흙당근 10kg BOX", unit: "BOX", price: 28000, img: "🥕", tag: null },
-                { id: 8, name: "다다기 오이 50개 BOX", unit: "BOX", price: 32000, img: "🥒", tag: null },
-                { id: 9, name: "깐마늘 1kg EA", unit: "EA", price: 8500, img: "🧄", tag: null },
-                { id: 10, name: "적상추 4kg BOX", unit: "BOX", price: 12000, img: "🥗", tag: null },
-                { id: 11, name: "시금치 4kg BOX", unit: "BOX", price: 15000, img: "🥬", tag: "신선" },
-                { id: 12, name: "브로콜리 8kg BOX", unit: "BOX", price: 35000, img: "🥦", tag: null },
+                { id: 1, name: "양배추(대) 42망(3입) BOX", unit: "BOX", price: 10900, img: "🥦", tag: null, category: "채소/과일" },
+                { id: 2, name: "양파 왕 20kg망 BOX", unit: "BOX", price: 22000, img: "🧅", tag: null, category: "채소/과일" },
+                { id: 3, name: "깐양파 10kg BOX", unit: "BOX", price: 20500, img: "🧅", tag: null, category: "채소/과일" },
+                { id: 4, name: "대파 (단) EA", unit: "EA", price: 3200, img: "🎋", tag: "추천", category: "채소/과일" },
+                { id: 5, name: "청양고추 10kg BOX", unit: "BOX", price: 45000, img: "🌶️", tag: "매움", category: "채소/과일" },
+                { id: 6, name: "애호박 인큐 20개 BOX", unit: "BOX", price: 18500, img: "🥒", tag: null, category: "채소/과일" },
+                { id: 7, name: "흙당근 10kg BOX", unit: "BOX", price: 28000, img: "🥕", tag: null, category: "채소/과일" },
+                { id: 8, name: "다다기 오이 50개 BOX", unit: "BOX", price: 32000, img: "🥒", tag: null, category: "채소/과일" },
+                { id: 9, name: "깐마늘 1kg EA", unit: "EA", price: 8500, img: "🧄", tag: null, category: "채소/과일" },
+                { id: 10, name: "적상추 4kg BOX", unit: "BOX", price: 12000, img: "🥗", tag: null, category: "채소/과일" },
+                { id: 11, name: "시금치 4kg BOX", unit: "BOX", price: 15000, img: "🥬", tag: "신선", category: "채소/과일" },
+                { id: 12, name: "브로콜리 8kg BOX", unit: "BOX", price: 35000, img: "🥦", tag: null, category: "채소/과일" },
             ],
             'list2': [
-                { id: 2001, name: "사과(부사) 10kg 32과", unit: "BOX", price: 42000, img: "🍎", tag: "신선" },
-                { id: 2002, name: "신고 배 7.5kg 10과", unit: "BOX", price: 38000, img: "🍐", tag: null },
-                { id: 2003, name: "제주 감귤 10kg BOX", unit: "BOX", price: 25000, img: "🍊", tag: "제철" },
-                { id: 2004, name: "바나나 13kg BOX", unit: "BOX", price: 28000, img: "🍌", tag: null },
-                { id: 2005, name: "완숙 토마토 5kg BOX", unit: "BOX", price: 18000, img: "🍅", tag: null },
-                { id: 2006, name: "샤인머스캣 2kg BOX", unit: "BOX", price: 19000, img: "🍇", tag: "인기" },
+                { id: 2001, name: "사과(부사) 10kg 32과", unit: "BOX", price: 42000, img: "🍎", tag: "신선", category: "채소/과일" },
+                { id: 2002, name: "신고 배 7.5kg 10과", unit: "BOX", price: 38000, img: "🍐", tag: null, category: "채소/과일" },
+                { id: 2003, name: "제주 감귤 10kg BOX", unit: "BOX", price: 25000, img: "🍊", tag: "제철", category: "채소/과일" },
+                { id: 2004, name: "바나나 13kg BOX", unit: "BOX", price: 28000, img: "🍌", tag: null, category: "채소/과일" },
+                { id: 2005, name: "완숙 토마토 5kg BOX", unit: "BOX", price: 18000, img: "🍅", tag: null, category: "채소/과일" },
+                { id: 2006, name: "샤인머스캣 2kg BOX", unit: "BOX", price: 19000, img: "🍇", tag: "인기", category: "채소/과일" },
             ],
             'list3': [
-                { id: 3001, name: "CJ 햇반 210g x 24", unit: "BOX", price: 21900, img: "🍚", tag: null },
-                { id: 3002, name: "신라면 30입 BOX", unit: "BOX", price: 24500, img: "🍜", tag: null },
-                { id: 3003, name: "동원 참치 150g x 10", unit: "EA", price: 19800, img: "🐟", tag: null },
-                { id: 3004, name: "해표 식용유 1.8L EA", unit: "EA", price: 6500, img: "🌻", tag: null },
-                { id: 3005, name: "곰표 밀가루 20kg", unit: "EA", price: 22000, img: "🌾", tag: null },
-                { id: 3006, name: "백설 설탕 15kg", unit: "EA", price: 18000, img: "🧂", tag: null },
+                { id: 3001, name: "CJ 햇반 210g x 24", unit: "BOX", price: 21900, img: "🍚", tag: null, category: "식품/가공" },
+                { id: 3002, name: "신라면 30입 BOX", unit: "BOX", price: 24500, img: "🍜", tag: null, category: "식품/가공" },
+                { id: 3003, name: "동원 참치 150g x 10", unit: "EA", price: 19800, img: "🐟", tag: null, category: "식품/가공" },
+                { id: 3004, name: "해표 식용유 1.8L EA", unit: "EA", price: 6500, img: "🌻", tag: null, category: "양념/소스" },
+                { id: 3005, name: "곰표 밀가루 20kg", unit: "EA", price: 22000, img: "🌾", tag: null, category: "양념/소스" },
+                { id: 3006, name: "백설 설탕 15kg", unit: "EA", price: 18000, img: "🧂", tag: null, category: "양념/소스" },
             ]
         };
 
         const globalDatabase = [
-            { id: 9101, name: "무우 특박스 10입 BOX", unit: "BOX", price: 22800, img: "📦", tag: "행사" },
-            { id: 9102, name: "무우 상박스 BOX", unit: "BOX", price: 17000, img: "📦", tag: null },
-            { id: 9103, name: "무우 (낱개)", unit: "EA", price: 2800, img: "🥣", tag: null },
+            { id: 9101, name: "무우 특박스 10입 BOX", unit: "BOX", price: 22800, img: "📦", tag: "행사", category: "채소/과일" },
+            { id: 9102, name: "무우 상박스 BOX", unit: "BOX", price: 17000, img: "📦", tag: null, category: "채소/과일" },
+            { id: 9103, name: "무우 (낱개)", unit: "EA", price: 2800, img: "🥣", tag: null, category: "채소/과일" },
         ];
 
         // --- 2. State Management ---
@@ -989,28 +1006,101 @@
 
         function renderMainList() {
             let displayList = [...currentList];
+            mainListEl.innerHTML = ''; // Clear container
+
+            if(displayList.length === 0) {
+                mainListEl.innerHTML = `<div style="padding:40px; text-align:center; color:#ccc; font-size:14px;">상품이 없습니다.</div>`;
+                listCountEl.innerText = `총 0개`;
+                return;
+            }
 
             if(currentTab !== 'special') {
                 if(viewerSortMode === 'latest') {
+                    // [Case 1] Latest: Flat List
                     displayList.sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
-                } else {
-                    const newItems = displayList.filter(item => item.isNew);
-                    const oldItems = displayList.filter(item => !item.isNew);
-
-                    newItems.sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
-                    oldItems.sort((a, b) => {
-                        const orderA = (a.order === null || a.order === undefined) ? Infinity : a.order;
-                        const orderB = (b.order === null || b.order === undefined) ? Infinity : b.order;
-                        return orderA - orderB;
+                    displayList.forEach(item => {
+                        mainListEl.appendChild(createProductElement(item));
                     });
-                    displayList = [...newItems, ...oldItems];
+                } else {
+                    // [Case 2] Custom: Group by Category -> Sort by User Order
+                    const grouped = {};
+                    const orderMap = { "채소/과일": 1, "수산/축산": 2, "식품/가공": 3, "양념/소스": 4, "주방/잡화": 5, "기타": 99 };
+                    
+                    // Grouping
+                    displayList.forEach(item => {
+                        const cat = item.category || "기타";
+                        if(!grouped[cat]) grouped[cat] = [];
+                        grouped[cat].push(item);
+                    });
+
+                    // Sort Categories
+                    const sortedCats = Object.keys(grouped).sort((a, b) => (orderMap[a] || 99) - (orderMap[b] || 99));
+
+                    sortedCats.forEach(cat => {
+                        // Internal Sort (User Order)
+                        const itemsInCat = grouped[cat];
+                        const newItems = itemsInCat.filter(item => item.isNew);
+                        const oldItems = itemsInCat.filter(item => !item.isNew);
+
+                        // New items by latest, Old items by explicit order
+                        newItems.sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
+                        oldItems.sort((a, b) => {
+                            const orderA = (a.order === null || a.order === undefined) ? Infinity : a.order;
+                            const orderB = (b.order === null || b.order === undefined) ? Infinity : b.order;
+                            return orderA - orderB;
+                        });
+                        
+                        const sortedItems = [...newItems, ...oldItems];
+
+                        // Render Header
+                        const header = document.createElement('div');
+                        header.className = 'list-category-header';
+                        header.innerText = cat;
+                        mainListEl.appendChild(header);
+
+                        // Render Items
+                        sortedItems.forEach(item => {
+                             mainListEl.appendChild(createProductElement(item));
+                        });
+                    });
                 }
+            } else {
+                // Special Tab (No sorting logic applied, just render)
+                displayList.forEach(item => {
+                    mainListEl.appendChild(createProductElement(item));
+                });
             }
 
-            renderProductList(displayList, mainListEl);
             listCountEl.innerText = `총 ${displayList.length}개`;
         }
 
+        function createProductElement(item) {
+            const qty = cart[item.id] || 0;
+            const div = document.createElement('div');
+            div.className = 'product-item';
+            div.innerHTML = `
+                <div class="prod-img">${item.img}</div>
+                <div class="prod-info">
+                    <div class="prod-name">
+                            ${item.tag ? `<span class="prod-tag">${item.tag}</span>` : ''} 
+                            ${item.name}
+                    </div>
+                    <div class="prod-unit">${item.unit}</div>
+                    <div class="prod-bottom">
+                        <div class="prod-price">${item.price.toLocaleString()}원</div>
+                    </div>
+                </div>
+                <div class="qty-control">
+                    <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
+                    <div class="qty-val" id="qty-${item.id}">${qty}</div>
+                    <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                </div>
+            `;
+            return div;
+        }
+
+        // Renamed to avoid confusion, though logic is now embedded in renderMainList 
+        // kept for backward compatibility if called elsewhere (search results uses it)
         function renderProductList(items, container) {
             container.innerHTML = '';
             if(items.length === 0) {
@@ -1018,28 +1108,7 @@
                 return;
             }
             items.forEach(item => {
-                const qty = cart[item.id] || 0;
-                const div = document.createElement('div');
-                div.className = 'product-item';
-                div.innerHTML = `
-                    <div class="prod-img">${item.img}</div>
-                    <div class="prod-info">
-                        <div class="prod-name">
-                             ${item.tag ? `<span class="prod-tag">${item.tag}</span>` : ''} 
-                             ${item.name}
-                        </div>
-                        <div class="prod-unit">${item.unit}</div>
-                        <div class="prod-bottom">
-                            <div class="prod-price">${item.price.toLocaleString()}원</div>
-                        </div>
-                    </div>
-                    <div class="qty-control">
-                        <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
-                        <div class="qty-val" id="qty-${item.id}">${qty}</div>
-                        <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
-                    </div>
-                `;
-                container.appendChild(div);
+                container.appendChild(createProductElement(item));
             });
         }
 
@@ -1061,7 +1130,7 @@
 
             if (totalCount > 0) {
                 orderBtn.classList.add('active');
-                orderBtn.innerHTML = `<span class="btn-brand-text">ORDERZ</span><span class="btn-action-text">${totalCount}개 주문하기</span>`;
+                orderBtn.innerHTML = `<span class="btn-brand-text">ORDERZ</span><span class="btn-action-text">담은 상품 확인하기 (${totalCount})</span>`;
             } else {
                 orderBtn.classList.remove('active');
                 orderBtn.innerHTML = `<span class="btn-brand-text">ORDERZ</span><span class="btn-action-text">상품을 담아주세요</span>`;
