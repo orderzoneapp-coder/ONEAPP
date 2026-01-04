@@ -150,7 +150,16 @@
             pointer-events: none;
         }
 
-        .list-count-info { font-size: 13px; font-weight: 500; color: #888; justify-self: start; }
+        /* New Date Button in Sort Bar */
+        .sort-bar-date-btn {
+            display: flex; align-items: center; gap: 4px;
+            background: transparent; border: none; padding: 0;
+            font-size: 14px; font-weight: 700; color: #333;
+            cursor: pointer; justify-self: start;
+            letter-spacing: -0.5px;
+        }
+        .sort-bar-date-btn:active { opacity: 0.6; }
+        .sort-bar-date-btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.5; fill: none; margin-top: 1px; }
 
         .viewer-sort-toggle {
             display: flex; background: #f0f2f5; border-radius: 20px; padding: 3px; justify-self: center;
@@ -232,19 +241,6 @@
         }
         .qty-btn:active { background-color: #f5f5f5; }
         .qty-val { width: 32px; text-align: center; font-size: 14px; font-weight: 700; color: #111; }
-
-        /* --- Floating Date Text --- */
-        .floating-text-date {
-            position: absolute; bottom: calc(var(--unified-bar-height) + 8px + env(safe-area-inset-bottom));
-            left: 50%; transform: translateX(-50%); z-index: 900; 
-            font-size: 13px; font-weight: 600; color: #333;
-            text-shadow: 0 1px 4px rgba(255,255,255,0.9);
-            background: transparent; padding: 4px 8px;
-            display: flex; align-items: center; gap: 4px;
-            cursor: pointer; transition: opacity 0.3s;
-        }
-        .floating-text-date:active { opacity: 0.7; }
-        .floating-text-date svg { width: 12px; height: 12px; stroke-width: 2.5; color: #666; }
 
         /* --- Unified Bottom Bar --- */
         .unified-bottom-bar {
@@ -346,6 +342,45 @@
         .col-header-btn:active { background: #f5f5f5; }
         .col-header-btn.active { background: #333; color: #fff; border-color: #333; }
         
+        /* Guide Icon Button */
+        .guide-icon-btn { 
+            display: flex; align-items: center; justify-content: center; 
+            width: 100%; height: 100%; background: none; border: none; 
+            cursor: pointer; color: #bbb; transition: color 0.2s;
+        }
+        .guide-icon-btn:active { color: #666; }
+        .guide-icon-btn.active { color: var(--primary); }
+
+        /* Coach Mark Style Guide Box */
+        .coach-mark-box {
+            background: #f0f9ff; border: 1px solid #dbeafe; 
+            margin: 10px 16px 0; border-radius: 12px;
+            overflow: hidden; opacity: 0; height: 0;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+        }
+        .coach-mark-box.open { 
+            height: auto; opacity: 1; padding: 16px; margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .cm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .cm-title { font-size: 14px; font-weight: 800; color: #0369a1; display: flex; align-items: center; gap: 6px; }
+        .cm-title svg { width: 16px; height: 16px; }
+        
+        .cm-close-btn { 
+            background: rgba(255,255,255,0.5); border: none; border-radius: 12px; 
+            font-size: 11px; color: #0284c7; padding: 4px 10px; font-weight: 700; cursor: pointer; 
+        }
+        
+        .cm-content { font-size: 13px; color: #334155; line-height: 1.5; }
+        .cm-row { display: flex; gap: 8px; margin-bottom: 6px; align-items: flex-start; }
+        .cm-row:last-child { margin-bottom: 0; }
+        .cm-label { 
+            font-weight: 700; color: #0284c7; background: #e0f2fe; 
+            padding: 2px 6px; border-radius: 4px; font-size: 11px; white-space: nowrap; margin-top: 1px;
+        }
+
         .editor-content-scroll { flex:1; overflow-y:auto; }
         
         /* Editor List Header (L1, L2, L3 separator) */
@@ -458,7 +493,10 @@
         </div>
 
         <div class="viewer-sort-bar" id="viewerSortBar">
-            <span class="list-count-info" id="listCount">전체 (0)</span>
+            <button class="sort-bar-date-btn" onclick="showToast('배송일 변경 팝업')">
+                <span>10/20 (월) 배송</span>
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
             
             <div class="viewer-sort-toggle">
                 <!-- Default Active is Latest -->
@@ -466,7 +504,6 @@
                 <button class="v-sort-btn" id="v-sort-custom" onclick="switchViewerSort('custom')">내 순서</button>
             </div>
             
-            <!-- Text Change: 리스트 편집 -> 리스트 관리 -->
             <button class="v-edit-btn" onclick="openEditor()">
                 <svg class="icon" viewBox="0 0 24 24" style="width:16px; height:16px; stroke-width:2.2;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                 <span>리스트 관리</span>
@@ -478,13 +515,6 @@
                 </div>
         </div>
 
-        <!-- Floating Date Text -->
-        <div class="floating-text-date" onclick="showToast('배송일 변경 팝업')">
-            <span>10/20 (월) 배송</span>
-            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </div>
-
-        <!-- Unified Bottom Bar -->
         <div class="unified-bottom-bar">
             <!-- Search -->
             <button class="nav-side-btn" onclick="showToast('상품 검색 시뮬레이션')">
@@ -516,17 +546,31 @@
             <div class="editor-sort-bar">
                 <div class="sort-left">
                     <div class="editor-view-toggle-group">
-                        <!-- Renamed buttons -->
                         <button class="ev-btn" id="ev-btn-category" onclick="setEditorViewMode('category')">분류순</button>
                         <button class="ev-btn active" id="ev-btn-manual" onclick="setEditorViewMode('manual')">번호순</button>
                     </div>
                 </div>
                 <div class="sort-right-headers">
-                    <!-- Updated to Clickable Buttons for Focus Sorting -->
                     <div class="col-header-btn" id="h-list1" onclick="focusEditorList('list1')">L1</div>
                     <div class="col-header-btn" id="h-list2" onclick="focusEditorList('list2')">L2</div>
                     <div class="col-header-btn" id="h-list3" onclick="focusEditorList('list3')">L3</div>
-                    <span></span>
+                    <button class="guide-icon-btn" id="guideBtn" onclick="toggleGuide()">
+                        <svg class="icon" viewBox="0 0 24 24" style="width:18px; height:18px;"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Dynamic Coach Mark Area -->
+            <div class="coach-mark-box" id="guideBox">
+                <div class="cm-header">
+                    <div class="cm-title" id="cmTitle">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        <span>편집 가이드</span>
+                    </div>
+                    <button class="cm-close-btn" onclick="toggleGuide()">닫기</button>
+                </div>
+                <div class="cm-content" id="cmContent">
+                    <!-- Content injected by JS -->
                 </div>
             </div>
         </div>
@@ -540,7 +584,7 @@
     </div>
 
     <script>
-        // --- Helper: Toast Message (Replaces Alert) ---
+        // --- Helper: Toast Message ---
         function showToast(msg) {
             let toast = document.createElement('div');
             toast.className = 'toast-msg show';
@@ -582,8 +626,6 @@
 
         // --- State Management ---
         let userSortData = { 'list1': {}, 'list2': {}, 'list3': {}, 'special': {} };
-        
-        // Default 'My Order' sub-mode is now 'category'
         let tabViewModes = { 'list1': 'category', 'list2': 'category', 'list3': 'category', 'special': 'manual' };
         
         let allEditorItems = []; 
@@ -592,14 +634,12 @@
         let cart = {}; 
         let editorActiveTab = 'list1'; 
         let editorSortMode = 'manual'; 
-        let editorFocusList = 'list1'; // New: Determines which list is shown first in Editor
-        
-        // Default Viewer Mode is 'latest'
+        let editorFocusList = 'list1'; 
+        let isGuideOpen = false; // Guide State
         let viewerSortMode = 'latest'; 
 
         // --- Elements ---
         const mainListEl = document.getElementById('mainProductList');
-        const listCountEl = document.getElementById('listCount');
         const orderBtn = document.getElementById('mainOrderBtn');
         const editorModal = document.getElementById('editorModal');
         const editorListEl = document.getElementById('editorList');
@@ -608,17 +648,14 @@
         function init() {
             initSortData(); 
             currentList = getExtendedList('list1'); 
-            // Ensure UI matches default state
             switchViewerSort('latest');
             updateOrderBarState(); 
         }
 
-        // Initialize user sort data
         function initSortData() {
             let baseTime = Date.now() - 1000000;
             ['list1', 'list2', 'list3'].forEach(listKey => {
                 productsData[listKey].forEach((p, idx) => {
-                    // No forced 'isNew'. All orders are null initially.
                     userSortData[listKey][p.id] = { order: null, isNew: false, addedAt: baseTime + idx * 1000 };
                 });
             });
@@ -630,7 +667,6 @@
         function getExtendedList(tabName) {
             const sortInfoMap = userSortData[tabName] || {};
             let items = [];
-            
             Object.keys(sortInfoMap).forEach(pidStr => {
                 const pid = parseInt(pidStr);
                 const sortInfo = sortInfoMap[pid];
@@ -673,30 +709,22 @@
             document.getElementById('scrollContainer').scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Shared Sort Logic: Priority = New > Ordered > Unordered
         function compareItems(a, b) {
             if (a.isNew && !b.isNew) return -1;
             if (!a.isNew && b.isNew) return 1;
-
             const orderA = (a.order === null || a.order === undefined || a.order === '') ? Infinity : parseInt(a.order);
             const orderB = (b.order === null || b.order === undefined || b.order === '') ? Infinity : parseInt(b.order);
-
             if (orderA !== orderB) return orderA - orderB;
             return a.name.localeCompare(b.name);
         }
         
-        // Similar helper for Editor Temp Order
         function compareEditorItems(a, b) {
-            // Check if item is effectively new (either originally new OR moved to this list)
             const aIsNew = a.isNew || (a.listId !== a.tempListId);
             const bIsNew = b.isNew || (b.listId !== b.tempListId);
-
             if (aIsNew && !bIsNew) return -1;
             if (!aIsNew && bIsNew) return 1;
-
             const orderA = (a.tempOrder === null || a.tempOrder === undefined || a.tempOrder === '') ? Infinity : parseInt(a.tempOrder);
             const orderB = (b.tempOrder === null || b.tempOrder === undefined || b.tempOrder === '') ? Infinity : parseInt(b.tempOrder);
-
             if (orderA !== orderB) return orderA - orderB;
             return a.name.localeCompare(b.name);
         }
@@ -710,7 +738,6 @@
                     displayList.sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
                     renderProductList(displayList, mainListEl, false);
                 } else {
-                    // Custom Mode (My Order)
                     if (isCategoryView) {
                         displayList.sort((a, b) => {
                             const catA = a.category || "기타";
@@ -726,9 +753,6 @@
             } else {
                 renderProductList(displayList, mainListEl, false);
             }
-
-            // 변경: '전체' 대신 '총 n개'로 명확히 표시
-            listCountEl.innerText = `총 ${displayList.length}개`;
         }
 
         function renderProductList(items, container, showHeaders = false) {
@@ -737,9 +761,7 @@
                 container.innerHTML = `<div style="padding:40px; text-align:center; color:#ccc; font-size:14px;">상품이 없습니다.</div>`;
                 return;
             }
-
             let lastCategory = null;
-
             items.forEach(item => {
                 if (showHeaders) {
                     const currentCategory = item.category || "기타";
@@ -751,14 +773,11 @@
                         lastCategory = currentCategory;
                     }
                 }
-
                 const qty = cart[item.id] || 0;
                 const div = document.createElement('div');
                 div.className = `product-item ${qty > 0 ? 'selected' : ''}`;
                 div.innerHTML = `
-                    <div class="prod-img">
-                         ${item.img}
-                    </div>
+                    <div class="prod-img">${item.img}</div>
                     <div class="prod-info">
                         <div class="prod-name">
                              ${item.isNew ? '<span class="new-badge" style="font-size:10px; margin-right:4px;">NEW</span>' : ''}
@@ -766,9 +785,7 @@
                              ${item.name}
                         </div>
                         <div class="prod-unit">${item.unit}</div>
-                        <div class="prod-bottom">
-                            <div class="prod-price">${item.price.toLocaleString()}원</div>
-                        </div>
+                        <div class="prod-bottom"><div class="prod-price">${item.price.toLocaleString()}원</div></div>
                     </div>
                     <div class="qty-control">
                         <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
@@ -784,16 +801,7 @@
             if(!cart[id]) cart[id] = 0;
             cart[id] += delta;
             if(cart[id] < 0) cart[id] = 0;
-            
-            // Update UI
             document.querySelectorAll(`[id^="qty-${id}"]`).forEach(el => el.innerText = cart[id]);
-            
-            // Update row styling
-            const items = currentList.filter(i => i.id === id);
-            // Re-render whole list is too heavy, just toggle class roughly or let it be.
-            // For simulation, let's just refresh the order bar logic.
-            // Ideally we find the parent .product-item and toggle class.
-            
             updateOrderBarState();
         }
 
@@ -825,38 +833,70 @@
             ['list1', 'list2', 'list3'].forEach(listId => {
                 const listItems = getExtendedList(listId);
                 listItems.forEach(item => {
-                    allEditorItems.push({ 
-                        ...item, 
-                        listId: listId, 
-                        tempOrder: item.order, // Can be null
-                        tempListId: listId 
-                    });
+                    allEditorItems.push({ ...item, listId: listId, tempOrder: item.order, tempListId: listId });
                 });
             });
             
-            // CHANGED: Always default focus to 'list1' for 1-2-3 order, regardless of current tab
             editorFocusList = 'list1'; 
-            
-            // Open with the current saved mode for this tab
             const savedMode = tabViewModes[currentTab] || 'manual';
             editorSortMode = savedMode;
 
             setEditorViewMode(savedMode);
-            // Update header button active state
             updateEditorHeaderState();
+            
+            // Ensure guide content is correct on open
+            updateGuideContent();
             
             editorModal.classList.add('open');
         }
 
         function closeEditor() { editorModal.classList.remove('open'); }
         
-        // Use Header Tabs to Focus/Sort
+        // --- GUIDE LOGIC ---
+        function toggleGuide() {
+            isGuideOpen = !isGuideOpen;
+            const btn = document.getElementById('guideBtn');
+            const box = document.getElementById('guideBox');
+            
+            if(isGuideOpen) {
+                btn.classList.add('active');
+                box.classList.add('open');
+                updateGuideContent(); // Ensure fresh content
+            } else {
+                btn.classList.remove('active');
+                box.classList.remove('open');
+            }
+        }
+
+        function updateGuideContent() {
+            const titleEl = document.getElementById('cmTitle');
+            const contentEl = document.getElementById('cmContent');
+            
+            if (editorSortMode === 'category') {
+                titleEl.innerHTML = `
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <span>분류순 편집 가이드</span>`;
+                contentEl.innerHTML = `
+                    <div class="cm-row"><div class="cm-label">정의</div><div>상품을 종류(카테고리)별로 묶어 정렬합니다.</div></div>
+                    <div class="cm-row"><div class="cm-label">L1~L3</div><div>버튼을 누르면 해당 리스트 상품이 <strong>맨 위</strong>로 올라옵니다.</div></div>
+                    <div class="cm-row"><div class="cm-label">순번</div><div>번호 입력 시 전체 순위가 변경되어 적용됩니다.</div></div>
+                `;
+            } else {
+                titleEl.innerHTML = `
+                    <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    <span>번호순 편집 가이드</span>`;
+                contentEl.innerHTML = `
+                    <div class="cm-row"><div class="cm-label">정의</div><div>내가 설정한 번호 순서대로 나열됩니다.</div></div>
+                    <div class="cm-row"><div class="cm-label">L1~L3</div><div>편집할 리스트를 선택해 최상단에서 모아볼 수 있습니다.</div></div>
+                    <div class="cm-row"><div class="cm-label">순서</div><div><strong>번호 입력</strong> 또는 <strong>우측 핸들 드래그</strong>로 순서를 바꿉니다.</div></div>
+                `;
+            }
+        }
+
         function focusEditorList(listId) {
             editorFocusList = listId;
             updateEditorHeaderState();
             renderEditorList();
-            
-            // Optional: Scroll to top when switching focus
             editorListEl.scrollTop = 0;
         }
 
@@ -870,13 +910,16 @@
             editorSortMode = mode;
             document.querySelectorAll('.ev-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`ev-btn-${mode}`).classList.add('active');
+            
+            // Update Guide Text when mode changes
+            if(isGuideOpen) updateGuideContent();
+            
             renderEditorList();
         }
 
         function updateEditorOrder(id, newVal) {
             const item = allEditorItems.find(i => i.id === id);
             if (!item) return;
-
             if (newVal === '' || newVal === null || isNaN(newVal)) {
                 item.tempOrder = null;
             } else {
@@ -886,27 +929,16 @@
 
         function renderEditorList() {
             editorListEl.innerHTML = '';
-            
-            // Flattened List (Show All Items)
             let visibleItems = [...allEditorItems];
             const isCategoryMode = (editorSortMode === 'category');
 
-            // Sort logic: 
-            // CHANGED: Use listId (Original List) to prevent visual jumping during edits
             visibleItems.sort((a, b) => {
-                // Priority 1: Is item in Focused List? (Using original listId for stability)
                 const aIsFocused = (a.listId === editorFocusList);
                 const bIsFocused = (b.listId === editorFocusList);
-                
                 if (aIsFocused && !bIsFocused) return -1;
                 if (!aIsFocused && bIsFocused) return 1;
-
-                // Priority 2: Group by List ID (Using original listId for stability)
-                if (a.listId !== b.listId) {
-                    return a.listId.localeCompare(b.listId);
-                }
-
-                // Priority 3: Internal Sort (Category vs Manual)
+                if (a.listId !== b.listId) return a.listId.localeCompare(b.listId);
+                
                 if (isCategoryMode) {
                     const catA = a.category || "기타";
                     const catB = b.category || "기타";
@@ -921,7 +953,6 @@
             let lastCategory = null;
 
             visibleItems.forEach((item) => {
-                // List Section Header (Based on original listId for stability)
                 if (item.listId !== lastListId) {
                     const listHeader = document.createElement('div');
                     listHeader.className = 'editor-list-header';
@@ -929,10 +960,9 @@
                     listHeader.innerText = listNameMap[item.listId] || item.listId;
                     editorListEl.appendChild(listHeader);
                     lastListId = item.listId;
-                    lastCategory = null; // Reset category for new list
+                    lastCategory = null; 
                 }
 
-                // Sub-header for Category Mode
                 if (isCategoryMode) {
                     const currentCategory = item.category || "기타";
                     if (currentCategory !== lastCategory) {
@@ -947,62 +977,40 @@
                 const row = document.createElement('div');
                 row.className = `editor-row ${item.isNew ? 'is-new' : ''}`;
                 
-                // Identify which column corresponds to item's current list
                 const renderSlot = (targetListId) => {
-                    // Check if this item belongs to this slot (targetListId)
-                    // Uses tempListId to update the INPUT state dynamically
                     if (item.tempListId === targetListId) {
                         const inputClass = "editor-input active-input";
                         const displayVal = (item.tempOrder === Infinity || item.tempOrder === null) ? '' : item.tempOrder;
                         return `<input type="number" class="${inputClass}" value="${displayVal}" data-id="${item.id}" onfocus="this.select()" onchange="updateEditorOrder(${item.id}, this.value)">`;
                     } else {
-                        // Click to move (shows different style if it's the current Focus List but not item's list)
                         const isActive = (item.tempListId === targetListId); 
                         const activeClass = isActive ? 'active' : '';
-                        
                         const onclickAction = `onclick="moveItemList(${item.id}, '${targetListId}')"`;
                         return `<div class="editor-move-btn ${activeClass}" ${onclickAction}>
-                                    <svg style="width:18px; height:18px; color:#ccc;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
+                                    <svg style="width:18px; height:18px; color:#ccc;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 </div>`;
                     }
                 };
 
                 const delOnclick = `onclick="deleteEditorItem(${item.id})"`;
-
                 row.innerHTML = `
-                    <div class="editor-del-btn" ${delOnclick}>
-                        <svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                    </div>
-                    <div class="editor-name-area">
-                        <span>${item.isNew ? '<span class="new-badge">NEW</span>' : ''}${item.name}</span>
-                        <div class="editor-cat-sub">${item.category || ''}</div>
-                    </div>
+                    <div class="editor-del-btn" ${delOnclick}><svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></div>
+                    <div class="editor-name-area"><span>${item.isNew ? '<span class="new-badge">NEW</span>' : ''}${item.name}</span><div class="editor-cat-sub">${item.category || ''}</div></div>
                     <div>${renderSlot('list1')}</div>
                     <div>${renderSlot('list2')}</div>
                     <div>${renderSlot('list3')}</div>
-                    <div class="editor-drag-handle">
-                        <svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                    </div>
+                    <div class="editor-drag-handle"><svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div>
                 `;
                 editorListEl.appendChild(row);
             });
         }
 
         function moveItemList(id, targetListId) { 
-            // NOTE: Removed restriction for 'category' mode
             const item = allEditorItems.find(i => i.id === id); 
             if(!item) return; 
-            
-            // Move item to new list (Temporary)
             item.tempListId = targetListId;
-            item.tempOrder = ''; // Reset order to empty to allow fresh input
-            
-            // Re-render to update grouping immediately (Visual Jump to new section)
+            item.tempOrder = ''; 
             renderEditorList(); 
-
-            // Auto-focus the newly created input
             setTimeout(() => {
                 const input = document.querySelector(`.editor-input[data-id="${id}"]`);
                 if(input) input.focus();
@@ -1010,8 +1018,6 @@
         }
 
         function deleteEditorItem(id) { 
-            // NOTE: Removed restriction for 'category' mode
-            // Native confirm is okay, but for simulation let's just delete
             if(!confirm('삭제하시겠습니까?')) return; 
             const idx = allEditorItems.findIndex(i => i.id === id); 
             if(idx > -1) allEditorItems.splice(idx, 1); 
@@ -1022,58 +1028,32 @@
             ['list1', 'list2', 'list3'].forEach(key => userSortData[key] = {});
             ['list1', 'list2', 'list3'].forEach(listId => {
                 let itemsInList = allEditorItems.filter(i => i.tempListId === listId);
-                
-                // Save Logic
                 itemsInList.sort(compareEditorItems);
-                
-                // FORCE 'manual' mode after save
                 tabViewModes[listId] = 'manual';
-
                 itemsInList.forEach((item, idx) => {
-                    let isNewlyMoved = false;
-                    if (item.listId !== listId) {
-                        isNewlyMoved = true;
-                    }
-
+                    let isNewlyMoved = (item.listId !== listId);
                     const finalIsNew = item.isNew || isNewlyMoved;
                     const finalAddedAt = isNewlyMoved ? Date.now() : item.addedAt;
-
-                    userSortData[listId][item.id] = { 
-                        order: item.tempOrder, 
-                        isNew: finalIsNew, 
-                        addedAt: finalAddedAt 
-                    };
+                    userSortData[listId][item.id] = { order: item.tempOrder, isNew: finalIsNew, addedAt: finalAddedAt };
                 });
             });
-
-            // Refresh view
-            if(currentTab !== editorFocusList) {
-                switchTab(editorFocusList, 'custom'); 
-            } else { 
-                currentList = getExtendedList(currentTab); 
-                switchViewerSort('custom'); 
-            }
+            if(currentTab !== editorFocusList) switchTab(editorFocusList, 'custom'); 
+            else { currentList = getExtendedList(currentTab); switchViewerSort('custom'); }
             showToast('저장되었습니다.');
             closeEditor();
         }
 
-        // Scroll listener
         let lastScrollY = 0;
         const scrollContainer = document.getElementById('scrollContainer');
         scrollContainer.addEventListener('scroll', () => {
             const currentScrollY = scrollContainer.scrollTop;
             const sBar = document.getElementById('viewerSortBar');
-            if (currentScrollY > lastScrollY && currentScrollY > 10) {
-                sBar.classList.add('scrolled-hide');
-            } else if (currentScrollY < lastScrollY) {
-                sBar.classList.remove('scrolled-hide');
-            }
+            if (currentScrollY > lastScrollY && currentScrollY > 10) sBar.classList.add('scrolled-hide');
+            else if (currentScrollY < lastScrollY) sBar.classList.remove('scrolled-hide');
             lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
         });
 
-        // Start
         init();
-
     </script>
 </body>
 </html>
