@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="google" content="notranslate">
-    <title>ORDERZ - 주문 홈 시뮬레이션</title>
+    <title>ORDERZ - NH라인 주문 시뮬레이션</title>
     <style>
         /* --- Reset & Base Styles --- */
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -52,6 +52,7 @@
             --nav-height: 56px;
             --unified-bar-height: 76px; 
             --sidebar-width: 85%;
+            --highlight-bg: #fffce0; /* 신규 상품 강조 배경색 */
         }
 
         /* --- Icons (SVG) --- */
@@ -150,7 +151,7 @@
             pointer-events: none;
         }
 
-        /* New Date Button in Sort Bar */
+        /* Sort Bar Date Button */
         .sort-bar-date-btn {
             display: flex; align-items: center; gap: 4px;
             background: transparent; border: none; padding: 0;
@@ -189,6 +190,7 @@
             background: #fff; transition: background-color 0.2s;
         }
         .product-item.selected { background-color: #f0fdf4; }
+        .product-item.is-new-item { background-color: var(--highlight-bg); } /* Highlight New Items */
 
         /* Checkbox Style for Search Selection */
         .global-item-checkbox {
@@ -534,7 +536,7 @@
         }
 
         .editor-row { display: grid; grid-template-columns: 32px 1fr 50px 50px 50px 32px; gap: 4px; padding: 10px; border-bottom: 1px solid #f2f4f6; background: #fff; align-items: center; transition: background 0.2s; }
-        .editor-row.is-new { background: #fffce0; }
+        .editor-row.is-new { background: #fffce0; } /* Keep Editor Highlight */
         
         /* Drag Feedback Styles */
         .editor-row.drag-over-allow { background: #dcfce7 !important; border-bottom: 2px solid var(--primary); transform: scale(0.99); }
@@ -565,7 +567,8 @@
         /* Hide handle in manual mode */
         .editor-drag-handle.hide-handle { display: none !important; }
 
-        .new-badge { font-size:9px; color:#fff; background:#f04452; padding:1px 3px; border-radius:3px; margin-right:4px; flex-shrink:0; vertical-align: middle; display: inline-block; }
+        /* Badge Removed, but class kept for potential future use or specific overrides */
+        .new-badge { display: none; } 
         
         .editor-bottom-bar { height: 60px; display: flex; padding: 8px 16px; gap: 10px; background: #fff; border-top: 1px solid #eee; flex-shrink: 0; z-index: 20; padding-bottom: env(safe-area-inset-bottom); box-sizing: content-box; }
         .editor-btn-cancel { flex: 1; border: 1px solid #d1d6db; background: #fff; color: #333; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; }
@@ -919,7 +922,7 @@
         }
 
         // --- Tab & List Functions ---
-        function switchTab(tabName) {
+        function switchTab(tabName, initialSort = 'latest') {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById(`tab-${tabName}`).classList.add('active');
             
@@ -1078,13 +1081,13 @@
                 }
                 const qty = cart[item.id] || 0;
                 const div = document.createElement('div');
-                div.className = `product-item ${qty > 0 ? 'selected' : ''}`;
+                // Apply 'is-new-item' class for highlighting new items
+                div.className = `product-item ${qty > 0 ? 'selected' : ''} ${item.isNew ? 'is-new-item' : ''}`;
                 
                 div.innerHTML = `
                     <div class="prod-img">${item.img}</div>
                     <div class="prod-info">
                         <div class="prod-name">
-                             ${item.isNew ? '<span class="new-badge" style="font-size:10px; margin-right:4px;">NEW</span>' : ''}
                              ${item.tag ? `<span class="prod-tag">${item.tag}</span>` : ''} 
                              ${item.name}
                         </div>
@@ -1178,12 +1181,14 @@
                 localResultContainer.innerHTML = `<div class="empty-result-msg">리스트에 검색 결과가 없습니다.</div>`;
             }
             queryTextEl.innerText = query;
+            localResultContainer.style.display = 'block';
             globalTriggerArea.style.display = 'block';
             globalResultContainer.style.display = 'none';
         }
 
         function executeGlobalSearch() {
             globalTriggerArea.style.display = 'none';
+            localResultContainer.style.display = 'none';
             globalResultContainer.style.display = 'block';
             selectedGlobalIds.clear();
             updateGlobalActionBtn();
@@ -1456,7 +1461,7 @@
 
                 row.innerHTML = `
                     <div class="editor-del-btn" ${delOnclick}><svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></div>
-                    <div class="editor-name-area"><span>${item.isNew ? '<span class="new-badge">NEW</span>' : ''}${item.name}</span><div class="editor-cat-sub">${item.category || ''}</div></div>
+                    <div class="editor-name-area"><span>${item.name}</span><div class="editor-cat-sub">${item.category || ''}</div></div>
                     <div>${renderSlot('list1')}</div>
                     <div>${renderSlot('list2')}</div>
                     <div>${renderSlot('list3')}</div>
