@@ -219,9 +219,16 @@
             margin-top: -1px;
             display: flex; align-items: center;
         }
+        /* Special Tab Header Style (Different color or icon if needed) */
+        .main-section-header.special-header {
+            background: #fff8f8; color: #d63031; border-top: 4px solid #f1f3f5;
+        }
         .main-section-header::before {
             content: ''; display: inline-block; width: 4px; height: 14px;
             background: var(--primary); margin-right: 8px; border-radius: 2px;
+        }
+        .main-section-header.special-header::before {
+            background: #d63031;
         }
 
         .prod-img { 
@@ -800,11 +807,15 @@
             "기타": 99
         };
 
-        // --- Data Mockup (Updated Categories) ---
+        // --- Data Mockup (5 Special Themes) ---
         const productsData = {
             'special': [
-                { id: 1001, name: "[특가] 다부리 배추 4포기 BOX", unit: "BOX", price: 12500, img: "🥬", tag: "단골특가", category: "채소.과일" },
-                { id: 1002, name: "[특가] 햇감자 10kg BOX", unit: "BOX", price: 18000, img: "🥔", tag: "한정수량", category: "채소.과일" },
+                { id: 1001, name: "[특가] 다부리 배추 4포기 BOX", unit: "BOX", price: 12500, img: "🥬", tag: "단골특가", theme: "🔥 사장님 강력 추천" },
+                { id: 1002, name: "[특가] 햇감자 10kg BOX", unit: "BOX", price: 18000, img: "🥔", tag: "한정수량", theme: "🔥 사장님 강력 추천" },
+                { id: 1003, name: "청양고추 (특) 10kg", unit: "BOX", price: 45000, img: "🌶️", tag: "세일", theme: "🥬 제철 신선 식품" },
+                { id: 1004, name: "노르웨이 고등어 10kg", unit: "BOX", price: 32000, img: "🐟", tag: "인기", theme: "🐟 수산/축산 특가" },
+                { id: 1005, name: "업소용 식용유 18L", unit: "EA", price: 38000, img: "🌻", tag: "대용량", theme: "📦 대용량 식자재" },
+                { id: 1006, name: "냉동 볶음밥 모음전", unit: "EA", price: 2500, img: "🍛", tag: "떨이", theme: "⏰ 마감 임박 떨이" },
             ],
             'list1': [
                 { id: 1, name: "양배추(대) 42망(3입) BOX", unit: "BOX", price: 10900, img: "🥦", tag: null, category: "채소.과일" },
@@ -932,11 +943,10 @@
             const sortBar = document.getElementById('viewerSortBar');
             if (tabName === 'special') {
                 sortBar.style.display = 'none';
+                renderMainList(); // Direct render for special tab
             } else {
                 sortBar.style.display = 'grid';
                 sortBar.classList.remove('scrolled-hide');
-                // 기존: 무조건 latest로 초기화
-                // 변경: 현재 viewerSortMode 상태를 유지
                 switchViewerSort(viewerSortMode);
             }
             
@@ -956,77 +966,51 @@
 
         function compareItems(a, b) {
             // New Main Sort Logic
-            // 1. 최신상품 (isNew = true)
             if (a.isNew && !b.isNew) return -1;
             if (!a.isNew && b.isNew) return 1;
 
-            // 2. 순번상품 (번호가 적은 순)
             const orderA = (a.order !== null && a.order !== '') ? parseInt(a.order) : Infinity;
             const orderB = (b.order !== null && b.order !== '') ? parseInt(b.order) : Infinity;
             
-            // 번호 유무에 따른 정렬 (번호가 있는게 우선)
             if (orderA !== Infinity && orderB === Infinity) return -1;
             if (orderA === Infinity && orderB !== Infinity) return 1;
 
-            // 둘 다 번호가 있으면 오름차순
             if (orderA !== Infinity && orderB !== Infinity) {
                 if (orderA !== orderB) return orderA - orderB;
             }
 
-            // 3. 번호가 같다면(혹은 둘다 없다면) 최신순 (addedAt 내림차순)
             return (b.addedAt || 0) - (a.addedAt || 0);
         }
         
-        // Editor Sort Logic - Keep Focus List Top, Group by List ID
         function compareEditorItems(a, b) {
-            // 1. [공통] 포커스된 리스트(탭) 최상단 노출
             const aIsFocused = (a.tempListId === editorFocusList);
             const bIsFocused = (b.tempListId === editorFocusList);
-            
             if (aIsFocused && !bIsFocused) return -1;
             if (!aIsFocused && bIsFocused) return 1;
 
-            // 2. [공통] 리스트 그룹핑 (L1끼리, L2끼리...)
             if (a.tempListId !== b.tempListId) return a.tempListId.localeCompare(b.tempListId);
 
-            // 3. [상태 확인] 신규 진입/이동 상품 여부
             const aIsMovedOrNew = a.isNew || (a.listId !== a.tempListId);
             const bIsMovedOrNew = b.isNew || (b.listId !== b.tempListId);
 
-            // --- 정렬 모드별 분기 ---
-            
             if (editorSortMode === 'category') {
-                // [A. 카테고리순 정렬]
-                // 우선순위: 카테고리코드 > (신규/이동) > 순번 > 최신순
-                
-                // 1. 카테고리 그룹핑 (코드순 정렬)
                 const catA = a.category || "기타";
                 const catB = b.category || "기타";
                 const codeA = CATEGORY_CODES[catA] || 99;
                 const codeB = CATEGORY_CODES[catB] || 99;
 
                 if (codeA !== codeB) return codeA - codeB;
-
-                // 2. 같은 카테고리 내에서 신규/이동 상품 최상단
                 if (aIsMovedOrNew && !bIsMovedOrNew) return -1;
                 if (!aIsMovedOrNew && bIsMovedOrNew) return 1;
-                
             } else {
-                // [B. 순번입력순 정렬]
-                // 우선순위: (신규/이동) > 순번 > 최신순  (카테고리 무시)
-                
-                // 1. 리스트 내에서 신규/이동 상품 무조건 최상단
                 if (aIsMovedOrNew && !bIsMovedOrNew) return -1;
                 if (!aIsMovedOrNew && bIsMovedOrNew) return 1;
             }
 
-            // 4. [공통] 순번 정렬 (tempOrder)
             const orderA = (a.tempOrder === null || a.tempOrder === '' || a.tempOrder === undefined) ? Infinity : parseInt(a.tempOrder);
             const orderB = (b.tempOrder === null || b.tempOrder === '' || b.tempOrder === undefined) ? Infinity : parseInt(b.tempOrder);
 
             if (orderA !== orderB) return orderA - orderB;
-
-            // 5. [공통] 최신순 정렬 (동순위 처리 및 순번없음 처리)
             return (b.addedAt || 0) - (a.addedAt || 0);
         }
 
@@ -1034,54 +1018,69 @@
             let displayList = [...currentList];
             const isCategoryView = (tabViewModes[currentTab] === 'category');
 
-            if(currentTab !== 'special') {
-                if(viewerSortMode === 'latest') {
-                    // Latest View: AddedAt desc
-                    displayList.sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
-                    renderProductList(displayList, mainListEl, false);
-                } else {
-                    if (isCategoryView) {
-                        displayList.sort((a, b) => {
-                            // Main List Category Sort: Code Order
-                            const catA = a.category || "기타";
-                            const catB = b.category || "기타";
-                            const codeA = CATEGORY_CODES[catA] || 99;
-                            const codeB = CATEGORY_CODES[catB] || 99;
-                            
-                            if (codeA !== codeB) return codeA - codeB;
-                            return compareItems(a, b);
-                        });
-                    } else {
-                        displayList.sort(compareItems);
-                    }
-                    renderProductList(displayList, mainListEl, isCategoryView);
-                }
-            } else {
+            if(currentTab === 'special') {
+                // Special Tab: No sorting, just grouping by theme
+                // Defined Theme Order for consistency
+                const themeOrder = [
+                    "🔥 사장님 강력 추천", 
+                    "⏰ 마감 임박 떨이", 
+                    "🥬 제철 신선 식품", 
+                    "📦 대용량 식자재", 
+                    "🐟 수산/축산 특가",
+                    "🍜 베스트 가공식품"
+                ];
+                
+                displayList.sort((a, b) => {
+                    const idxA = themeOrder.indexOf(a.theme);
+                    const idxB = themeOrder.indexOf(b.theme);
+                    return (idxA === -1 ? 99 : idxA) - (idxB === -1 ? 99 : idxB);
+                });
+                renderProductList(displayList, mainListEl, true, 'theme');
+                return;
+            }
+
+            if(viewerSortMode === 'latest') {
+                displayList.sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
                 renderProductList(displayList, mainListEl, false);
+            } else {
+                if (isCategoryView) {
+                    displayList.sort((a, b) => {
+                        const catA = a.category || "기타";
+                        const catB = b.category || "기타";
+                        const codeA = CATEGORY_CODES[catA] || 99;
+                        const codeB = CATEGORY_CODES[catB] || 99;
+                        
+                        if (codeA !== codeB) return codeA - codeB;
+                        return compareItems(a, b);
+                    });
+                } else {
+                    displayList.sort(compareItems);
+                }
+                renderProductList(displayList, mainListEl, isCategoryView);
             }
         }
 
-        function renderProductList(items, container, showHeaders = false) {
+        function renderProductList(items, container, showHeaders = false, groupBy = 'category') {
             container.innerHTML = '';
             if(items.length === 0) {
                 container.innerHTML = `<div style="padding:40px; text-align:center; color:#ccc; font-size:14px;">상품이 없습니다.</div>`;
                 return;
             }
-            let lastCategory = null;
+            let lastGroup = null;
             items.forEach(item => {
                 if (showHeaders) {
-                    const currentCategory = item.category || "기타";
-                    if (currentCategory !== lastCategory) {
+                    const currentGroup = item[groupBy] || "기타";
+                    if (currentGroup !== lastGroup) {
                         const headerDiv = document.createElement('div');
-                        headerDiv.className = 'main-section-header';
-                        headerDiv.innerText = currentCategory;
+                        // Special styling for special tab headers
+                        headerDiv.className = (groupBy === 'theme') ? 'main-section-header special-header' : 'main-section-header';
+                        headerDiv.innerText = currentGroup;
                         container.appendChild(headerDiv);
-                        lastCategory = currentCategory;
+                        lastGroup = currentGroup;
                     }
                 }
                 const qty = cart[item.id] || 0;
                 const div = document.createElement('div');
-                // Apply 'is-new-item' class for highlighting new items
                 div.className = `product-item ${qty > 0 ? 'selected' : ''} ${item.isNew ? 'is-new-item' : ''}`;
                 
                 div.innerHTML = `
@@ -1188,7 +1187,7 @@
 
         function executeGlobalSearch() {
             globalTriggerArea.style.display = 'none';
-            localResultContainer.style.display = 'none';
+            localResultContainer.style.display = 'none'; // Hide local results
             globalResultContainer.style.display = 'block';
             selectedGlobalIds.clear();
             updateGlobalActionBtn();
