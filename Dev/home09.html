@@ -1,0 +1,134 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/Dev/home08.html b/Dev/home08.html
+index ae5d9da392d9db9c3c0e884b46f37a248ed3f389..266b27a025d596f9e7e8f8dedcb9d1cabdb6d5fe 100644
+--- a/Dev/home08.html
++++ b/Dev/home08.html
+@@ -302,52 +302,52 @@
+         .unified-bottom-bar {
+             position: absolute; bottom: 0; left: 0; width: 100%;
+             height: calc(var(--unified-bar-height) + env(safe-area-inset-bottom));
+             background: #fff; border-top: 1px solid #eee;
+             box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+             z-index: 1000; display: flex; align-items: center; justify-content: space-between;
+             padding: 0 12px env(safe-area-inset-bottom); gap: 8px; 
+         }
+ 
+         .nav-side-btn {
+             flex: 1; height: 50px; border-radius: 12px; background: #fff; border: none;
+             display: flex; align-items: center; justify-content: center;
+             cursor: pointer; color: #555; transition: all 0.2s;
+             box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+         }
+         .center-main-btn {
+             flex: 1; height: 50px; background: #fff; border: none; border-radius: 12px;
+             display: flex; flex-direction: column; align-items: center; justify-content: center;
+             cursor: not-allowed; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+             transition: all 0.2s; padding: 0 4px; min-width: 0; position: relative;
+         }
+         .btn-brand-text { color: var(--primary); font-family: Arial; font-weight: 900; font-size: 10px; line-height: 1.1; margin-bottom: 3px; }
+         .btn-action-text { color: #111; font-size: 13px; font-weight: 700; letter-spacing: -0.8px; line-height: 1.1; white-space: nowrap; }
+         
+         .center-main-btn.mall-mode-btn { background: #222; cursor: pointer; }
+-        .center-main-btn.mall-mode-btn .btn-brand-text { display: none; }
+-        .center-main-btn.mall-mode-btn .btn-action-text { color: #fff; font-size: 15px; font-weight: 600; }
++        .center-main-btn.mall-mode-btn .btn-brand-text { color: #fff; }
++        .center-main-btn.mall-mode-btn .btn-action-text { color: #fff; font-size: 13px; font-weight: 600; }
+         .center-main-btn.mall-mode-btn.has-selection { background: var(--primary); }
+         .center-main-btn.active { background: #f0fdf4; cursor: pointer; box-shadow: 0 4px 12px rgba(31, 170, 94, 0.2); }
+ 
+         /* --- Editor Modal --- */
+         .editor-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; transform: translateY(100%); transition: transform 0.3s; display:flex; flex-direction:column; }
+         .editor-modal.open { transform: translateY(0); }
+         .editor-header { height: 56px; border-bottom:1px solid #eee; display:flex; align-items:center; justify-content:center; font-weight:700; position:relative; }
+         .editor-close { position:absolute; right:16px; background:none; border:none; color:#555; cursor: pointer; }
+         .editor-top-area { padding: 16px; background: #f8f9fa; border-bottom: 1px solid #eee; font-size: 13px; color: #555; text-align: center; }
+         .editor-bottom-bar { height: 60px; display: flex; padding: 8px 16px; gap: 10px; background: #fff; border-top: 1px solid #eee; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom); }
+         .editor-btn-save { flex: 1; border: none; background: #333; color: #fff; border-radius: 8px; font-weight: 600; cursor: pointer; }
+ 
+         /* Toast & Animations */
+         .toast-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: white; padding: 14px 24px; border-radius: 30px; font-size: 14px; z-index: 3000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+         .toast-msg.show { opacity: 1; }
+         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+     </style>
+ </head>
+ <body>
+ 
+     <div class="app-container">
+         <header>
+             <button class="header-mode-btn" id="headerModeBtn" onclick="toggleAppMode()">
+                 <!-- Icon will be injected by JS -->
+             </button>
+@@ -618,64 +618,66 @@
+             const btn = document.getElementById('headerModeBtn');
+             const orderView = document.getElementById('orderModeElements');
+             const mallView = document.getElementById('mallModeElements');
+             
+             if (currentAppMode === 'mall') {
+                 btn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg> 주문하기`;
+                 orderView.style.display = 'none';
+                 mallView.style.display = 'flex';
+                 renderMallList();
+             } else {
+                 btn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> 상품목록`;
+                 orderView.style.display = 'flex';
+                 mallView.style.display = 'none';
+                 document.getElementById('orderSearchBar').classList.remove('show');
+                 
+                 if (currentTab !== 'all' && currentTab !== 'special' && !userLists.find(l => l.id === currentTab)) {
+                    currentTab = 'all';
+                 }
+                 switchTab(currentTab);
+             }
+             updateBottomButton();
+         }
+ 
+         function updateBottomButton() {
+             const mainBtn = document.getElementById('mainOrderBtn');
+-            const mainBtnText = document.getElementById('orderBtnText');
++            const updateMainBtnContent = (label) => {
++                mainBtn.innerHTML = `<span class="btn-brand-text">ORDERZ</span><span class="btn-action-text" id="orderBtnText">${label}</span>`;
++            };
+             
+             if (currentAppMode === 'mall') {
+                 mainBtn.className = 'center-main-btn mall-mode-btn';
+                 if (selectedIds.size > 0) {
+                     mainBtn.classList.add('has-selection');
+-                    mainBtnText.innerText = `${selectedIds.size}개 상품 담기`;
++                    updateMainBtnContent(`${selectedIds.size}개 상품 담기`);
+                 } else {
+                     mainBtn.classList.remove('has-selection');
+-                    mainBtnText.innerText = '주문하러 가기';
++                    updateMainBtnContent('상품을 담아주세요');
+                 }
+             } else {
+                 mainBtn.className = 'center-main-btn';
+-                mainBtn.innerHTML = `<span class="btn-brand-text">ORDERZ</span><span class="btn-action-text" id="orderBtnText">상품을 담아주세요</span>`;
++                updateMainBtnContent('상품을 담아주세요');
+             }
+         }
+ 
+         function handleMainBtnClick() {
+             if (currentAppMode === 'mall') {
+                 if(selectedIds.size > 0) {
+                     if(userLists.length === 0) userLists.push({ id:'list1', name:'LIST 1'});
+                     
+                     selectedIds.forEach(id => {
+                         const item = rawDB.find(p => p.id === id);
+                         if(item) {
+                             if(!item.lists) item.lists = [];
+                             if(!item.lists.includes(userLists[0].id)) item.lists.push(userLists[0].id);
+                         }
+                     });
+ 
+                     showToast(`${selectedIds.size}개 상품이 주문서에 담겼습니다.`);
+                     selectedIds.clear();
+                     currentAppMode = 'order';
+                     updateModeUI();
+                 } else {
+                     currentAppMode = 'order';
+                     updateModeUI();
+                 }
+             } else {
+ 
+EOF
+)
