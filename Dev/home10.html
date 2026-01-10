@@ -28,7 +28,7 @@
             background: #fff; z-index: 100; border-bottom: 1px solid var(--border); flex-shrink: 0; position: relative;
         }
         
-        /* Header Button: Mode Switcher OR Back Button */
+        /* Header Button: Mode Switcher (상단 좌측) */
         .header-mode-btn { 
             background: transparent; 
             border: 1px solid transparent; 
@@ -36,7 +36,7 @@
             border-radius: 8px; 
             font-size: 13px; 
             font-weight: 600; 
-            color: #444; 
+            color: #333; 
             display: flex; 
             align-items: center; 
             gap: 6px; 
@@ -44,9 +44,9 @@
             transition: background-color 0.2s;
         }
         .header-mode-btn:active { background-color: #f0f0f0; }
-        .header-mode-btn svg { width: 18px; height: 18px; stroke-width: 2; }
+        .header-mode-btn svg { width: 20px; height: 20px; stroke-width: 2; }
 
-        /* Title Center */
+        /* Title Center (중앙 홈 버튼) */
         .header-center-title { 
             position: absolute; 
             left: 50%; 
@@ -55,11 +55,15 @@
             font-weight: 800; 
             cursor: pointer; 
             transition: all 0.1s;
-            padding: 4px 8px; 
+            padding: 4px 8px; /* 터치 영역 확보 */
         }
-        .header-center-title:active { opacity: 0.6; transform: translateX(-50%) scale(0.96); }
+        /* 클릭 피드백 */
+        .header-center-title:active { 
+            opacity: 0.6; 
+            transform: translateX(-50%) scale(0.96); 
+        }
         
-        /* Profile Group */
+        /* Profile Group: 0P Left, Icon Right */
         .header-profile-group { 
             display: flex; 
             flex-direction: row; 
@@ -88,8 +92,10 @@
 
         /* --- Mall Mode Specifics (T-P1) --- */
         .mall-category-nav { display: flex; justify-content: space-around; padding: 12px 0; background: #fff; border-bottom: 1px solid #f0f0f0; }
-        .mall-cat-item { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 20%; opacity: 0.8; }
+        .mall-cat-item { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 20%; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
+        .mall-cat-item.active { opacity: 1; font-weight: bold; color: var(--primary); }
         .mall-cat-icon { width: 44px; height: 44px; background: #f8f9fa; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid #eee; }
+        .mall-cat-item.active .mall-cat-icon { background: var(--primary-light); border-color: var(--primary); }
         .mall-cat-text { font-size: 11px; }
 
         /* Search Bar Overlay (CMD-A1: Layer over category bar) */
@@ -250,9 +256,8 @@
         <!-- HEADER (T-G3) -->
         <header>
             <!-- 
-                CMD-D1: 상단 버튼 (모드 스위치 OR 검색 종료 버튼) 
-                - 검색 모드일 때: '←' 아이콘 (검색 종료)
-                - 일반 모드일 때: 모드 스위치 (햄버거/체크리스트)
+                모드 스위치: 항상 유지 (검색 중에도 유지)
+                클릭 시: 모드 전환 (검색 종료 효과 포함)
             -->
             <button class="header-mode-btn" id="modeSwitchBtn" onclick="app.handleHeaderLeftBtn()">
                 <!-- JS Injected dynamically -->
@@ -278,7 +283,7 @@
         <div id="pageMall" class="content-scroll" style="display:none;">
             <!-- Category Nav (Replaced by Search Input in Search Mode) -->
             <div id="categoryNavArea" class="mall-category-nav">
-                <!-- JS Injected -->
+                <!-- JS Injected (UI Only) -->
             </div>
 
             <!-- CMD-A1: Search Input Layer -->
@@ -438,20 +443,17 @@
                 let html = '';
                 let className = 'main-cta-btn cta-default';
 
-                // CTA State Logic
+                // CTA Logic
                 if (mode === 'mall') {
-                    // [STATE: MALL] 상품목록
+                    // Page 1
                     html = `<span class="cta-brand">ORDERZ</span><span>주문하러 가기</span>`;
                 } else {
-                    // Order Mode
+                    // Page 2
                     if (cartCount === 0) {
-                        // [STATE: ORDER_EMPTY] 주문하기 + 수량 0
                         html = `<span class="cta-brand">ORDERZ</span><span>상품을 담아 주세요</span>`;
                     } else {
-                        // [STATE: ORDER_FILLED] 주문하기 + 수량 1 이상
                         html = `<span class="cta-brand">ORDERZ</span><span>담은 상품 확인</span>`;
                     }
-                    // [STATE: CONFIRM] "주문하기" - (별도 확인 페이지 구현 시 사용 예정)
                 }
 
                 this.btn.className = className;
@@ -484,6 +486,7 @@
 
             renderCategories() {
                 const container = document.getElementById('categoryNavArea');
+                // UI Only: No Click Event
                 container.innerHTML = CATEGORIES.map(c => `
                     <div class="mall-cat-item">
                         <div class="mall-cat-icon">${c.icon}</div>
@@ -507,46 +510,39 @@
                 if (isSearchMode) {
                     catNav.style.display = 'none';
                     searchBar.style.display = 'block';
-                    banner.style.display = 'none'; // Hide Banner
-                    tabs.style.display = 'none';   // Hide Tabs
+                    banner.style.display = 'none'; 
+                    tabs.style.display = 'none';   
                     
-                    // CMD-D1: Header Btn becomes "Back" (Exit Search)
-                    modeBtn.innerHTML = `
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="19" y1="12" x2="5" y2="12"></line>
-                            <polyline points="12 19 5 12 12 5"></polyline>
-                        </svg>
-                        <span>뒤로</span>
-                    `;
+                    // Request: Maintain Mode Switcher even in Search Mode
+                    // Do NOT change to Back button
                 } else {
                     catNav.style.display = 'flex';
                     searchBar.style.display = 'none';
-                    banner.style.display = 'block'; // Show Banner
-                    tabs.style.display = 'flex';    // Show Tabs
-                    
-                    // Normal Mode Btn Logic (Mall/Order)
-                    if (mode === 'mall') {
-                        modeBtn.innerHTML = `
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                            <span>상품목록</span>
-                        `;
-                    } else {
-                        modeBtn.innerHTML = `
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14l2 2 4-4"></path></svg>
-                            <span>주문하기</span>
-                        `;
-                    }
+                    banner.style.display = 'block'; 
+                    tabs.style.display = 'flex';    
                 }
 
-                // Main Mode UI
+                // Normal Mode Btn Logic (Always applied)
                 if (mode === 'mall') {
                     document.getElementById('pageMall').style.display = 'block';
                     document.getElementById('pageOrder').style.display = 'none';
                     this.renderMallList();
+                    
+                    // Display: "상품목록" + Hamburger Icon
+                    modeBtn.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        <span>상품목록</span>
+                    `;
                 } else {
                     document.getElementById('pageMall').style.display = 'none';
                     document.getElementById('pageOrder').style.display = 'block';
                     this.renderOrderList();
+
+                    // Display: "주문하기" + Checklist Icon
+                    modeBtn.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14l2 2 4-4"></path></svg>
+                        <span>주문하기</span>
+                    `;
                 }
 
                 document.querySelectorAll('.mall-sub-tab').forEach(el => {
@@ -564,11 +560,10 @@
 
                 // Search Filtering (Overlay Mode)
                 if (isSearchMode) {
-                    // CMD-B1: Filter items
                     if (searchQuery) {
                         items = items.filter(i => i.name.includes(searchQuery));
                     }
-                    // CMD-B2: Search Summary Bar (Updated Format: "Term · Count")
+                    // CMD-B2: Search Summary Bar
                     summaryHtml = `
                         <div class="search-summary-bar">
                             <span class="search-keyword">${searchQuery}</span>
@@ -650,12 +645,10 @@
             // --- Header Button Action (Dynamic) ---
             handleHeaderLeftBtn() {
                 // Request: Maintain Mode Switch functionality even in search mode
-                // Clicking this will switch mode (and implicitly close search via toggleMode logic)
                 this.toggleModeWithGuide();
             },
 
             // --- Search Logic ---
-            // CMD-A1: Search Entry
             openSearch() {
                 if (this.state.mode !== 'mall') return; // Only in Mall
                 this.state.isSearchMode = true;
@@ -663,7 +656,6 @@
                 setTimeout(() => document.getElementById('searchInput').focus(), 100);
             },
 
-            // CMD-C1, C2: Close Search & Restore
             closeSearch() {
                 this.state.isSearchMode = false;
                 this.state.searchQuery = '';
@@ -702,60 +694,10 @@
                 this.state.isSearchMode = false; // Reset search
                 this.state.save();
             },
-            update() {
-                if (!app.state) return;
 
-                const { mode, mallTab, mallCat, isSearchMode } = app.state;
-                const modeBtn = document.getElementById('modeSwitchBtn');
-                
-                // Search Mode UI Toggle (CMD-A1)
-                const catNav = document.getElementById('categoryNavArea');
-                const searchBar = document.getElementById('searchBarArea');
-                const banner = document.getElementById('mallBanner');
-                const tabs = document.getElementById('mallTabs');
-                
-                if (isSearchMode) {
-                    catNav.style.display = 'none';
-                    searchBar.style.display = 'block';
-                    banner.style.display = 'none'; // Hide Banner
-                    tabs.style.display = 'none';   // Hide Tabs
-                    
-                    // Request: Maintain Mode Switcher even in Search Mode
-                    // Do NOT change to Back button
-                } else {
-                    catNav.style.display = 'flex';
-                    searchBar.style.display = 'none';
-                    banner.style.display = 'block'; // Show Banner
-                    tabs.style.display = 'flex';    // Show Tabs
-                }
-
-                // Normal Mode Btn Logic (Always applied)
-                if (mode === 'mall') {
-                    document.getElementById('pageMall').style.display = 'block';
-                    document.getElementById('pageOrder').style.display = 'none';
-                    this.renderMallList();
-                    
-                    // Display: "상품목록" + Hamburger Icon
-                    modeBtn.innerHTML = `
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                        <span>상품목록</span>
-                    `;
-                } else {
-                    document.getElementById('pageMall').style.display = 'none';
-                    document.getElementById('pageOrder').style.display = 'block';
-                    this.renderOrderList();
-
-                    // Display: "주문하기" + Checklist Icon
-                    modeBtn.innerHTML = `
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14l2 2 4-4"></path></svg>
-                        <span>주문하기</span>
-                    `;
-                }
-
-                document.querySelectorAll('.mall-sub-tab').forEach(el => {
-                    const tabName = el.getAttribute('onclick').match(/'([^']+)'/)[1];
-                    el.classList.toggle('active', tabName === mallTab);
-                });
+            setMallTab(tab) {
+                this.state.mallTab = tab;
+                this.state.save();
             },
             
             toggleSelect(id) {
