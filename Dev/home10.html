@@ -59,16 +59,7 @@
             border-bottom-color: #16a34a;
             font-weight: 700;
         }
-        .cl-tab-save {
-            flex: 1;
-            text-align: center;
-            padding: 0.75rem 0;
-            font-size: 0.875rem;
-            color: #3b82f6;
-            font-weight: 700;
-            border-bottom: 2px solid transparent;
-        }
-        .cl-tab-save:active { background-color: #eff6ff; }
+        /* cl-tab-save 스타일 제거 (더 이상 탭에 위치하지 않음) */
 
         /* Grid Layout */
         .cl-grid-row {
@@ -181,6 +172,11 @@
         #move-sheet-overlay { background-color: rgba(0,0,0,0.4); transition: opacity 0.2s; }
         #move-sheet { transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1); transform: translateY(100%); }
         #move-sheet.visible { transform: translateY(0); }
+        
+        /* Delivery Date Sheet */
+        #delivery-sheet-overlay { background-color: rgba(0,0,0,0.4); transition: opacity 0.2s; }
+        #delivery-sheet { transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1); transform: translateY(100%); }
+        #delivery-sheet.visible { transform: translateY(0); }
 
         /* Add List Btn */
         .add-list-btn-wide {
@@ -228,6 +224,65 @@
             transform: translateY(0);
         }
 
+        /* Sub Section Bar Styles */
+        .sub-section-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: #fff;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 13px;
+        }
+        .delivery-btn {
+            display: flex; align-items: center; gap: 4px;
+            color: #374151; font-weight: 600;
+            cursor: pointer;
+        }
+        .sort-dropdown-container {
+            position: relative;
+        }
+        .sort-btn {
+            display: flex; align-items: center; gap: 4px;
+            color: #4b5563; font-weight: 500; cursor: pointer;
+        }
+        .sort-dropdown-menu {
+            position: absolute;
+            top: 100%; right: 0;
+            margin-top: 4px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 140px;
+            z-index: 40;
+            display: none;
+        }
+        .sort-dropdown-menu.active { display: block; }
+        .sort-option {
+            padding: 10px 12px;
+            font-size: 13px;
+            color: #374151;
+            cursor: pointer;
+            border-bottom: 1px solid #f9fafb;
+        }
+        .sort-option:last-child { border-bottom: none; }
+        .sort-option:hover { background-color: #f9fafb; }
+        .sort-option.selected { color: #16a34a; font-weight: 700; }
+
+        /* List Section Header */
+        .list-section-header {
+            background-color: #f9fafb;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #4b5563;
+            border-bottom: 1px solid #f3f4f6;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+        
         /* Safe area bottom fix */
         .safe-pb { padding-bottom: env(safe-area-inset-bottom); }
     </style>
@@ -282,13 +337,29 @@
                 <div id="my-list-container" class="flex justify-between items-center px-0 bg-white border-b h-[40px]">
                     <div id="my-list-tabs" class="flex flex-1 overflow-x-auto no-scrollbar items-center h-full"></div>
                 </div>
-                <div id="sort-filter-bar" class="hidden bg-white border-b px-4 py-2 flex items-center space-x-4 text-xs text-gray-500">
-                    <button class="sort-chip active" data-sort="latest">최신순</button>
-                    <div class="h-3 w-px bg-gray-300"></div>
-                    <button class="sort-chip" data-sort="category">카테고리순</button>
-                    <div class="h-3 w-px bg-gray-300"></div>
-                    <button class="sort-chip" data-sort="frequency">자주쓰는순</button>
+                
+                <!-- Sub Section Bar (NEW) -->
+                <div id="sub-section-bar" class="sub-section-bar hidden">
+                    <!-- Left: Delivery Date -->
+                    <div id="delivery-date-btn" class="delivery-btn" onclick="openDeliverySheet()">
+                        <i class="far fa-calendar-alt text-lg text-green-600 mr-1"></i>
+                        <span id="current-delivery-date">1월 12일(월) 도착</span>
+                    </div>
+
+                    <!-- Right: Sort Dropdown -->
+                    <div class="sort-dropdown-container">
+                        <div class="sort-btn" onclick="toggleSortDropdown(event)">
+                            <span id="current-sort-label">최신순</span>
+                            <i class="fas fa-caret-down text-gray-400"></i>
+                        </div>
+                        <div id="sort-dropdown-menu" class="sort-dropdown-menu">
+                            <div class="sort-option" onclick="changeSort('latest')">최신순</div>
+                            <div class="sort-option" onclick="changeSort('category')">카테고리순</div>
+                            <div class="sort-option" onclick="changeSort('frequency')">자주 쓰는 상품순</div>
+                        </div>
+                    </div>
                 </div>
+
                 <!-- Search Box (Initially Hidden) -->
                 <div id="search-container" class="p-3 border-b bg-white search-hidden shadow-inner">
                     <div class="flex items-center w-full">
@@ -326,16 +397,16 @@
                     <i class="fas fa-times text-xl"></i>
                 </button>
                 <h1 class="text-lg font-bold text-gray-800">리스트 만들기</h1>
-                <div class="w-8"></div>
+                <!-- UX 개선: 저장 버튼을 헤더 우측 상단으로 이동 -->
+                <button id="create-list-save-btn" class="text-green-600 font-bold text-sm">저장</button>
             </header>
             
-            <!-- Tabs with Save Button (Main Data Save) -->
+            <!-- Tabs (Save Button Removed) -->
             <div class="flex-none flex border-b bg-white z-20">
                 <button class="cl-tab-btn active" data-tab="all">전체</button>
                 <button class="cl-tab-btn cl-tab-l1" data-tab="1">L1</button>
                 <button class="cl-tab-btn cl-tab-l2" data-tab="2">L2</button>
                 <button class="cl-tab-btn cl-tab-l3" data-tab="3">L3</button>
-                <button class="cl-tab-save" id="create-list-save-btn">저장</button>
             </div>
 
             <!-- Content Area -->
@@ -376,6 +447,21 @@
                         <button class="w-full py-3 rounded-xl border border-gray-200 text-gray-700 font-semibold hover:bg-green-50 btn-move-l3" onclick="applyBatchMove(3)">L3으로 이동</button>
                     </div>
                     <button id="move-sheet-cancel" class="w-full mt-4 py-3 text-gray-500 font-medium">취소</button>
+                </div>
+                <div class="h-6 bg-white w-full"></div>
+            </div>
+            
+            <!-- Delivery Date Sheet (Modal) -->
+            <div id="delivery-sheet-overlay" class="hidden absolute inset-0 z-40"></div>
+            <div id="delivery-sheet" class="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-[0_-5px_20px_rgba(0,0,0,0.15)] z-50">
+                <div class="p-5">
+                    <h3 class="font-bold text-lg mb-4 text-center">배송일 변경</h3>
+                    <div class="space-y-2">
+                        <button class="w-full py-3 rounded-xl border border-gray-200 text-gray-700 font-semibold hover:bg-green-50" onclick="updateDeliveryDate('1월 12일(월) 도착')">1월 12일(월) 도착 (기본)</button>
+                        <button class="w-full py-3 rounded-xl border border-gray-200 text-gray-700 font-semibold hover:bg-green-50" onclick="updateDeliveryDate('1월 13일(화) 도착')">1월 13일(화) 도착</button>
+                        <button class="w-full py-3 rounded-xl border border-gray-200 text-gray-700 font-semibold hover:bg-green-50" onclick="updateDeliveryDate('1월 14일(수) 도착')">1월 14일(수) 도착</button>
+                    </div>
+                    <button id="delivery-sheet-cancel" class="w-full mt-4 py-3 text-gray-500 font-medium">닫기</button>
                 </div>
                 <div class="h-6 bg-white w-full"></div>
             </div>
@@ -498,8 +584,8 @@
                 <span class="text-[10px]">검색</span>
             </button>
             <button id="footer-cta-btn" class="flex-1 flex flex-col items-center justify-center transition-colors bg-white text-gray-300">
-                <div class="flex items-center space-x-1 mb-0.5"><span id="footer-logo" class="font-extrabold text-sm">ORDERZ</span></div>
-                <span id="cta-text" class="text-[10px] font-bold">상품을 담아 주세요</span>
+                <div class="flex items-center space-x-1 mb-0.5"><span id="footer-logo" class="font-extrabold text-xs">ORDERZ</span></div>
+                <span id="cta-text" class="text-sm font-bold">상품을 담아 주세요</span>
             </button>
             <button id="footer-inquiry-btn" class="flex-1 flex flex-col items-center justify-center text-gray-500 border-l border-gray-100 hover:text-green-600 transition-colors">
                 <i class="fas fa-comment-dots text-xl mb-0.5"></i>
@@ -514,24 +600,26 @@
         const appState = {
             products: { 
                 vegetable: [
-                    { id: 1, name: '흙쪽파(1kg)단', spec: '판매처: a유통', price: 9800, img: 'https://placehold.co/80x80/d1e7dd/333333?text=쪽파', category: 'vegetable', subCategory: '무/배추/조미채소', thirdCategory: '쪽파', liked: true, myList: [], deliveryDate: '2025-10-21', likedTimestamp: 1729770000000 },
-                    { id: 2, name: '깐양파_10kg', spec: '판매처: a유통', price: 19500, img: 'https://placehold.co/80x80/d1e7dd/333333?text=양파', category: 'vegetable', subCategory: '무/배추/조미채소', thirdCategory: '양파', liked: true, myList: [], deliveryDate: '2025-10-22' },
-                    { id: 3, name: '무우 (낱개)', spec: '판매처: a유통', price: 2800, img: 'https://placehold.co/80x80/d1e7dd/333333?text=무', category: 'vegetable', subCategory: '무/배추/조미채소', thirdCategory: '무우', liked: true, myList: [] },
-                    { id: 12, name: '백다다기_5개입', price: 3500, spec: '판매처: a유통', category: 'vegetable', subCategory: '오이/호박/고추/피망', thirdCategory: '오이', myList: [], liked: true },
-                    { id: 52, name: '베이컨(알찬)', price: 11500, spec: '판매처: a유통', category: 'seafood', subCategory: '돼지고기', thirdCategory: '가공육', myList: [], liked: true },
-                    { id: 63, name: '식용유(말)쉐프원', price: 47800, spec: '판매처: a유통', category: 'sauce', subCategory: '기름', thirdCategory: '식용유', myList: [], liked: true },
+                    { id: 1, name: '흙쪽파(1kg)단', spec: '판매처: a유통', price: 9800, img: 'https://placehold.co/80x80/d1e7dd/333333?text=쪽파', category: 'vegetable', subCategory: '무/배추/조미채소', thirdCategory: '쪽파', liked: true, myList: [], deliveryDate: '2025-10-21', likedTimestamp: 1729770000000, orderCount: 50 },
+                    { id: 2, name: '깐양파_10kg', spec: '판매처: a유통', price: 19500, img: 'https://placehold.co/80x80/d1e7dd/333333?text=양파', category: 'vegetable', subCategory: '무/배추/조미채소', thirdCategory: '양파', liked: true, myList: [], deliveryDate: '2025-10-22', likedTimestamp: 1729760000000, orderCount: 120 },
+                    { id: 3, name: '무우 (낱개)', spec: '판매처: a유통', price: 2800, img: 'https://placehold.co/80x80/d1e7dd/333333?text=무', category: 'vegetable', subCategory: '무/배추/조미채소', thirdCategory: '무우', liked: true, myList: [], likedTimestamp: 1729750000000, orderCount: 30 },
+                    { id: 12, name: '백다다기_5개입', price: 3500, spec: '판매처: a유통', category: 'vegetable', subCategory: '오이/호박/고추/피망', thirdCategory: '오이', myList: [], liked: true, likedTimestamp: 1729780000000, orderCount: 200 },
+                    { id: 52, name: '베이컨(알찬)', price: 11500, spec: '판매처: a유통', category: 'seafood', subCategory: '돼지고기', thirdCategory: '가공육', myList: [], liked: true, likedTimestamp: 1729740000000, orderCount: 15 },
+                    { id: 63, name: '식용유(말)쉐프원', price: 47800, spec: '판매처: a유통', category: 'sauce', subCategory: '기름', thirdCategory: '식용유', myList: [], liked: true, likedTimestamp: 1729730000000, orderCount: 80 },
                 ],
             },
             cart: {},
             listNames: { 1: '리스트1', 2: '리스트2', 3: '리스트3' },
-            currentView: 'quick-order', // Initial dummy value, will be set by localStorage
+            currentView: 'quick-order',
             currentMyList: -1,
             clTab: 'all',
             tempChanges: {},
             hasChanges: false,
             activeListInputId: 1,
             isSearching: false,
-            tooltipTimeout: null
+            tooltipTimeout: null,
+            currentSort: 'latest', // latest, category, frequency
+            deliveryDate: '1월 12일(월) 도착'
         };
 
         const homeView = document.getElementById('home-view');
@@ -561,6 +649,16 @@
         const modeTooltip = document.getElementById('mode-tooltip');
         const modeIcon = document.getElementById('mode-icon');
         const modeText = document.getElementById('mode-text');
+        
+        // New Elements
+        const subSectionBar = document.getElementById('sub-section-bar');
+        const currentDeliveryDateEl = document.getElementById('current-delivery-date');
+        const currentSortLabelEl = document.getElementById('current-sort-label');
+        const sortDropdownMenu = document.getElementById('sort-dropdown-menu');
+        const sortContainer = document.querySelector('.sort-dropdown-container');
+        const deliverySheet = document.getElementById('delivery-sheet');
+        const deliverySheetOverlay = document.getElementById('delivery-sheet-overlay');
+        const deliverySheetCancel = document.getElementById('delivery-sheet-cancel');
 
         function getAllProducts() {
             return Object.values(appState.products).flat();
@@ -589,6 +687,7 @@
             quickOrderView.classList.remove('hidden');
             createListView.classList.add('hidden');
             renderListTabs();
+            renderSubSectionBar();
             updateFooterUI();
             updateHeaderUI();
             renderProducts();
@@ -628,13 +727,10 @@
 
         // Mode Switch Logic
         modeSwitchBtn.onclick = function() {
-            // Case 1: 검색 중이면 뒤로가기(검색 닫기)
             if (appState.isSearching) {
                 closeSearch();
                 return;
             }
-
-            // Case 2: 모드 전환
             if (appState.currentView === 'home') {
                 showQuickOrderView(true);
                 showModeTooltip("주문하기가 기본 접속 화면으로 설정되었습니다.");
@@ -643,13 +739,79 @@
                 showModeTooltip("상품목록이 기본 접속 화면으로 설정되었습니다.");
             }
         };
-
-        // Header Title Click (Same as Mode Switch but without saving default??)
-        // Request said only Left Button logic. Keeping Title logic as alias for now or removing?
-        // Let's keep title as simple nav alias but without saving preference logic to keep it simple, 
-        // OR make it same behavior. The user spec focused on the button. 
-        // Let's make title click behave same for consistency.
+        
         headerTitle.onclick = modeSwitchBtn.onclick;
+
+        // --- Sub Section Bar Logic ---
+        function renderSubSectionBar() {
+            // Only show in Quick Order view
+            if (appState.currentView !== 'quick-order') return;
+            
+            subSectionBar.classList.remove('hidden');
+            
+            // Toggle Sort Filter based on currentMyList (0 = Regular Special)
+            if (appState.currentMyList === 0) {
+                sortContainer.style.display = 'none';
+            } else {
+                sortContainer.style.display = 'block';
+            }
+            
+            // Update Delivery Date Text
+            currentDeliveryDateEl.textContent = appState.deliveryDate;
+            
+            // Update Sort Label
+            const sortMap = { 'latest': '최신순', 'category': '카테고리순', 'frequency': '자주 쓰는 상품순' };
+            currentSortLabelEl.textContent = sortMap[appState.currentSort];
+            
+            document.querySelectorAll('.sort-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+        }
+        
+        window.toggleSortDropdown = function(e) {
+            e.stopPropagation();
+            sortDropdownMenu.classList.toggle('active');
+        };
+
+        window.changeSort = function(sortType) {
+            appState.currentSort = sortType;
+            renderSubSectionBar(); // Update label
+            renderProducts(); // Re-sort and render list
+            sortDropdownMenu.classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            document.getElementById('product-list-container').scrollTop = 0;
+        };
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.sort-dropdown-container')) {
+                sortDropdownMenu.classList.remove('active');
+            }
+        });
+
+        // Delivery Modal Logic
+        window.openDeliverySheet = function() {
+            deliverySheetOverlay.classList.remove('hidden');
+            setTimeout(() => deliverySheet.classList.add('visible'), 10);
+        };
+        
+        window.closeDeliverySheet = function() {
+            deliverySheet.classList.remove('visible');
+            setTimeout(() => deliverySheetOverlay.classList.add('hidden'), 300);
+        };
+        
+        window.updateDeliveryDate = function(newDate) {
+            appState.deliveryDate = newDate;
+            renderSubSectionBar();
+            closeDeliverySheet();
+        };
+
+        deliverySheetCancel.onclick = deliverySheetOverlay.onclick = closeDeliverySheet;
+
+
+        // --- Existing Functions ---
 
         window.openCreateListView = function() {
             appState.tempChanges = {};
@@ -816,20 +978,6 @@
             renderCreateList();
         };
 
-        modeSwitchBtn.onclick = headerTitle.onclick = () => {
-             if (appState.isSearching) {
-                closeSearch();
-                return;
-            }
-            if (appState.currentView === 'home') {
-                showQuickOrderView(true);
-                showModeTooltip("주문하기가 기본 접속 화면으로 설정되었습니다.");
-            } else {
-                showHomeView(true);
-                showModeTooltip("상품목록이 기본 접속 화면으로 설정되었습니다.");
-            }
-        };
-
         document.getElementById('create-list-close-icon').onclick = document.getElementById('cl-bottom-back').onclick = closeCreateListView;
         document.getElementById('create-list-save-btn').onclick = saveCreateListChanges;
         clSelectAll.onchange = (e) => {
@@ -864,7 +1012,7 @@
             }
             appState.isSearching = !appState.isSearching;
             searchContainer.classList.toggle('search-hidden', !appState.isSearching);
-            updateHeaderUI(); // 헤더 아이콘 변경 (뒤로가기 <-> 모드 아이콘)
+            updateHeaderUI();
 
             if (appState.isSearching) {
                 setTimeout(() => productSearchInput.focus(), 300);
@@ -885,11 +1033,16 @@
         productSearchInput.oninput = function(e) {
             const term = e.target.value.toLowerCase();
             const list = getAllProducts().filter(p => p.liked && p.name.toLowerCase().includes(term));
-            renderProductListWithItems(list);
+            renderProductListWithItemsHelper(list);
         };
 
-        function renderProductListWithItems(items) {
-            document.getElementById('product-list').innerHTML = items.map(p => `
+        function renderProductListWithItemsHelper(items) {
+             document.getElementById('product-list').innerHTML = renderItemsHTML(items);
+        }
+        
+        // Helper to render items HTML
+        function renderItemsHTML(items) {
+            return items.map(p => `
             <div class="product-item flex items-center p-3 bg-white border-b">
                 <div class="flex-grow"><div class="text-sm font-bold">${p.name}</div><div class="text-xs text-gray-500">${p.price.toLocaleString()}원</div></div>
                 <div class="flex items-center border rounded bg-white"><button class="w-8 h-8" onclick="updateQty(${p.id},-1)">-</button><div class="w-8 text-center text-sm font-bold">${appState.cart[p.id]||0}</div><button class="w-8 h-8" onclick="updateQty(${p.id},1)">+</button></div>
@@ -903,14 +1056,17 @@
             
             let btnClass = "flex-1 flex flex-col items-center justify-center transition-colors bg-white ";
             
-            // 상태와 관계없이 항상 홈과 동일한 디자인(색상) 적용
-            if(footerLogo) footerLogo.className = "font-extrabold text-sm text-green-800";
-            ctaText.className = "text-[10px] font-bold text-gray-500";
+            // 로고 작게 (text-xs), 텍스트 크게 (text-sm)
+            if(footerLogo) footerLogo.className = "font-extrabold text-xs text-green-800";
+            ctaText.className = "text-sm font-bold text-gray-500";
             
             if (canClick) {
                 btnClass += "cursor-pointer hover:bg-gray-50";
             } else {
                 btnClass += "cursor-default";
+                // 비활성 상태일 때도 크기 유지, 색상만 변경
+                if(footerLogo) footerLogo.className = "font-extrabold text-xs text-gray-300";
+                ctaText.className = "text-sm font-bold text-gray-300";
             }
             
             footerCtaBtn.className = btnClass;
@@ -944,15 +1100,78 @@
             `<div class="flex-grow"></div><button class="add-list-btn-wide ml-2" onclick="openCreateListView()">+ 리스트 만들기</button>`;
         }
 
-        window.switchMainList = function(id) { appState.currentMyList = id; renderListTabs(); renderProducts(); };
+        window.switchMainList = function(id) { appState.currentMyList = id; renderListTabs(); renderSubSectionBar(); renderProducts(); };
 
         function renderProducts() {
             const list = getAllProducts().filter(p => p.liked);
             let filtered = [];
+            
+            // 1. Filter
             if(appState.currentMyList === 0) filtered = getAllProducts().slice(0,2);
             else if(appState.currentMyList === -1) filtered = list;
             else filtered = list.filter(p => (p.myList||[]).includes(appState.currentMyList));
-            renderProductListWithItems(filtered);
+            
+            // Category Mapping (English -> Korean)
+            const categoryMap = {
+                'vegetable': '채소/과일',
+                'seafood': '수산/축산',
+                'processed': '식품/가공',
+                'sauce': '양념/소스',
+                'kitchen': '주방/잡화'
+            };
+            
+            // 2. Sort Logic
+            if (appState.currentSort === 'latest') {
+                filtered.sort((a, b) => (b.likedTimestamp || 0) - (a.likedTimestamp || 0));
+            } else if (appState.currentSort === 'category') {
+                // Custom Category Order: 채소/과일 -> 수산/축산 -> 양념/소스 -> others
+                const catOrder = ['vegetable', 'seafood', 'sauce', 'processed', 'kitchen'];
+                
+                filtered.sort((a, b) => {
+                    const catA = a.category || '';
+                    const catB = b.category || '';
+                    
+                    let idxA = catOrder.indexOf(catA);
+                    let idxB = catOrder.indexOf(catB);
+                    
+                    // Handle unknown categories (push to end)
+                    if (idxA === -1) idxA = 999;
+                    if (idxB === -1) idxB = 999;
+                    
+                    if (idxA !== idxB) return idxA - idxB;
+                    
+                    // Secondary sort: Name
+                    return (a.name || '').localeCompare(b.name || '');
+                });
+            } else if (appState.currentSort === 'frequency') {
+                filtered.sort((a, b) => (b.orderCount || 0) - (a.orderCount || 0));
+            }
+            
+            // 3. Grouping & Rendering
+            let html = '';
+            
+            // Case A: Regular Special (Event Name Header)
+            if (appState.currentMyList === 0) {
+                 html += `<div class="list-section-header">🔥 한정수량 타임특가</div>`;
+                 html += renderItemsHTML(filtered);
+            } 
+            // Case B: Category Sort (Major Category Name Header)
+            else if (appState.currentSort === 'category') {
+                // Group by Major Category
+                const categories = [...new Set(filtered.map(p => p.category))];
+                categories.forEach(catKey => {
+                    const catName = categoryMap[catKey] || catKey; // Map to Korean
+                    html += `<div class="list-section-header">${catName}</div>`;
+                    const catItems = filtered.filter(p => p.category === catKey);
+                    html += renderItemsHTML(catItems);
+                });
+            } 
+            // Case C: Default Flat List
+            else {
+                html = renderItemsHTML(filtered);
+            }
+
+            document.getElementById('product-list').innerHTML = html;
         }
 
         window.updateQty = function(id, d) {
