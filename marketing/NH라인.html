@@ -130,7 +130,7 @@
     <div class="container mx-auto max-w-screen-xl">
         
         <!-- Header Section -->
-        <header class="text-center py-16 md:py-32 px-4">
+        <header class="text-center py-10 md:py-32 px-4">
             <div class="mb-6 animate-bounce">
                 <span class="speech-bubble text-lg md:text-xl shadow-lg">따르르릉~</span>
             </div>
@@ -145,13 +145,13 @@
         </header>
 
         <main class="px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-start">
                 
                 <!-- Left Text Column: Solution & CTA only -->
                 <div class="order-1 lg:order-1 flex flex-col justify-center h-full">
                     
                     <!-- The Solution Box -->
-                    <div class="bg-white p-8 rounded-2xl shadow-xl border border-green-100 transform hover:-translate-y-1 transition duration-300">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-green-100 transform hover:-translate-y-1 transition duration-300">
                         <h3 class="text-2xl font-bold brand-green mb-2">사장님을 기억하는 [오더즈]</h3>
                         <p class="text-gray-500 mb-6 text-sm">문자 받으신 사장님께만 드리는 약속입니다.</p>
                         
@@ -174,7 +174,6 @@
                                     <p class="text-sm text-gray-600">어떤 물건이 들어오는지, 품질은 어떤지 미리 확인하세요.</p>
                                 </div>
                             </li>
-                            <!-- [수정됨] 문자 내용과 일치: 100% 반품 보장 -->
                             <li class="flex items-start">
                                 <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-4">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -188,7 +187,7 @@
                     </div>
 
                     <!-- CTA Button -->
-                    <div class="mt-10 text-center lg:text-left space-y-3">
+                    <div class="mt-8 text-center lg:text-left space-y-3">
                          <a href="http://pf.kakao.com/_PkUxgs/chat" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-[#FEE500] hover:bg-yellow-400 text-black font-bold py-4 px-8 rounded-xl shadow-lg transition-all transform hover:scale-105 w-full sm:w-auto">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 2c5.523 0 10 3.582 10 8s-4.477 8-10 8c-1.24 0-2.42-.18-3.51-.5L4 20l1.55-4.23a9.94 9.94 0 0 1-3.48-5.63C2.07 5.582 6.547 2 12 2z"/>
@@ -196,10 +195,9 @@
                             오더즈 시작하기 (카톡 문의)
                         </a>
                         
-                        <!-- [추가됨] 실시간 가격 확인 버튼 (가격 투명성 입증) -->
                         <div class="block sm:inline-block sm:ml-2">
                              <a href="https://orderz.kr/shop/listtype.php?type=3" target="_blank" class="inline-flex items-center justify-center bg-white border-2 border-gray-200 hover:border-green-500 hover:text-green-600 text-gray-600 font-bold py-4 px-8 rounded-xl shadow-sm transition-all w-full sm:w-auto mt-2 sm:mt-0">
-                                👀 가입 없이 시세표 둘러보기
+                                👀 시세표 새창으로 보기
                             </a>
                         </div>
 
@@ -208,27 +206,27 @@
                 </div>
 
                 <!-- Right Mobile Preview Column -->
-                <!-- [수정됨] 모바일에서는 폰 프레임을 숨기고(hidden), PC에서만 보이게(lg:block) 처리. -->
-                <!-- 모바일 사용자는 이미 폰을 들고 있으므로 폰 그림이 이중으로 보이지 않게 함. -->
-                <div class="order-2 lg:order-2 sticky top-10 hidden lg:block">
-                    <div class="relative w-full max-w-[340px] h-[700px] mx-auto">
-                        <!-- Phone Frame -->
-                        <div class="w-full h-full bg-gray-900 rounded-[40px] p-3 border-[6px] border-gray-800 shadow-2xl ring-1 ring-gray-900/5">
-                            <!-- Notch/Status Bar Mock -->
-                            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-6 bg-gray-900 rounded-b-2xl z-20"></div>
+                <!-- [수정됨] 모바일 최적화: 모바일에서는 숨기지 않고(remove hidden), 프레임 스타일을 단순화하여 바로 내용을 보여줌 -->
+                <div class="order-2 lg:order-2 sticky top-4 lg:top-10 w-full mt-6 lg:mt-0">
+                    <div class="relative w-full lg:max-w-[340px] h-[600px] lg:h-[700px] mx-auto">
+                        <!-- Phone Frame Container: 모바일에서는 깔끔한 박스형, PC에서는 스마트폰 형태 -->
+                        <div class="w-full h-full bg-white rounded-xl lg:rounded-[40px] lg:p-3 border-2 border-gray-200 lg:border-[6px] lg:border-gray-800 shadow-xl lg:ring-1 lg:ring-gray-900/5 overflow-hidden">
+                            
+                            <!-- Notch/Status Bar Mock (PC only) -->
+                            <div class="hidden lg:block absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-6 bg-gray-900 rounded-b-2xl z-20"></div>
                             
                             <!-- Screen -->
-                            <div class="w-full h-full bg-white rounded-[30px] overflow-hidden relative">
+                            <div class="w-full h-full bg-white lg:rounded-[30px] overflow-hidden relative flex flex-col">
                                 <!-- App Header Mock -->
-                                <div class="bg-white border-b border-gray-100 p-4 pt-8 text-center relative z-10">
-                                    <p class="text-sm font-bold text-gray-800">NH라인 오더즈</p>
+                                <div class="bg-white border-b border-gray-100 p-3 lg:pt-8 text-center relative z-10 flex-shrink-0">
+                                    <p class="text-sm font-bold text-gray-800">NH라인 오더즈 실시간 시세</p>
                                 </div>
                                 <!-- Actual Iframe -->
-                                <iframe src="https://orderz.kr/shop/listtype.php?type=3" class="w-full h-[calc(100%-60px)] border-0 bg-white"></iframe>
+                                <iframe src="https://orderz.kr/shop/listtype.php?type=3" class="w-full flex-grow border-0 bg-white" title="오더즈 시세표 미리보기"></iframe>
                                 
                                 <!-- Floating Overlay Prompt (Visual Cue) -->
-                                <div class="absolute bottom-6 left-4 right-4 bg-black/80 backdrop-blur-sm p-4 rounded-xl text-white text-center shadow-lg animate-pulse">
-                                    <p class="text-sm font-medium">👇 지금 바로 투명한 시세를 확인하세요</p>
+                                <div class="absolute bottom-6 left-4 right-4 bg-green-600/90 backdrop-blur-sm p-3 rounded-xl text-white text-center shadow-lg animate-pulse pointer-events-none">
+                                    <p class="text-sm font-medium">👆 위 화면을 터치해서 시세를 확인하세요</p>
                                 </div>
                             </div>
                         </div>
