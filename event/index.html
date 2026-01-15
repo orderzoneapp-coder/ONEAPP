@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>사장님 첫 구매 혜택 - 오더즈</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1f2937;
+            /* Prevent horizontal scroll on mobile */
+            overflow-x: hidden; 
+        }
+        /* Hide Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Scallop Edge Pattern */
+        .scallop-l {
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background-color: #fff;
+            border-radius: 50%;
+            z-index: 20;
+        }
+        .scallop-r {
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background-color: #fff;
+            border-radius: 50%;
+            z-index: 20;
+        }
+
+        /* Utility for Korean Word Break */
+        .break-keep {
+            word-break: keep-all;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="border-b border-gray-100 bg-white sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 md:px-6 md:py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-black text-emerald-800 tracking-tight cursor-pointer">ORDERZ</h1>
+            <a href="https://orderz.kr/bbs/login.php?url=https://orderz.kr/" class="bg-gray-900 text-white px-5 py-2 md:px-8 md:py-2.5 rounded-lg font-bold text-xs md:text-sm hover:bg-gray-800 transition shadow-md no-underline inline-block whitespace-nowrap">
+                신규가입
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section (Gradient Theme) -->
+    <!-- Background Changed: White to Emerald Gradient (Fresh & Clean) -->
+    <section class="relative pt-12 pb-12 md:pt-24 md:pb-20 px-5 md:px-6 overflow-hidden flex items-center justify-center min-h-[400px] md:min-h-[500px]">
+        
+        <!-- Gradient Background -->
+        <!-- bg-gradient-to-b: Starts White (Top) -> Soft Emerald (Bottom) -->
+        <div class="absolute inset-0 z-0 bg-gradient-to-b from-white via-emerald-50 to-emerald-100">
+            <!-- Subtle Radial Highlight for depth -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-white via-transparent to-transparent opacity-80"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <!-- Badge: Adapted for light background -->
+            <span class="inline-block py-1 px-3 md:py-1.5 md:px-4 rounded-full bg-emerald-100 text-emerald-700 text-xs md:text-sm font-semibold mb-4 md:mb-6 border border-emerald-200 shadow-sm">
+                🎁 신규회원 전용 혜택
+            </span>
+            
+            <!-- Headline: Dark text for readability on light bg -->
+            <h2 class="text-3xl md:text-5xl font-bold leading-tight mb-4 md:mb-6 drop-shadow-sm break-keep text-gray-900">
+                <!-- Mobile: Shortened version -->
+                <span class="md:hidden">사장님의 힘찬 시작,<br><span class="text-emerald-600">오더즈</span>가 지원합니다</span>
+                <!-- Desktop: Full version -->
+                <span class="hidden md:inline">사장님의 힘찬 시작,<br><span class="text-emerald-600">오더즈</span>가 든든하게 지원합니다</span>
+            </h2>
+            
+            <!-- Description: Darker gray text -->
+            <p class="text-gray-600 text-base md:text-lg font-light leading-relaxed break-keep">
+                <!-- Mobile: Core benefits only -->
+                <span class="md:hidden">
+                    <strong class="text-emerald-800 font-bold border-b-2 border-yellow-400">15,000원 장사 지원금</strong>과<br>
+                    무료배송으로 부담 없이 시작하세요.
+                </span>
+                <!-- Desktop: Full sentence -->
+                <span class="hidden md:inline">
+                    성공적인 장사를 위한 첫 걸음, <strong class="text-emerald-800 font-bold border-b-2 border-yellow-400">15,000원 장사 지원 혜택</strong>과<br>
+                    무료배송으로 부담 없이 시작해 보세요.
+                </span>
+            </p>
+        </div>
+    </section>
+
+    <!-- BENEFIT 01: Coupon Pack -->
+    <section class="py-12 md:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-4 md:px-6 text-center">
+            <div class="mb-8 md:mb-12">
+                <span class="text-emerald-600 font-bold tracking-widest text-xs md:text-sm uppercase mb-2 md:mb-3 block">Benefit 01</span>
+                <h3 class="text-2xl md:text-4xl font-bold text-gray-900 mb-2 md:mb-3 break-keep">사장님 성공 지원 쿠폰팩</h3>
+                <p class="text-lg md:text-3xl font-bold text-gray-600 leading-snug break-keep">
+                    가입 즉시
+                    <span class="text-emerald-600 font-black">총 15,000원 할인</span>을<br class="md:hidden"> 자동으로 넣어드립니다!
+                </p>
+            </div>
+
+            <!-- Grid: Coupon 1 -> Coupon 2 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 max-w-5xl mx-auto mb-8 md:mb-10 relative items-center">
+                
+                <!-- Plus Sign (+) -->
+                <!-- Mobile: positioned relatively between items / Desktop: Absolute center -->
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 bg-white p-1.5 md:p-2 rounded-full border border-gray-100 shadow-lg w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-emerald-600 font-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                </div>
+
+                <!-- Coupon 1 (Green) -->
+                <div class="bg-emerald-600 rounded-2xl p-6 md:p-8 shadow-xl relative flex flex-col justify-between h-full min-h-[200px] md:min-h-[260px] group overflow-hidden text-left transition-transform hover:-translate-y-1 duration-300">
+                    <div class="scallop-l"></div>
+                    <div class="scallop-r"></div>
+                    
+                    <div class="z-10 border-b border-emerald-500 pb-3 md:pb-4 mb-3 md:mb-4 border-dashed">
+                        <span class="inline-block bg-white text-emerald-700 text-[10px] md:text-[10px] font-bold px-2 py-0.5 rounded w-fit mb-2 border border-emerald-200">첫 주문 추천</span>
+                        <h4 class="text-white font-bold text-lg md:text-xl mb-1 break-keep">가볍게 시작하는 할인</h4>
+                        <p class="text-emerald-100 text-xs md:text-sm">5만원 이상 구매 시 사용 가능</p>
+                    </div>
+
+                    <div class="flex items-end justify-between z-10">
+                        <div class="flex items-end gap-1">
+                            <span class="text-3xl md:text-4xl font-black text-white tracking-tight">5,000</span>
+                            <span class="text-lg md:text-xl font-bold text-emerald-100 mb-1">원</span>
+                        </div>
+                        <span class="bg-emerald-800 text-white text-[10px] md:text-xs px-2.5 py-1 md:px-3 md:py-1 rounded-full font-bold shadow-sm whitespace-nowrap">즉시 지급</span>
+                    </div>
+                </div>
+
+                <!-- Coupon 2 (Teal - Similar but Distinct) -->
+                <div class="bg-teal-600 rounded-2xl p-6 md:p-8 shadow-xl relative flex flex-col justify-between h-full min-h-[200px] md:min-h-[260px] group overflow-hidden text-left transition-transform hover:-translate-y-1 duration-300">
+                    <div class="scallop-l bg-white"></div>
+                    <div class="scallop-r bg-white"></div>
+                    
+                    <div class="z-10 border-b border-teal-500 pb-3 md:pb-4 mb-3 md:mb-4 border-dashed">
+                        <span class="inline-block bg-white text-teal-800 text-[10px] md:text-[10px] font-bold px-2 py-0.5 rounded w-fit mb-2 border border-teal-200">본격 장사 시작</span>
+                        <h4 class="text-white font-bold text-lg md:text-xl mb-1 break-keep">통 큰 대량구매 할인</h4>
+                        <p class="text-teal-100 text-xs md:text-sm">10만원 이상 구매 시 사용 가능</p>
+                    </div>
+
+                    <div class="flex items-end justify-between z-10">
+                        <div class="flex items-end gap-1">
+                            <span class="text-3xl md:text-4xl font-black text-white tracking-tight">10,000</span>
+                            <span class="text-lg md:text-xl font-bold text-teal-100 mb-1">원</span>
+                        </div>
+                        <span class="bg-teal-800 text-white text-[10px] md:text-xs px-2.5 py-1 md:px-3 md:py-1 rounded-full font-bold shadow-sm whitespace-nowrap">즉시 지급</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Click-Inducing Usage Guide -->
+            <div class="max-w-4xl mx-auto mt-8 text-center px-2">
+                <button onclick="toggleGuide()" class="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-white border border-emerald-200 rounded-full px-6 py-3 md:py-2.5 shadow-sm text-sm font-bold text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-200 group active:scale-95">
+                    <span class="text-base">💡</span>
+                    <span>혜택 100% 활용하는 법</span>
+                    <svg id="guide-arrow" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 group-hover:text-emerald-600 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <!-- Hidden Content Area -->
+                <div id="guide-content" class="hidden mt-4 bg-white border border-emerald-100 rounded-2xl p-5 md:p-6 shadow-sm text-left">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-center gap-6 md:gap-6 text-sm">
+                        
+                        <!-- Step 1 -->
+                        <div class="flex flex-row md:flex-col items-center gap-3 md:gap-2 w-full md:w-auto">
+                            <span class="w-7 h-7 md:w-8 md:h-8 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full flex items-center justify-center font-bold shadow-sm shrink-0 text-xs md:text-sm">1</span>
+                            <div class="text-left md:text-center flex-1">
+                                <span class="text-gray-500 block text-xs md:text-sm">회원가입 즉시</span>
+                                <strong class="text-emerald-700 break-keep">쿠폰 2장 자동 발급</strong>
+                            </div>
+                        </div>
+                        
+                        <div class="hidden md:block text-gray-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                        <!-- Mobile Divider -->
+                        <div class="md:hidden w-full border-t border-dashed border-gray-100 pl-10"></div>
+
+                        <!-- Step 2 -->
+                        <div class="flex flex-row md:flex-col items-center gap-3 md:gap-2 w-full md:w-auto">
+                            <span class="w-7 h-7 md:w-8 md:h-8 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full flex items-center justify-center font-bold shadow-sm shrink-0 text-xs md:text-sm">2</span>
+                            <div class="text-left md:text-center flex-1">
+                                <span class="text-gray-500 block text-xs md:text-sm">주문 금액에 맞춰</span>
+                                <strong class="text-gray-800 break-keep">5천원 or 1만원 선택</strong>
+                            </div>
+                        </div>
+
+                        <div class="hidden md:block text-gray-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                        <!-- Mobile Divider -->
+                        <div class="md:hidden w-full border-t border-dashed border-gray-100 pl-10"></div>
+
+                        <!-- Step 3 -->
+                        <div class="flex flex-row md:flex-col items-center gap-3 md:gap-2 w-full md:w-auto">
+                            <span class="w-7 h-7 md:w-8 md:h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold shadow-sm shrink-0 text-xs md:text-sm">3</span>
+                            <div class="text-left md:text-center flex-1">
+                                <span class="text-gray-500 block text-xs md:text-sm">결제 단계에서</span>
+                                <strong class="text-emerald-600 border-b border-emerald-200 break-keep">쿠폰 적용 클릭 필수</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5 md:mt-5 text-center">
+                        <span class="text-[11px] md:text-xs text-gray-400 bg-gray-50 px-2.5 py-1.5 rounded inline-flex items-center gap-1.5 leading-snug break-keep">
+                            <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            자동적용 아님! 주문서에서 꼭 선택하세요
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFIT 02: Experience -->
+    <section class="py-12 md:py-24 bg-gray-100 border-t border-gray-200 border-b">
+        <div class="max-w-5xl mx-auto px-5 md:px-6 text-center">
+            <div class="mb-8 md:mb-12">
+                <span class="text-emerald-600 font-bold tracking-widest text-xs md:text-sm uppercase mb-2 md:mb-3 block">Benefit 02</span>
+                <h3 class="text-2xl md:text-4xl font-bold text-gray-900 mb-2 break-keep">품질/배송 걱정 NO</h3>
+                <p class="text-sm md:text-lg text-gray-500 font-medium">부담없이 체험해보세요</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-6 md:p-10 rounded-2xl md:rounded-3xl shadow-lg border-2 border-gray-300 flex flex-col items-center">
+                    <div class="w-14 h-14 md:w-20 md:h-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 mb-4 md:mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 md:h-10 md:w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                        </svg>
+                    </div>
+                    <h4 class="text-lg md:text-xl font-bold text-gray-900 mb-1 md:mb-2 break-keep">무료배송</h4>
+                    <p class="text-sm md:text-base text-gray-500 text-center break-keep leading-relaxed">소량 주문도 배송비 0원<br>부담 없이 시작해보세요</p>
+                </div>
+
+                <div class="bg-white p-6 md:p-10 rounded-2xl md:rounded-3xl shadow-lg border-2 border-gray-300 flex flex-col items-center">
+                    <div class="w-14 h-14 md:w-20 md:h-20 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 mb-4 md:mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 md:h-10 md:w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-lg md:text-xl font-bold text-gray-900 mb-1 md:mb-2 break-keep">100% 무료 반품</h4>
+                    <p class="text-sm md:text-base text-gray-500 text-center break-keep leading-relaxed">고객님 기준에 맞지 않으시다면<br>100% 환불해 드립니다</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="py-12 md:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-4 md:px-6 text-center">
+            <div class="mb-8 md:mb-12">
+                <div class="flex items-center justify-center gap-2 md:gap-3 mb-2 md:mb-3">
+                    <span class="text-2xl md:text-3xl animate-bounce">📢</span>
+                    <h3 class="text-2xl md:text-4xl font-bold text-gray-900 break-keep">오늘의 경매가 확인</h3>
+                </div>
+                <p class="text-gray-500 text-sm md:text-lg font-light break-keep leading-relaxed">
+                    매일 아침 낙찰되는 도매시장 시세 그대로<br>
+                    <span class="text-emerald-600 font-bold">오늘 가장 신선한 가격</span>을 확인하세요!
+                </p>
+            </div>
+
+            <!-- Categories Tabs -->
+            <div class="flex justify-center gap-2 md:gap-4 mb-8 md:mb-12 overflow-x-auto px-2 no-scrollbar">
+                <button onclick="changeCategory('farm')" id="btn-farm" class="category-btn bg-emerald-700 text-white px-4 py-2.5 md:px-8 md:py-3 rounded-full font-bold text-xs md:text-base shadow-lg transition transform hover:scale-105 whitespace-nowrap">
+                    농산 (경매)
+                </button>
+                <button onclick="changeCategory('food')" id="btn-food" class="category-btn bg-white text-gray-500 border border-gray-200 px-4 py-2.5 md:px-8 md:py-3 rounded-full font-bold text-xs md:text-base hover:border-emerald-500 hover:text-emerald-600 transition whitespace-nowrap">
+                    식자재
+                </button>
+                <button onclick="changeCategory('industrial')" id="btn-industrial" class="category-btn bg-white text-gray-500 border border-gray-200 px-4 py-2.5 md:px-8 md:py-3 rounded-full font-bold text-xs md:text-base hover:border-emerald-500 hover:text-emerald-600 transition whitespace-nowrap">
+                    공산품
+                </button>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-10 md:mb-16 px-1">
+                <!-- Default (Farm) Items -->
+                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group relative overflow-hidden">
+                    <div class="aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl">
+                        🧅
+                    </div>
+                    <div class="text-left">
+                        <span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span>
+                        <h4 class="font-bold text-gray-900 mt-1.5 md:mt-2 truncate text-sm md:text-lg">무안 햇 양파 20kg</h4>
+                        <p class="text-gray-400 text-xs md:text-sm mb-2 md:mb-3 truncate">산지 직송 | 특품</p>
+                        <div class="flex items-center gap-1.5 md:gap-2 bg-emerald-50 rounded-lg p-1.5 md:p-2 mt-1 border border-emerald-100">
+                            <span class="text-[11px] md:text-sm font-bold text-emerald-700 whitespace-nowrap">📉 오늘의 경매가</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group">
+                    <div class="aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl">
+                        🥔
+                    </div>
+                    <div class="text-left">
+                        <span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span>
+                        <h4 class="font-bold text-gray-900 mt-1.5 md:mt-2 truncate text-sm md:text-lg">제주 흙당근 10kg</h4>
+                        <p class="text-gray-400 text-xs md:text-sm mb-2 md:mb-3 truncate">세척 가능 | 상급</p>
+                        <div class="flex items-center gap-1.5 md:gap-2 bg-emerald-50 rounded-lg p-1.5 md:p-2 mt-1 border border-emerald-100">
+                            <span class="text-[11px] md:text-sm font-bold text-emerald-700 whitespace-nowrap">📉 오늘의 경매가</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group">
+                    <div class="aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl">
+                        🍎
+                    </div>
+                    <div class="text-left">
+                        <span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span>
+                        <h4 class="font-bold text-gray-900 mt-1.5 md:mt-2 truncate text-sm md:text-lg">경북 부사 사과 5kg</h4>
+                        <p class="text-gray-400 text-xs md:text-sm mb-2 md:mb-3 truncate">당도 보장 | 14-16과</p>
+                        <div class="flex items-center gap-1.5 md:gap-2 bg-emerald-50 rounded-lg p-1.5 md:p-2 mt-1 border border-emerald-100">
+                            <span class="text-[11px] md:text-sm font-bold text-emerald-700 whitespace-nowrap">📉 오늘의 경매가</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group">
+                    <div class="aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl">
+                        🍠
+                    </div>
+                    <div class="text-left">
+                        <span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span>
+                        <h4 class="font-bold text-gray-900 mt-1.5 md:mt-2 truncate text-sm md:text-lg">해남 꿀고구마 10kg</h4>
+                        <p class="text-gray-400 text-xs md:text-sm mb-2 md:mb-3 truncate">특상 | 베니하루카</p>
+                        <div class="flex items-center gap-1.5 md:gap-2 bg-emerald-50 rounded-lg p-1.5 md:p-2 mt-1 border border-emerald-100">
+                            <span class="text-[11px] md:text-sm font-bold text-emerald-700 whitespace-nowrap">📉 오늘의 경매가</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="https://orderz.kr/" class="w-full md:w-auto text-gray-500 font-medium border border-gray-200 py-3.5 rounded-lg md:border-0 md:py-0 md:hover:text-emerald-600 transition flex items-center justify-center gap-2 mx-auto text-sm md:text-lg group no-underline">
+                전체 상품 시세 확인하기
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 md:group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-0 py-10 md:py-16">
+        <div class="max-w-7xl mx-auto px-5 md:px-6 text-center text-gray-400 text-xs md:text-sm">
+            <h2 class="text-xl md:text-2xl font-black text-white mb-4 md:mb-6 tracking-tight">ORDERZ</h2>
+            <div class="flex justify-center gap-4 md:gap-6 mb-6 md:mb-8">
+                <a href="#" class="hover:text-white transition">이용약관</a>
+                <a href="#" class="hover:text-white transition font-bold">개인정보처리방침</a>
+                <a href="#" class="hover:text-white transition">사업자정보확인</a>
+            </div>
+            <p class="mb-1 break-keep">본 이벤트는 당사 사정에 의해 사전 예고 없이 변경될 수 있습니다.</p>
+            <p>&copy; 2024 ORDERZ Corp. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle Usage Guide
+        function toggleGuide() {
+            const content = document.getElementById('guide-content');
+            const arrow = document.getElementById('guide-arrow');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                content.classList.add('fade-in');
+                arrow.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                content.classList.remove('fade-in');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+
+        // Category Tab Logic
+        function changeCategory(type) {
+            // Reset Buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.className = "category-btn bg-white text-gray-500 border border-gray-200 px-4 py-2.5 md:px-8 md:py-3 rounded-full font-bold text-xs md:text-base hover:border-emerald-500 hover:text-emerald-600 transition whitespace-nowrap";
+            });
+            
+            // Set Active Button
+            const activeBtn = document.getElementById(`btn-${type}`);
+            activeBtn.className = "category-btn bg-emerald-700 text-white px-4 py-2.5 md:px-8 md:py-3 rounded-full font-bold text-xs md:text-base shadow-lg transform transition hover:scale-105 whitespace-nowrap";
+
+            // Mock Content Change
+            const grid = document.getElementById('product-grid');
+            let content = '';
+
+            const auctionUI = `
+                <div class="flex items-center gap-1.5 md:gap-2 bg-emerald-50 rounded-lg p-1.5 md:p-2 mt-1 border border-emerald-100">
+                    <span class="text-[11px] md:text-sm font-bold text-emerald-700 whitespace-nowrap">📉 오늘의 경매가</span>
+                </div>`;
+
+            // Updated itemClass with darker border and mobile sizing
+            const itemClass = "bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group";
+            const iconClass = "aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl";
+            const titleClass = "font-bold text-gray-900 mt-1.5 md:mt-2 truncate text-sm md:text-lg";
+            const descClass = "text-gray-400 text-xs md:text-sm mb-2 md:mb-3 truncate";
+
+            if(type === 'farm') {
+                content = `
+                    <div class="${itemClass}"><div class="${iconClass}">🧅</div><div class="text-left"><span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span><h4 class="${titleClass}">무안 햇 양파 20kg</h4><p class="${descClass}">산지 직송 | 특품</p>${auctionUI}</div></div>
+                    <div class="${itemClass}"><div class="${iconClass}">🥔</div><div class="text-left"><span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span><h4 class="${titleClass}">제주 흙당근 10kg</h4><p class="${descClass}">세척 가능 | 상급</p>${auctionUI}</div></div>
+                    <div class="${itemClass}"><div class="${iconClass}">🍎</div><div class="text-left"><span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span><h4 class="${titleClass}">경북 부사 사과 5kg</h4><p class="${descClass}">당도 보장 | 14-16과</p>${auctionUI}</div></div>
+                    <div class="${itemClass}"><div class="${iconClass}">🍠</div><div class="text-left"><span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span><h4 class="${titleClass}">해남 꿀고구마 10kg</h4><p class="${descClass}">특상 | 베니하루카</p>${auctionUI}</div></div>
+                `;
+            } else if (type === 'food') {
+                content = `
+                     <div class="${itemClass}"><div class="${iconClass}">🥫</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">식자재</span><h4 class="${titleClass}">업소용 참치 1.88kg</h4><p class="${descClass}">대용량 | 오뚜기</p><p class="font-bold text-gray-900 text-base md:text-xl">14,500원</p></div></div>
+                     <div class="${itemClass}"><div class="${iconClass}">🧂</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">식자재</span><h4 class="${titleClass}">미원 2kg 대용량</h4><p class="${descClass}">대상 | 감칠맛</p><p class="font-bold text-gray-900 text-base md:text-xl">9,800원</p></div></div>
+                     <div class="${itemClass}"><div class="${iconClass}">🍝</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">식자재</span><h4 class="${titleClass}">스파게티면 3kg</h4><p class="${descClass}">업소용 | 이탈리아산</p><p class="font-bold text-gray-900 text-base md:text-xl">8,500원</p></div></div>
+                     <div class="${itemClass}"><div class="${iconClass}">🧊</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">냉동</span><h4 class="${titleClass}">냉동 볶음밥 300g x 10</h4><p class="${descClass}">간편조리 | 10팩</p><p class="font-bold text-gray-900 text-base md:text-xl">21,000원</p></div></div>
+                `;
+            } else if (type === 'industrial') {
+                content = `
+                     <div class="${itemClass}"><div class="${iconClass}">🧻</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">공산품</span><h4 class="${titleClass}">점보롤 화장지 16롤</h4><p class="${descClass}">유한킴벌리 | 2겹</p><p class="font-bold text-gray-900 text-base md:text-xl">28,900원</p></div></div>
+                     <div class="${itemClass}"><div class="${iconClass}">🧤</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">주방용품</span><h4 class="${titleClass}">니트릴 장갑 100매</h4><p class="${descClass}">라텍스 | M사이즈</p><p class="font-bold text-gray-900 text-base md:text-xl">7,500원</p></div></div>
+                     <div class="${itemClass}"><div class="${iconClass}">🧴</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">세제</span><h4 class="${titleClass}">주방세제 14kg</h4><p class="${descClass}">업소용 | 레몬향</p><p class="font-bold text-gray-900 text-base md:text-xl">15,000원</p></div></div>
+                     <div class="${itemClass}"><div class="${iconClass}">🥢</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">일회용품</span><h4 class="${titleClass}">대나무 젓가락 1000매</h4><p class="${descClass}">개별포장 | 고급형</p><p class="font-bold text-gray-900 text-base md:text-xl">11,000원</p></div></div>
+                `;
+            }
+            
+            grid.innerHTML = content;
+        }
+    </script>
+</body>
+</html>
