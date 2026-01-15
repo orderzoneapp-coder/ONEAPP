@@ -27,6 +27,19 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        /* Dynamic Slide Up Animation */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up {
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0; /* Initial state */
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
         /* Scallop Edge Pattern */
         .scallop-l {
             position: absolute;
@@ -55,58 +68,84 @@
         .break-keep {
             word-break: keep-all;
         }
+
+        /* Hero Text Shadow for better readability on image */
+        .text-shadow-strong {
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        /* Shine (Shimmer) Animation Effect */
+        .text-shine {
+            background: linear-gradient(to right, #34d399 0%, #ecfdf5 50%, #34d399 100%);
+            background-size: 200% auto;
+            color: #34d399;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header class="border-b border-gray-100 bg-white sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 md:px-6 md:py-4 flex justify-between items-center">
-            <h1 class="text-xl md:text-2xl font-black text-emerald-800 tracking-tight cursor-pointer">ORDERZ</h1>
-            <a href="https://orderz.kr/bbs/login.php?url=https://orderz.kr/" class="bg-gray-900 text-white px-5 py-2 md:px-8 md:py-2.5 rounded-lg font-bold text-xs md:text-sm hover:bg-gray-800 transition shadow-md no-underline inline-block whitespace-nowrap">
+    <!-- Header (Fixed & Transparent initially) -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent border-transparent py-3 md:py-4">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center">
+            <!-- Logo -->
+            <h1 id="header-logo" class="text-xl md:text-2xl font-black text-white tracking-tight cursor-pointer transition-colors duration-300 drop-shadow-md">ORDERZ</h1>
+            
+            <!-- Button Color Changed: Gray -> Emerald Green -->
+            <a href="https://orderz.kr/bbs/login.php?url=https://orderz.kr/" class="bg-emerald-600 text-white px-5 py-2 md:px-8 md:py-2.5 rounded-lg font-bold text-xs md:text-sm hover:bg-emerald-700 transition shadow-md no-underline inline-block whitespace-nowrap ring-2 ring-white/20">
                 신규가입
             </a>
         </div>
     </header>
 
-    <!-- Hero Section (Gradient Theme) -->
-    <!-- Background Changed: White to Emerald Gradient (Fresh & Clean) -->
-    <section class="relative pt-12 pb-12 md:pt-24 md:pb-20 px-5 md:px-6 overflow-hidden flex items-center justify-center min-h-[400px] md:min-h-[500px]">
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-12 md:pt-40 md:pb-20 px-5 md:px-6 overflow-hidden flex items-center justify-center min-h-[500px] md:min-h-[600px]">
         
-        <!-- Gradient Background -->
-        <!-- bg-gradient-to-b: Starts White (Top) -> Soft Emerald (Bottom) -->
-        <div class="absolute inset-0 z-0 bg-gradient-to-b from-white via-emerald-50 to-emerald-100">
-            <!-- Subtle Radial Highlight for depth -->
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-white via-transparent to-transparent opacity-80"></div>
+        <!-- Background Image with Gradient Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://oneapp2.godohosting.com/%EC%8B%A0%EA%B7%9C%ED%98%9C%ED%83%9D/main.jpg" class="w-full h-full object-cover object-center" alt="배경 이미지">
+            <!-- Gradient Overlay: Top(Dark) -> Center(Medium) -> Bottom(Dark) -->
+            <!-- 자연스럽게 글자를 띄우기 위해 위아래는 진하게, 중앙도 글자가 보일 정도로 은은하게 어둡게 처리 -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/80"></div>
         </div>
 
+        <!-- Content Wrapper: Removed Box Style, Just Centered Text -->
         <div class="max-w-4xl mx-auto text-center relative z-10">
-            <!-- Badge: Adapted for light background -->
-            <span class="inline-block py-1 px-3 md:py-1.5 md:px-4 rounded-full bg-emerald-100 text-emerald-700 text-xs md:text-sm font-semibold mb-4 md:mb-6 border border-emerald-200 shadow-sm">
-                🎁 신규회원 전용 혜택
-            </span>
+            <!-- Badge -->
+            <div class="animate-slide-up delay-100">
+                <span class="inline-block py-1 px-3 md:py-1.5 md:px-4 rounded-full bg-emerald-600 text-white text-xs md:text-sm font-bold mb-4 md:mb-6 shadow-lg border border-emerald-500/50">
+                    🎁 신규회원 전용 혜택
+                </span>
+            </div>
             
-            <!-- Headline: Dark text for readability on light bg -->
-            <h2 class="text-3xl md:text-5xl font-bold leading-tight mb-4 md:mb-6 drop-shadow-sm break-keep text-gray-900">
-                <!-- Mobile: Shortened version -->
-                <span class="md:hidden">사장님의 힘찬 시작,<br><span class="text-emerald-600">오더즈</span>가 지원합니다</span>
-                <!-- Desktop: Full version -->
-                <span class="hidden md:inline">사장님의 힘찬 시작,<br><span class="text-emerald-600">오더즈</span>가 든든하게 지원합니다</span>
+            <!-- Headline: Adjusted spacing and added animation -->
+            <!-- Changed animate-pulse to text-shine for a premium glowing effect -->
+            <h2 class="animate-slide-up delay-200 text-3xl md:text-5xl font-bold leading-tight md:leading-snug mb-4 md:mb-6 break-keep text-white drop-shadow-xl text-shadow-strong">
+                <span class="md:hidden">사장님의 힘찬 시작,<br><span class="text-shine inline-block">오더즈</span>가 지원합니다</span>
+                <span class="hidden md:inline">사장님의 힘찬 시작,<br><span class="text-shine inline-block">오더즈</span>가 든든하게 지원합니다</span>
             </h2>
             
-            <!-- Description: Darker gray text -->
-            <p class="text-gray-600 text-base md:text-lg font-light leading-relaxed break-keep">
-                <!-- Mobile: Core benefits only -->
-                <span class="md:hidden">
-                    <strong class="text-emerald-800 font-bold border-b-2 border-yellow-400">15,000원 장사 지원금</strong>과<br>
-                    무료배송으로 부담 없이 시작하세요.
-                </span>
-                <!-- Desktop: Full sentence -->
-                <span class="hidden md:inline">
-                    성공적인 장사를 위한 첫 걸음, <strong class="text-emerald-800 font-bold border-b-2 border-yellow-400">15,000원 장사 지원 혜택</strong>과<br>
-                    무료배송으로 부담 없이 시작해 보세요.
-                </span>
-            </p>
+            <!-- Description -->
+            <div class="animate-slide-up delay-300">
+                <p class="text-gray-100 text-base md:text-lg font-medium leading-relaxed break-keep drop-shadow-md">
+                    <span class="md:hidden">
+                        <strong class="text-emerald-300 font-bold border-b border-emerald-500/50">15,000원 장사 지원금</strong>과<br>
+                        무료배송으로 부담 없이 시작하세요.
+                    </span>
+                    <span class="hidden md:inline">
+                        성공적인 장사를 위한 첫 걸음, <strong class="text-emerald-300 font-bold border-b border-emerald-500/50">15,000원 장사 지원 혜택</strong>과<br>
+                        무료배송으로 부담 없이 시작해 보세요.
+                    </span>
+                </p>
+            </div>
         </div>
     </section>
 
@@ -303,11 +342,13 @@
             </div>
 
             <!-- Product Grid -->
+            <!-- Initial content will be populated by JS to ensure consistency, or simple static placeholder -->
             <div id="product-grid" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-10 md:mb-16 px-1">
-                <!-- Default (Farm) Items -->
+                <!-- Static Fallback (Farm) - JS가 로드되기 전이나 SEO를 위해 초기값 유지 (구조는 변경됨) -->
                 <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group relative overflow-hidden">
-                    <div class="aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl">
-                        🧅
+                    <div class="aspect-square bg-gray-100 rounded-lg md:rounded-xl mb-3 md:mb-4 overflow-hidden relative">
+                        <!-- 이미지 들어갈 곳 -->
+                        <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Onion+Image" alt="무안 햇 양파" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     </div>
                     <div class="text-left">
                         <span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span>
@@ -318,9 +359,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group">
-                    <div class="aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl">
-                        🥔
+                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group relative overflow-hidden">
+                    <div class="aspect-square bg-gray-100 rounded-lg md:rounded-xl mb-3 md:mb-4 overflow-hidden relative">
+                         <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Carrot+Image" alt="제주 흙당근" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     </div>
                     <div class="text-left">
                         <span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span>
@@ -331,9 +372,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group">
-                    <div class="aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl">
-                        🍎
+                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group relative overflow-hidden">
+                    <div class="aspect-square bg-gray-100 rounded-lg md:rounded-xl mb-3 md:mb-4 overflow-hidden relative">
+                         <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Apple+Image" alt="경북 부사 사과" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     </div>
                     <div class="text-left">
                         <span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span>
@@ -344,9 +385,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group">
-                    <div class="aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl">
-                        🍠
+                <div class="bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group relative overflow-hidden">
+                    <div class="aspect-square bg-gray-100 rounded-lg md:rounded-xl mb-3 md:mb-4 overflow-hidden relative">
+                         <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Sweet+Potato" alt="해남 꿀고구마" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                     </div>
                     <div class="text-left">
                         <span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span>
@@ -383,6 +424,28 @@
     </footer>
 
     <script>
+        // Header Scroll Effect
+        const header = document.getElementById('main-header');
+        const logo = document.getElementById('header-logo');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                // Scrolled: White Background, Emerald/Dark Text
+                header.classList.remove('bg-transparent', 'border-transparent', 'py-3', 'md:py-4');
+                header.classList.add('bg-white', 'shadow-md', 'py-2', 'md:py-3');
+                
+                logo.classList.remove('text-white', 'drop-shadow-md');
+                logo.classList.add('text-emerald-800');
+            } else {
+                // Top: Transparent Background, White Text
+                header.classList.add('bg-transparent', 'border-transparent', 'py-3', 'md:py-4');
+                header.classList.remove('bg-white', 'shadow-md', 'py-2', 'md:py-3');
+                
+                logo.classList.add('text-white', 'drop-shadow-md');
+                logo.classList.remove('text-emerald-800');
+            }
+        });
+
         // Toggle Usage Guide
         function toggleGuide() {
             const content = document.getElementById('guide-content');
@@ -400,6 +463,30 @@
         }
 
         // Category Tab Logic
+        
+        // Data Configuration (나중에 여기 이미지 주소를 실제 URL로 변경하세요)
+        // imgUrl: 'https://쇼핑몰주소/이미지.jpg' 형태로 넣으시면 됩니다.
+        const productData = {
+            farm: [
+                { title: '무안 햇 양파 20kg', desc: '산지 직송 | 특품', tag: '오늘의 경매', tagClass: 'bg-red-100 text-red-600', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Onion+Image', isAuction: true },
+                { title: '제주 흙당근 10kg', desc: '세척 가능 | 상급', tag: '오늘의 경매', tagClass: 'bg-red-100 text-red-600', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Carrot+Image', isAuction: true },
+                { title: '경북 부사 사과 5kg', desc: '당도 보장 | 14-16과', tag: '오늘의 경매', tagClass: 'bg-red-100 text-red-600', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Apple+Image', isAuction: true },
+                { title: '해남 꿀고구마 10kg', desc: '특상 | 베니하루카', tag: '오늘의 경매', tagClass: 'bg-red-100 text-red-600', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Sweet+Potato', isAuction: true }
+            ],
+            food: [
+                { title: '업소용 참치 1.88kg', desc: '대용량 | 오뚜기', price: '14,500원', tag: '식자재', tagClass: 'bg-gray-100 text-gray-500', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Tuna+Can', isAuction: false },
+                { title: '미원 2kg 대용량', desc: '대상 | 감칠맛', price: '9,800원', tag: '식자재', tagClass: 'bg-gray-100 text-gray-500', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Seasoning', isAuction: false },
+                { title: '스파게티면 3kg', desc: '업소용 | 이탈리아산', price: '8,500원', tag: '식자재', tagClass: 'bg-gray-100 text-gray-500', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Pasta', isAuction: false },
+                { title: '냉동 볶음밥 300g x 10', desc: '간편조리 | 10팩', price: '21,000원', tag: '냉동', tagClass: 'bg-gray-100 text-gray-500', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Fried+Rice', isAuction: false }
+            ],
+            industrial: [
+                { title: '점보롤 화장지 16롤', desc: '유한킴벌리 | 2겹', price: '28,900원', tag: '공산품', tagClass: 'bg-gray-100 text-gray-500', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Toilet+Paper', isAuction: false },
+                { title: '니트릴 장갑 100매', desc: '라텍스 | M사이즈', price: '7,500원', tag: '주방용품', tagClass: 'bg-gray-100 text-gray-500', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Gloves', isAuction: false },
+                { title: '주방세제 14kg', desc: '업소용 | 레몬향', price: '15,000원', tag: '세제', tagClass: 'bg-gray-100 text-gray-500', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Detergent', isAuction: false },
+                { title: '대나무 젓가락 1000매', desc: '개별포장 | 고급형', price: '11,000원', tag: '일회용품', tagClass: 'bg-gray-100 text-gray-500', imgUrl: 'https://placehold.co/400x400/e2e8f0/64748b?text=Chopsticks', isAuction: false }
+            ]
+        };
+
         function changeCategory(type) {
             // Reset Buttons
             document.querySelectorAll('.category-btn').forEach(btn => {
@@ -425,43 +512,42 @@
                 descEl.innerHTML = `주방부터 홀 서빙, 배달 용품까지<br><span class="text-emerald-600 font-bold">사장님이 찾으시는 모든 것</span>을 한곳에서 해결하세요!`;
             }
 
-            // Mock Content Change
+            // Render Product Grid
             const grid = document.getElementById('product-grid');
+            const items = productData[type];
+            
             let content = '';
-
+            
+            // Common Classes
+            const itemClass = "bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group relative overflow-hidden";
+            const imgContainerClass = "aspect-square bg-gray-100 rounded-lg md:rounded-xl mb-3 md:mb-4 overflow-hidden relative";
+            const imgClass = "w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300";
+            const titleClass = "font-bold text-gray-900 mt-1.5 md:mt-2 truncate text-sm md:text-lg";
+            const descClass = "text-gray-400 text-xs md:text-sm mb-2 md:mb-3 truncate";
+            
+            // Auction UI Component
             const auctionUI = `
                 <div class="flex items-center gap-1.5 md:gap-2 bg-emerald-50 rounded-lg p-1.5 md:p-2 mt-1 border border-emerald-100">
                     <span class="text-[11px] md:text-sm font-bold text-emerald-700 whitespace-nowrap">📉 오늘의 경매가</span>
                 </div>`;
 
-            // Updated itemClass with darker border and mobile sizing
-            const itemClass = "bg-white border border-gray-300 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm cursor-pointer group";
-            const iconClass = "aspect-square bg-gray-50 rounded-lg md:rounded-xl mb-3 md:mb-4 flex items-center justify-center text-4xl md:text-5xl";
-            const titleClass = "font-bold text-gray-900 mt-1.5 md:mt-2 truncate text-sm md:text-lg";
-            const descClass = "text-gray-400 text-xs md:text-sm mb-2 md:mb-3 truncate";
-
-            if(type === 'farm') {
-                content = `
-                    <div class="${itemClass}"><div class="${iconClass}">🧅</div><div class="text-left"><span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span><h4 class="${titleClass}">무안 햇 양파 20kg</h4><p class="${descClass}">산지 직송 | 특품</p>${auctionUI}</div></div>
-                    <div class="${itemClass}"><div class="${iconClass}">🥔</div><div class="text-left"><span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span><h4 class="${titleClass}">제주 흙당근 10kg</h4><p class="${descClass}">세척 가능 | 상급</p>${auctionUI}</div></div>
-                    <div class="${itemClass}"><div class="${iconClass}">🍎</div><div class="text-left"><span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span><h4 class="${titleClass}">경북 부사 사과 5kg</h4><p class="${descClass}">당도 보장 | 14-16과</p>${auctionUI}</div></div>
-                    <div class="${itemClass}"><div class="${iconClass}">🍠</div><div class="text-left"><span class="bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">오늘의 경매</span><h4 class="${titleClass}">해남 꿀고구마 10kg</h4><p class="${descClass}">특상 | 베니하루카</p>${auctionUI}</div></div>
+            items.forEach(item => {
+                const priceUI = item.isAuction ? auctionUI : `<p class="font-bold text-gray-900 text-base md:text-xl">${item.price}</p>`;
+                
+                content += `
+                    <div class="${itemClass}">
+                        <div class="${imgContainerClass}">
+                            <img src="${item.imgUrl}" alt="${item.title}" class="${imgClass}">
+                        </div>
+                        <div class="text-left">
+                            <span class="${item.tagClass} text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">${item.tag}</span>
+                            <h4 class="${titleClass}">${item.title}</h4>
+                            <p class="${descClass}">${item.desc}</p>
+                            ${priceUI}
+                        </div>
+                    </div>
                 `;
-            } else if (type === 'food') {
-                content = `
-                     <div class="${itemClass}"><div class="${iconClass}">🥫</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">식자재</span><h4 class="${titleClass}">업소용 참치 1.88kg</h4><p class="${descClass}">대용량 | 오뚜기</p><p class="font-bold text-gray-900 text-base md:text-xl">14,500원</p></div></div>
-                     <div class="${itemClass}"><div class="${iconClass}">🧂</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">식자재</span><h4 class="${titleClass}">미원 2kg 대용량</h4><p class="${descClass}">대상 | 감칠맛</p><p class="font-bold text-gray-900 text-base md:text-xl">9,800원</p></div></div>
-                     <div class="${itemClass}"><div class="${iconClass}">🍝</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">식자재</span><h4 class="${titleClass}">스파게티면 3kg</h4><p class="${descClass}">업소용 | 이탈리아산</p><p class="font-bold text-gray-900 text-base md:text-xl">8,500원</p></div></div>
-                     <div class="${itemClass}"><div class="${iconClass}">🧊</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">냉동</span><h4 class="${titleClass}">냉동 볶음밥 300g x 10</h4><p class="${descClass}">간편조리 | 10팩</p><p class="font-bold text-gray-900 text-base md:text-xl">21,000원</p></div></div>
-                `;
-            } else if (type === 'industrial') {
-                content = `
-                     <div class="${itemClass}"><div class="${iconClass}">🧻</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">공산품</span><h4 class="${titleClass}">점보롤 화장지 16롤</h4><p class="${descClass}">유한킴벌리 | 2겹</p><p class="font-bold text-gray-900 text-base md:text-xl">28,900원</p></div></div>
-                     <div class="${itemClass}"><div class="${iconClass}">🧤</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">주방용품</span><h4 class="${titleClass}">니트릴 장갑 100매</h4><p class="${descClass}">라텍스 | M사이즈</p><p class="font-bold text-gray-900 text-base md:text-xl">7,500원</p></div></div>
-                     <div class="${itemClass}"><div class="${iconClass}">🧴</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">세제</span><h4 class="${titleClass}">주방세제 14kg</h4><p class="${descClass}">업소용 | 레몬향</p><p class="font-bold text-gray-900 text-base md:text-xl">15,000원</p></div></div>
-                     <div class="${itemClass}"><div class="${iconClass}">🥢</div><div class="text-left"><span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">일회용품</span><h4 class="${titleClass}">대나무 젓가락 1000매</h4><p class="${descClass}">개별포장 | 고급형</p><p class="font-bold text-gray-900 text-base md:text-xl">11,000원</p></div></div>
-                `;
-            }
+            });
             
             grid.innerHTML = content;
         }
