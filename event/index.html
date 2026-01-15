@@ -279,9 +279,11 @@
             <div class="mb-8 md:mb-12">
                 <div class="flex items-center justify-center gap-2 md:gap-3 mb-2 md:mb-3">
                     <span class="text-2xl md:text-3xl animate-bounce">📢</span>
-                    <h3 class="text-2xl md:text-4xl font-bold text-gray-900 break-keep">오늘의 경매가 확인</h3>
+                    <!-- Added ID for dynamic text update -->
+                    <h3 id="category-title" class="text-2xl md:text-4xl font-bold text-gray-900 break-keep">오늘의 경매가 확인</h3>
                 </div>
-                <p class="text-gray-500 text-sm md:text-lg font-light break-keep leading-relaxed">
+                <!-- Added ID for dynamic text update -->
+                <p id="category-desc" class="text-gray-500 text-sm md:text-lg font-light break-keep leading-relaxed">
                     매일 아침 낙찰되는 도매시장 시세 그대로<br>
                     <span class="text-emerald-600 font-bold">오늘 가장 신선한 가격</span>을 확인하세요!
                 </p>
@@ -407,6 +409,21 @@
             // Set Active Button
             const activeBtn = document.getElementById(`btn-${type}`);
             activeBtn.className = "category-btn bg-emerald-700 text-white px-4 py-2.5 md:px-8 md:py-3 rounded-full font-bold text-xs md:text-base shadow-lg transform transition hover:scale-105 whitespace-nowrap";
+
+            // Update Title & Description based on Category
+            const titleEl = document.getElementById('category-title');
+            const descEl = document.getElementById('category-desc');
+
+            if (type === 'farm') {
+                titleEl.textContent = "오늘의 경매가 확인";
+                descEl.innerHTML = `매일 아침 낙찰되는 도매시장 시세 그대로<br><span class="text-emerald-600 font-bold">오늘 가장 신선한 가격</span>을 확인하세요!`;
+            } else if (type === 'food') {
+                titleEl.textContent = "약 4,200여종의 식자재";
+                descEl.innerHTML = `소용량부터 대용량까지 꼼꼼하게 채웠습니다.<br><span class="text-emerald-600 font-bold">사장님 매장에 딱 맞는 규격</span>으로 골라보세요!`;
+            } else if (type === 'industrial') {
+                titleEl.textContent = "공산품도 오더즈에 다~ 있다";
+                descEl.innerHTML = `주방부터 홀 서빙, 배달 용품까지<br><span class="text-emerald-600 font-bold">사장님이 찾으시는 모든 것</span>을 한곳에서 해결하세요!`;
+            }
 
             // Mock Content Change
             const grid = document.getElementById('product-grid');
