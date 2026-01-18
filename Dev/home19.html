@@ -1079,13 +1079,35 @@
             return items.map(p => {
                 const qty = appState.cart[p.id] || 0;
                 const rowBg = qty > 0 ? 'bg-green-50' : 'bg-white';
+                
+                // Add Delete Button Logic for Quick Order View (except Special List)
+                const isSpecial = appState.currentMyList === 0;
+                const deleteBtn = !isSpecial ? `<button class="w-8 h-full mr-1 text-gray-300 hover:text-red-500 flex items-center justify-center" onclick="deleteProduct(${p.id})"><i class="far fa-trash-alt"></i></button>` : '';
+
                 return `
             <div class="product-item flex items-center p-3 ${rowBg} border-b">
+                ${deleteBtn}
                 <div class="flex-grow"><div class="text-sm font-bold">${p.name}</div><div class="text-xs text-gray-500">${p.price.toLocaleString()}원</div></div>
                 <div class="flex items-center border rounded bg-white"><button class="w-8 h-8" onclick="updateQty(${p.id},-1)">-</button><div class="w-8 text-center text-sm font-bold">${qty}</div><button class="w-8 h-8" onclick="updateQty(${p.id},1)">+</button></div>
             </div>`;
             }).join('');
         }
+
+        window.deleteProduct = function(id) {
+            if(!confirm("목록에서 삭제하시겠습니까?")) return;
+            const p = getAllProducts().find(x => x.id === id);
+            if(!p) return;
+
+            // Handle deletion based on current list context
+            if(appState.currentMyList === -1) {
+                // Wishlist: Unlike
+                p.liked = false;
+            } else if(appState.currentMyList > 0) {
+                // Custom List: Remove from list
+                p.myList = p.myList.filter(lid => lid !== appState.currentMyList);
+            }
+            renderProducts();
+        };
 
         function updateFooterUI() {
             const hasItems = Object.keys(appState.cart).length > 0;
