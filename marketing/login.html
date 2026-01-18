@@ -1,0 +1,255 @@
+import React, { useState } from 'react';
+import { ShoppingCart, Check, Gift, Truck, Plus, Minus, X } from 'lucide-react';
+
+export default function LandingPage() {
+  // 대파 수량 상태 관리
+  const [daepaQty, setDaepaQty] = useState(1);
+  const [showProductModal, setShowProductModal] = useState(false);
+
+  // 수량 변경 핸들러
+  const handleQtyChange = (change) => {
+    const newQty = daepaQty + change;
+    if (newQty >= 1) {
+      setDaepaQty(newQty);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
+      
+      {/* 1. 상단 헤더 */}
+      <header className="bg-emerald-700 text-white sticky top-0 z-50 shadow-md">
+        <div className="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+          <h1 className="text-xl font-bold tracking-tighter">ORDERZ</h1>
+          <a href="#join-frame" className="bg-yellow-400 text-emerald-900 px-4 py-1.5 rounded-full text-sm font-bold hover:bg-yellow-300 transition">
+            지금 가입하고 혜택받기
+          </a>
+        </div>
+      </header>
+
+      {/* 메인 배너 */}
+      <section className="bg-emerald-600 text-white pt-10 pb-16 px-4 text-center">
+        <div className="max-w-2xl mx-auto">
+          <span className="inline-block bg-emerald-800 text-emerald-100 px-3 py-1 rounded-full text-sm mb-4">
+            사장님 전용 도매몰 오픈
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+            식자재, 아직도<br />
+            비싸게 사시나요?
+          </h2>
+          <p className="text-lg md:text-xl text-emerald-100 mb-8 opacity-90">
+            중간 유통 싹 뺐습니다.<br/>
+            가입 즉시 <span className="text-yellow-300 font-bold">도매가 구매 + 5,000원 쿠폰</span> 증정!
+          </p>
+          <div className="flex justify-center gap-2">
+            <div className="bg-white/10 backdrop-blur-sm p-3 rounded-lg flex items-center gap-2">
+              <Truck size={20} className="text-yellow-300"/>
+              <span className="text-sm">서울/경기 직배송</span>
+            </div>
+             <div className="bg-white/10 backdrop-blur-sm p-3 rounded-lg flex items-center gap-2">
+              <Gift size={20} className="text-yellow-300"/>
+              <span className="text-sm">가입선물 증정</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. 미끼 상품 (이벤트 상품) 섹션 */}
+      <section className="py-12 px-4 max-w-4xl mx-auto -mt-10">
+        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-gray-100">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-gray-900">🔥 신규회원 한정 미친 특가</h3>
+            <p className="text-gray-500 text-sm mt-1">지금 가입하면 이 가격에 바로 구매 가능합니다.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* 상품 1: 대파 (인터랙티브 기능 추가됨) */}
+            <div className="border-2 border-emerald-500 rounded-xl p-5 bg-emerald-50/50 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                주문폭주
+              </div>
+              <div className="flex gap-4 mb-4">
+                <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center text-4xl shrink-0 shadow-sm border border-emerald-100">
+                  🥬
+                </div>
+                <div className="flex-1">
+                  <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded">한정수량</span>
+                  <h4 className="font-bold text-xl mt-1 text-gray-900">신선 대파 10단</h4>
+                  <p className="text-emerald-700 text-xs font-medium mt-1 mb-2">단 900원 꼴 / 1일 10단 한정</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-gray-400 line-through text-sm">25,000원</span>
+                    <span className="text-red-600 font-bold text-2xl">9,000</span>
+                    <span className="text-gray-600 text-sm">원</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 수량 조절 및 구매 버튼 영역 */}
+              <div className="bg-white p-3 rounded-lg border border-emerald-200">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-sm font-bold text-gray-700">수량 선택</span>
+                  <div className="flex items-center gap-3">
+                    <button 
+                      onClick={() => handleQtyChange(-1)}
+                      className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 active:bg-gray-300 transition"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="font-bold text-lg w-6 text-center">{daepaQty}</span>
+                    <button 
+                      onClick={() => handleQtyChange(1)}
+                      className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center hover:bg-emerald-200 active:bg-emerald-300 transition"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center border-t border-dashed pt-3">
+                  <span className="text-gray-500 text-sm">총 합계</span>
+                  <span className="font-bold text-xl text-emerald-700">{(9000 * daepaQty).toLocaleString()}원</span>
+                </div>
+                <button 
+                  onClick={() => setShowProductModal(true)}
+                  className="w-full mt-3 bg-emerald-600 text-white font-bold py-3 rounded-lg hover:bg-emerald-700 transition shadow-md flex items-center justify-center gap-2"
+                >
+                  <ShoppingCart size={18} />
+                  지금 바로 주문하기
+                </button>
+              </div>
+            </div>
+
+            {/* 상품 2 */}
+            <div className="flex items-center gap-4 border rounded-xl p-4 hover:border-emerald-500 transition cursor-pointer group bg-white">
+              <div className="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-4xl shrink-0">
+                🥗
+              </div>
+              <div>
+                 <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded">특A급</span>
+                <h4 className="font-bold text-lg mt-1">알배기 배추 (특) 1box</h4>
+                <div className="mt-1">
+                  <span className="text-gray-400 line-through text-sm">15,000원</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-red-600 font-bold text-2xl">7,000</span>
+                    <span className="text-gray-600 text-sm">원</span>
+                  </div>
+                </div>
+                <p className="text-emerald-600 text-xs font-medium mt-1">어디서도 못 보는 가격</p>
+              </div>
+            </div>
+            
+             {/* 상품 3 */}
+            <div className="flex items-center gap-4 border rounded-xl p-4 hover:border-emerald-500 transition cursor-pointer group bg-white">
+              <div className="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-4xl shrink-0">
+                🥒
+              </div>
+              <div>
+                <h4 className="font-bold text-lg mt-1">쥬키니 호박 (특) 1box</h4>
+                <div className="mt-1">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-gray-900 font-bold text-xl">11,000</span>
+                    <span className="text-gray-600 text-sm">원</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+             {/* 상품 4 */}
+            <div className="flex items-center gap-4 border rounded-xl p-4 hover:border-emerald-500 transition cursor-pointer group bg-white">
+              <div className="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-4xl shrink-0">
+                🍚
+              </div>
+              <div>
+                <h4 className="font-bold text-lg mt-1">청운추미 쌀 20kg</h4>
+                <div className="mt-1">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-gray-900 font-bold text-xl">57,500</span>
+                    <span className="text-gray-600 text-sm">원</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. 회원가입 프레임 섹션 */}
+      <section id="join-frame" className="py-12 bg-gray-100">
+        <div className="max-w-5xl mx-auto px-0 md:px-4">
+          <div className="bg-white md:rounded-xl shadow-lg overflow-hidden">
+            <div className="bg-gray-900 p-4 md:p-6 text-center">
+              <h3 className="text-xl font-bold text-white">회원가입하고 혜택받기</h3>
+              <p className="text-gray-400 text-sm mt-1">아래 페이지에서 정보를 입력하시면 즉시 가입됩니다.</p>
+            </div>
+            
+            <div className="w-full h-[1200px] bg-white">
+              <iframe 
+                src="https://orderz.kr/bbs/register_form.php"
+                title="쇼핑몰 회원가입"
+                className="w-full h-full border-0"
+                scrolling="yes"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. 하단 신뢰 요소 */}
+      <section className="py-10 text-center text-gray-500 bg-white">
+        <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex flex-col items-center">
+             <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+              <Check className="text-emerald-600"/>
+             </div>
+             <h4 className="font-bold text-gray-800">품질 보장</h4>
+             <p className="text-sm">마음에 안 드시면 100% 반품/교환</p>
+          </div>
+          <div className="flex flex-col items-center">
+             <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+              <Truck className="text-emerald-600"/>
+             </div>
+             <h4 className="font-bold text-gray-800">새벽 배송</h4>
+             <p className="text-sm">밤 10시 전 주문 시 내일 새벽 도착</p>
+          </div>
+          <div className="flex flex-col items-center">
+             <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+              <ShoppingCart className="text-emerald-600"/>
+             </div>
+             <h4 className="font-bold text-gray-800">간편 주문</h4>
+             <p className="text-sm">문자로도 편하게 주문 가능</p>
+          </div>
+        </div>
+      </section>
+      
+      <footer className="bg-gray-800 text-gray-400 py-8 text-center text-xs">
+        <p>(주)오더즈 | 대표: 홍길동 | 사업자등록번호: 000-00-00000</p>
+        <p className="mt-1">고객센터: 010-XXXX-XXXX</p>
+      </footer>
+
+      {/* 상품 구매 모달 (Iframe) */}
+      {showProductModal && (
+        <div className="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-0 md:p-4">
+          <div className="bg-white w-full h-full md:h-[90%] md:max-w-4xl md:rounded-xl overflow-hidden relative flex flex-col">
+            <div className="flex justify-between items-center p-3 bg-gray-100 border-b">
+              <h3 className="font-bold text-gray-800">상품 주문하기</h3>
+              <button 
+                onClick={() => setShowProductModal(false)}
+                className="p-1 hover:bg-gray-200 rounded-full transition"
+              >
+                <X size={24} className="text-gray-600"/>
+              </button>
+            </div>
+            <div className="flex-1 w-full bg-white">
+              {/* 실제 쇼핑몰 상세페이지 연결 */}
+              <iframe 
+                src="https://orderz.kr/shop/item.php?it_id=601010"
+                title="대파 구매"
+                className="w-full h-full border-0"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
