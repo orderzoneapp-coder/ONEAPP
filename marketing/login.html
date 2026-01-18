@@ -15,7 +15,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-800 flex flex-col relative">
       
       {/* 1. 상단 헤더 */}
       <header className="bg-emerald-700 text-white sticky top-0 z-50 shadow-md">
@@ -27,8 +27,8 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* 메인 배너 */}
-      <section className="bg-emerald-600 text-white pt-10 pb-16 px-4 text-center">
+      {/* 2. 메인 배너 */}
+      <section className="bg-emerald-600 text-white pt-10 pb-20 px-4 text-center relative z-0">
         <div className="max-w-2xl mx-auto">
           <span className="inline-block bg-emerald-800 text-emerald-100 px-3 py-1 rounded-full text-sm mb-4">
             사장님 전용 도매몰 오픈
@@ -54,8 +54,9 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 2. 미끼 상품 (이벤트 상품) 섹션 */}
-      <section className="py-12 px-4 max-w-4xl mx-auto -mt-10">
+      {/* 3. 미끼 상품 (이벤트 상품) 섹션 */}
+      {/* -mt-10으로 위로 당길 때 z-10을 주어 배너 위로 올라오게 처리 */}
+      <section className="px-4 max-w-4xl mx-auto -mt-10 relative z-10 mb-12">
         <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-gray-100">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-gray-900">🔥 신규회원 한정 미친 특가</h3>
@@ -63,9 +64,9 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* 상품 1: 대파 (인터랙티브 기능 추가됨) */}
+            {/* 상품 1: 대파 (인터랙티브) */}
             <div className="border-2 border-emerald-500 rounded-xl p-5 bg-emerald-50/50 shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+              <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg z-20">
                 주문폭주
               </div>
               <div className="flex gap-4 mb-4">
@@ -84,7 +85,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* 수량 조절 및 구매 버튼 영역 */}
+              {/* 수량 조절 영역 */}
               <div className="bg-white p-3 rounded-lg border border-emerald-200">
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-sm font-bold text-gray-700">수량 선택</span>
@@ -172,7 +173,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 3. 회원가입 프레임 섹션 */}
+      {/* 4. 회원가입 프레임 섹션 */}
       <section id="join-frame" className="py-12 bg-gray-100">
         <div className="max-w-5xl mx-auto px-0 md:px-4">
           <div className="bg-white md:rounded-xl shadow-lg overflow-hidden">
@@ -181,7 +182,7 @@ export default function LandingPage() {
               <p className="text-gray-400 text-sm mt-1">아래 페이지에서 정보를 입력하시면 즉시 가입됩니다.</p>
             </div>
             
-            <div className="w-full h-[1200px] bg-white">
+            <div className="w-full h-[1200px] bg-white relative">
               <iframe 
                 src="https://orderz.kr/bbs/register_form.php"
                 title="쇼핑몰 회원가입"
@@ -193,7 +194,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 4. 하단 신뢰 요소 */}
+      {/* 5. 하단 신뢰 요소 & 푸터 */}
       <section className="py-10 text-center text-gray-500 bg-white">
         <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex flex-col items-center">
@@ -225,7 +226,7 @@ export default function LandingPage() {
         <p className="mt-1">고객센터: 010-XXXX-XXXX</p>
       </footer>
 
-      {/* 상품 구매 모달 (Iframe) */}
+      {/* 상품 구매 모달 */}
       {showProductModal && (
         <div className="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-0 md:p-4">
           <div className="bg-white w-full h-full md:h-[90%] md:max-w-4xl md:rounded-xl overflow-hidden relative flex flex-col">
@@ -238,8 +239,7 @@ export default function LandingPage() {
                 <X size={24} className="text-gray-600"/>
               </button>
             </div>
-            <div className="flex-1 w-full bg-white">
-              {/* 실제 쇼핑몰 상세페이지 연결 */}
+            <div className="flex-1 w-full bg-white relative">
               <iframe 
                 src="https://orderz.kr/shop/item.php?it_id=601010"
                 title="대파 구매"
