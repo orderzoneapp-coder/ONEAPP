@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORDERZ 전단지 - 인쇄용</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 인쇄 및 화면 설정 */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        body { 
+            font-family: Pretendard, sans-serif; 
+            background-color: #555; /* 배경을 어둡게 하여 A4 용지가 돋보이게 함 */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* A4 용지 규격 (210mm x 297mm) */
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            overflow: hidden; /* 내용이 넘치지 않도록 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 인쇄 시 설정 */
+        @media print {
+            body { 
+                background: none; 
+                padding: 0; 
+                margin: 0;
+            }
+            .page {
+                width: 100%;
+                height: 100%;
+                box-shadow: none;
+                margin: 0;
+                page-break-after: always;
+            }
+            /* 브라우저 기본 머리말/꼬리말 제거 */
+            @page {
+                margin: 0;
+                size: A4;
+            }
+        }
+
+        /* 강조 텍스트 효과 */
+        .stroke-text {
+            -webkit-text-stroke: 1px #047857; /* emerald-700 */
+            color: white;
+            text-shadow: 2px 2px 0px #047857;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- A4 전단지 영역 -->
+    <div class="page">
+        
+        <!-- 1. 헤더 (강렬한 인상) -->
+        <header class="bg-emerald-700 text-white pt-8 pb-6 px-8 text-center">
+            <div class="inline-block bg-yellow-400 text-emerald-900 font-extrabold px-4 py-1 rounded-full text-sm mb-2 shadow-lg">
+                사장님 전용 식자재 도매몰
+            </div>
+            <h1 class="text-6xl font-black tracking-tighter leading-none mb-2">ORDERZ</h1>
+            <p class="text-xl font-medium opacity-90">중간 유통 거품을 싹! 뺐습니다.</p>
+        </header>
+
+        <!-- 2. 메인 카피 & 미끼 상품 (시선 집중) -->
+        <div class="flex-1 bg-gray-50 p-8 flex flex-col items-center">
+            
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold text-gray-900 leading-tight">
+                    <span class="text-emerald-600">식자재비</span>, 아직도<br>
+                    비싸게 내고 계신가요?
+                </h2>
+                <div class="w-24 h-1 bg-emerald-500 mx-auto my-4 rounded"></div>
+                <p class="text-gray-600 text-lg">
+                    지금 가입하면 아래 가격으로<br>
+                    <strong class="text-emerald-700">내일 새벽 바로 배송</strong>해 드립니다!
+                </p>
+            </div>
+
+            <!-- 특가 상품 리스트 (박스 디자인) -->
+            <div class="w-full space-y-4">
+                
+                <!-- 상품 1: 대파 (가장 강조) -->
+                <div class="bg-white border-2 border-emerald-600 rounded-2xl p-5 shadow-lg flex items-center relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-4 py-1 rounded-bl-xl">
+                        한정수량
+                    </div>
+                    <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center text-4xl mr-5 shrink-0">
+                        🥬
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-gray-800">신선 대파 10단</h3>
+                        <p class="text-gray-500 text-sm line-through">기존가 25,000원</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-sm text-emerald-600 font-bold">단 900원꼴!</span>
+                        <span class="text-4xl font-black text-red-600">9,000</span>
+                        <span class="text-xl font-bold text-gray-800">원</span>
+                    </div>
+                </div>
+
+                <!-- 상품 2: 알배기 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-4 shadow flex items-center">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-3xl mr-4 shrink-0">
+                        🥗
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-gray-800">알배기 배추 (특) 1box</h3>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-3xl font-black text-emerald-700">7,000</span>
+                        <span class="text-lg font-bold text-gray-800">원</span>
+                    </div>
+                </div>
+
+                <!-- 상품 3: 쌀 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-4 shadow flex items-center">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-3xl mr-4 shrink-0">
+                        🍚
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-gray-800">청운추미 쌀 20kg</h3>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-3xl font-black text-emerald-700">57,500</span>
+                        <span class="text-lg font-bold text-gray-800">원</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 추가 혜택 -->
+            <div class="mt-8 flex gap-4 text-center w-full justify-center">
+                <div class="bg-emerald-50 px-4 py-3 rounded-lg flex-1">
+                    <div class="text-2xl mb-1">🚚</div>
+                    <div class="font-bold text-emerald-800">서울/경기 직배송</div>
+                </div>
+                <div class="bg-emerald-50 px-4 py-3 rounded-lg flex-1">
+                    <div class="text-2xl mb-1">🎁</div>
+                    <div class="font-bold text-emerald-800">가입쿠폰 5,000원</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3. 하단 QR 코드 영역 (Action) -->
+        <div class="bg-gray-900 text-white p-8 pb-10 flex items-center justify-between relative overflow-hidden">
+            <!-- 배경 데코레이션 -->
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-gray-800 rounded-full opacity-50"></div>
+
+            <div class="z-10">
+                <p class="text-yellow-400 font-bold mb-1 text-lg">실제 상품사진 확인하고 주문하세요!</p>
+                <h3 class="text-3xl font-bold mb-4">카메라로 찍으면<br>주문 페이지로 이동</h3>
+                <p class="text-gray-400 text-sm">
+                    문의전화: 010-XXXX-XXXX<br>
+                    사이트: www.orderz.kr
+                </p>
+            </div>
+
+            <!-- QR 코드 (API 활용하여 자동 생성) -->
+            <!-- 실제 사용 시 data= 뒤에 사장님의 랜딩페이지 URL을 넣으면 됩니다 -->
+            <div class="bg-white p-2 rounded-xl z-10 shrink-0 shadow-2xl">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://orderz.kr" 
+                     alt="주문 QR코드" 
+                     class="w-40 h-40">
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
