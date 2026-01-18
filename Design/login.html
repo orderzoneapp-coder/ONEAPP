@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 카카오 전용 색상 */
+        .bg-kakao {
+            background-color: #FEE500;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <!-- 메인 컨테이너 -->
+    <div class="w-full max-w-md bg-white rounded-xl shadow-lg m-4 overflow-hidden">
+        
+        <!-- 1단: 서비스 로그인 -->
+        <div class="p-8 pb-10">
+            <!-- 타이틀 -->
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold text-gray-800 tracking-tight">서비스 로그인</h1>
+            </div>
+
+            <form class="space-y-4" onsubmit="event.preventDefault(); alert('로그인 시도');">
+                <!-- 입력 필드 -->
+                <div class="space-y-3">
+                    <div>
+                        <input type="text" placeholder="아이디" 
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+                    </div>
+                    <div>
+                        <input type="password" placeholder="비밀번호" 
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+                    </div>
+                </div>
+                
+                <!-- 로그인 버튼 -->
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-lg transition-colors shadow-sm">
+                    로그인
+                </button>
+
+                <!-- 하단 유틸리티 링크 영역 (한줄 레이아웃 통합) -->
+                <div class="flex justify-center items-center text-xs text-gray-500 gap-4 mt-6">
+                    <a href="#" class="hover:text-gray-800 transition-colors">아이디 찾기</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="#" class="hover:text-gray-800 transition-colors">비밀번호 찾기</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="#" class="font-bold text-blue-600 hover:text-blue-800 transition-colors">대표회원가입</a>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- 2단: 카카오 계정 연결 (배경색으로 구분) -->
+        <div class="bg-gray-50 p-6 border-t border-gray-100">
+            <!-- 카카오 로그인 버튼 -->
+            <button type="button" onclick="alert('카카오 로그인 시도')" 
+                    class="w-full bg-kakao hover:opacity-90 text-[#3c1e1e] font-semibold py-3.5 rounded-lg transition-opacity flex items-center justify-center gap-2 shadow-sm">
+                <i class="fa-solid fa-comment"></i>
+                카카오 로그인
+            </button>
+
+            <!-- 안내 문구 및 연결 버튼 (순서 변경: 설명 -> 버튼) -->
+            <div class="text-center mt-5">
+                <!-- 설명 먼저 -->
+                <p class="text-xs text-gray-500 mb-2">
+                    <i class="fa-solid fa-circle-info text-blue-500 mr-1"></i>
+                    1회 대표님 계정을 연결하여 카카오 로그인 합니다.
+                </p>
+                
+                <!-- 연결 버튼(링크) 나중 -->
+                <a href="#" class="inline-flex items-center text-sm font-bold text-gray-600 hover:text-blue-600 border-b border-gray-400 hover:border-blue-600 pb-0.5 transition-all group">
+                    대표 계정 연결하기
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-xs group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
