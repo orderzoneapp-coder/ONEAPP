@@ -798,11 +798,8 @@
         }
 
         function updateHeaderUI() {
-            if (appState.isSearching) {
-                // 검색 모드: 뒤로가기
-                modeIcon.className = "fas fa-arrow-left text-lg";
-                modeText.textContent = "뒤로";
-            } else if (appState.currentView === 'home') {
+            // 검색 중이어도 버튼 상태 변경하지 않음 (뒤로가기 로직 삭제)
+            if (appState.currentView === 'home') {
                 // 상품목록(Mall) 모드
                 modeIcon.className = "fas fa-bars text-lg";
                 modeText.textContent = "상품목록";
@@ -828,7 +825,7 @@
         modeSwitchBtn.onclick = function() {
             if (appState.isSearching) {
                 closeSearch();
-                return;
+                // return을 제거하여 검색 종료 후 모드 전환이 이어지도록 함
             }
             if (appState.currentView === 'home') {
                 showQuickOrderView(true);
