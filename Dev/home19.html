@@ -155,11 +155,11 @@
         }
 
         /* Search Animations */
-        #search-container {
+        #search-container, #home-search-container {
             transition: max-height 0.3s ease-in-out, opacity 0.3s, padding 0.3s;
             overflow: hidden;
         }
-        #search-container.search-hidden {
+        .search-hidden {
             max-height: 0;
             opacity: 0;
             padding-top: 0 !important;
@@ -293,6 +293,26 @@
             z-index: 5;
         }
         
+        /* Virtual Keyboard */
+        #virtual-keyboard {
+            transition: transform 0.3s cubic-bezier(0.1, 0.7, 0.1, 1);
+            transform: translateY(100%);
+        }
+        #virtual-keyboard.keyboard-visible {
+            transform: translateY(0);
+        }
+        .mock-key {
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+        
         /* Safe area bottom fix */
         .safe-pb { padding-bottom: env(safe-area-inset-bottom); }
     </style>
@@ -301,8 +321,11 @@
 
     <div id="app" class="max-w-md mx-auto bg-white shadow-lg min-h-screen pb-20 relative overflow-hidden">
 
+        <!-- Search Overlay (Modal) -->
+        <div id="search-overlay" class="fixed inset-0 bg-white/95 z-20 hidden"></div>
+
         <!-- HEADER -->
-        <header class="sticky top-0 bg-white z-20 shadow-sm border-b">
+        <header class="sticky top-0 bg-white z-30 shadow-sm border-b">
             <div class="relative flex justify-between items-center p-3 h-[57px]">
                 <!-- Mode Switch Button -->
                 <button id="mode-switch-btn" class="flex items-center space-x-1.5 text-gray-600 hover:bg-gray-100 rounded-lg px-2 py-1.5 transition relative">
@@ -329,7 +352,7 @@
         <!-- HOME MAIN (MALL MODE) -->
         <main id="home-view" class="hidden">
              <!-- Category Bar (Moved Here) -->
-             <div id="category-bar" class="flex justify-around items-center bg-white py-2 px-1 border-b sticky top-[57px] z-10">
+             <div id="category-bar" class="flex justify-around items-center bg-white py-2 px-1 border-b sticky top-[57px] z-30">
                 <button class="category-btn" onclick="filterByCategory('vegetable')">
                     <span class="text-2xl">🥬</span>
                     <span class="text-[10px] font-medium text-gray-600">채소.과일</span>
@@ -360,14 +383,24 @@
                 <button class="py-2 text-sm text-gray-500">마감임박</button>
              </div>
 
-             <!-- Select All Bar Removed -->
+             <!-- Home Search Box (New for Home) -->
+             <div id="home-search-container" class="p-3 border-b bg-white search-hidden shadow-inner sticky top-[125px] z-30">
+                <div class="flex items-center w-full">
+                    <div class="relative flex-grow">
+                        <input type="text" id="home-search-input" placeholder="전체 상품 검색" class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-sm bg-gray-50">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
              
              <div id="home-product-list" class="divide-y pb-24"></div>
         </main>
 
         <!-- QUICK ORDER MAIN (ORDER MODE) -->
         <main id="quick-order-view" class="hidden">
-            <div id="sub-header" class="z-10 shadow-md bg-gray-100">
+            <div id="sub-header" class="z-30 shadow-md bg-gray-100 relative">
                 <div id="my-list-container" class="flex justify-between items-center px-0 bg-white border-b h-[40px]">
                     <div id="my-list-tabs" class="flex flex-1 overflow-x-auto no-scrollbar items-center h-full"></div>
                 </div>
@@ -610,6 +643,33 @@
             </div>
         </div>
 
+        <!-- Virtual Keyboard Simulation -->
+        <div id="virtual-keyboard" class="fixed bottom-0 left-0 right-0 bg-gray-200 pb-safe z-50 shadow-[0_-4px_15px_rgba(0,0,0,0.1)]">
+            <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b border-gray-300">
+                <span class="text-xs text-gray-500">입력 시뮬레이션</span>
+                <button onclick="closeSearch()" class="text-xs font-bold text-blue-600">완료</button>
+            </div>
+            <div class="p-2 space-y-2">
+                <div class="flex gap-1 justify-center">
+                    <div class="mock-key w-8 h-10">Q</div><div class="mock-key w-8 h-10">W</div><div class="mock-key w-8 h-10">E</div><div class="mock-key w-8 h-10">R</div><div class="mock-key w-8 h-10">T</div><div class="mock-key w-8 h-10">Y</div><div class="mock-key w-8 h-10">U</div><div class="mock-key w-8 h-10">I</div><div class="mock-key w-8 h-10">O</div><div class="mock-key w-8 h-10">P</div>
+                </div>
+                <div class="flex gap-1 justify-center px-4">
+                    <div class="mock-key w-8 h-10">A</div><div class="mock-key w-8 h-10">S</div><div class="mock-key w-8 h-10">D</div><div class="mock-key w-8 h-10">F</div><div class="mock-key w-8 h-10">G</div><div class="mock-key w-8 h-10">H</div><div class="mock-key w-8 h-10">J</div><div class="mock-key w-8 h-10">K</div><div class="mock-key w-8 h-10">L</div>
+                </div>
+                <div class="flex gap-1 justify-center px-8">
+                    <div class="mock-key flex-grow h-10 bg-gray-300"><i class="fas fa-arrow-up text-sm"></i></div>
+                    <div class="mock-key w-8 h-10">Z</div><div class="mock-key w-8 h-10">X</div><div class="mock-key w-8 h-10">C</div><div class="mock-key w-8 h-10">V</div><div class="mock-key w-8 h-10">B</div><div class="mock-key w-8 h-10">N</div><div class="mock-key w-8 h-10">M</div>
+                    <div class="mock-key flex-grow h-10 bg-gray-300"><i class="fas fa-backspace text-sm"></i></div>
+                </div>
+                <div class="flex gap-1 justify-center px-1">
+                    <div class="mock-key w-12 h-10 bg-gray-300 text-xs">123</div>
+                    <div class="mock-key flex-grow h-10">space</div>
+                    <div class="mock-key w-16 h-10 bg-blue-500 text-white text-xs">Go</div>
+                </div>
+            </div>
+            <div class="h-6 w-full"></div>
+        </div>
+
         <!-- FOOTER (Main) -->
         <footer class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t z-30 flex h-[60px] shadow-[0_-2px_10px_rgba(0,0,0,0.05)] safe-pb">
             <button id="footer-search-btn" class="flex-1 flex flex-col items-center justify-center text-gray-500 border-r border-gray-100 hover:text-green-600 transition-colors">
@@ -653,7 +713,8 @@
             tooltipTimeout: null,
             currentSort: 'latest', // latest, category, frequency
             deliveryDate: '1월 12일(월) 도착',
-            selectedCategory: null // New State
+            selectedCategory: null, // New State
+            homeSearchText: '' // New State for Home Search
         };
 
         const homeView = document.getElementById('home-view');
@@ -680,9 +741,13 @@
         const footerSearchBtn = document.getElementById('footer-search-btn');
         const searchContainer = document.getElementById('search-container');
         const productSearchInput = document.getElementById('product-search-input');
+        const homeSearchContainer = document.getElementById('home-search-container');
+        const homeSearchInput = document.getElementById('home-search-input');
         const modeTooltip = document.getElementById('mode-tooltip');
         const modeIcon = document.getElementById('mode-icon');
         const modeText = document.getElementById('mode-text');
+        const searchOverlay = document.getElementById('search-overlay');
+        const virtualKeyboard = document.getElementById('virtual-keyboard');
         
         // New Elements
         const subSectionBar = document.getElementById('sub-section-bar');
@@ -1040,34 +1105,114 @@
         });
 
         footerSearchBtn.onclick = function() {
-            if (appState.currentView === 'home') {
-                alert("홈 검색 기능 준비중");
-                return;
-            }
             appState.isSearching = !appState.isSearching;
-            searchContainer.classList.toggle('search-hidden', !appState.isSearching);
             updateHeaderUI();
 
             if (appState.isSearching) {
-                setTimeout(() => productSearchInput.focus(), 300);
+                // Show Overlay & Keyboard
+                searchOverlay.classList.remove('hidden');
+                virtualKeyboard.classList.add('keyboard-visible');
             } else {
-                productSearchInput.value = '';
-                renderProducts();
+                searchOverlay.classList.add('hidden');
+                virtualKeyboard.classList.remove('keyboard-visible');
+            }
+
+            if (appState.currentView === 'home') {
+                homeSearchContainer.classList.toggle('search-hidden', !appState.isSearching);
+                if(appState.isSearching) setTimeout(() => homeSearchInput.focus(), 300);
+                else {
+                    homeSearchInput.value = '';
+                    appState.homeSearchText = '';
+                    renderHomeView();
+                }
+            } else {
+                searchContainer.classList.toggle('search-hidden', !appState.isSearching);
+                if(appState.isSearching) setTimeout(() => productSearchInput.focus(), 300);
+                else {
+                    productSearchInput.value = '';
+                    renderProducts();
+                }
             }
         };
 
         window.closeSearch = function() {
             appState.isSearching = false;
             searchContainer.classList.add('search-hidden');
+            homeSearchContainer.classList.add('search-hidden');
+            searchOverlay.classList.add('hidden');
+            virtualKeyboard.classList.remove('keyboard-visible');
             productSearchInput.value = '';
+            homeSearchInput.value = '';
+            appState.homeSearchText = '';
             updateHeaderUI();
             renderProducts();
+            renderHomeView();
         };
 
         productSearchInput.oninput = function(e) {
             const term = e.target.value.toLowerCase();
+            
+            // Toggle overlay based on input
+            if (term.length > 0) {
+                document.getElementById('search-overlay').classList.add('hidden');
+            } else {
+                document.getElementById('search-overlay').classList.remove('hidden');
+            }
+
             const list = getAllProducts().filter(p => p.liked && p.name.toLowerCase().includes(term));
-            renderProductListWithItemsHelper(list);
+            
+            // Append "Expand Search" button logic
+            let html = renderItemsHTML(list);
+            if (term.length > 0) {
+                html += `
+                <div class="p-4 text-center text-blue-600 font-bold border-t cursor-pointer hover:bg-blue-50 transition-colors" onclick="expandSearchToHome()">
+                    상품목록에서 전체 상품 검색하기 <i class="fas fa-arrow-right ml-1"></i>
+                </div>`;
+            }
+            
+            document.getElementById('product-list').innerHTML = html;
+        };
+
+        homeSearchInput.oninput = function(e) {
+            const term = e.target.value.toLowerCase();
+            appState.homeSearchText = term;
+
+            // Toggle overlay based on input
+            if (term.length > 0) {
+                document.getElementById('search-overlay').classList.add('hidden');
+            } else {
+                document.getElementById('search-overlay').classList.remove('hidden');
+            }
+
+            renderHomeView();
+        }
+
+        window.expandSearchToHome = function() {
+            const query = productSearchInput.value;
+            appState.homeSearchText = query.toLowerCase();
+            
+            // Switch View, Keep Search Active
+            appState.isSearching = true; 
+            searchContainer.classList.add('search-hidden');
+            productSearchInput.value = '';
+            
+            showHomeView();
+            updateHeaderUI();
+            
+            // Setup Home Search
+            homeSearchContainer.classList.remove('search-hidden');
+            homeSearchInput.value = query;
+            homeSearchInput.focus();
+            
+            // Ensure Overlay & Keyboard persist
+            if (query.length > 0) {
+                searchOverlay.classList.add('hidden'); // Hide overlay if we have text
+            } else {
+                searchOverlay.classList.remove('hidden');
+            }
+            virtualKeyboard.classList.add('keyboard-visible');
+            
+            renderHomeView();
         };
 
         function renderProductListWithItemsHelper(items) {
@@ -1116,7 +1261,7 @@
             
             let btnClass = "flex-1 flex flex-col items-center justify-center transition-colors bg-white ";
             
-            // 로고 작게 (text-xs), 텍스트 크게 (text-sm)
+            // 로고와 텍스트 색상을 항상 기본(활성) 색상으로 유지
             if(footerLogo) footerLogo.className = "font-extrabold text-xs text-green-800";
             ctaText.className = "text-sm font-bold text-gray-500";
             
@@ -1124,9 +1269,7 @@
                 btnClass += "cursor-pointer hover:bg-gray-50";
             } else {
                 btnClass += "cursor-default";
-                // 비활성 상태일 때도 크기 유지, 색상만 변경
-                if(footerLogo) footerLogo.className = "font-extrabold text-xs text-gray-300";
-                ctaText.className = "text-sm font-bold text-gray-300";
+                // 비활성 상태일 때도 색상은 변경하지 않음 (기본색 유지)
             }
             
             footerCtaBtn.className = btnClass;
@@ -1135,11 +1278,17 @@
         }
 
         function renderHomeView() {
-            // Updated to support category filtering
-            let list = getAllProducts(); // Mall shows all products, or at least all available
+            // Updated to support category filtering AND Search Text
+            let list = getAllProducts(); 
             
+            // 1. Category Filter
             if (appState.selectedCategory) {
                 list = list.filter(p => p.category === appState.selectedCategory);
+            }
+
+            // 2. Search Text Filter
+            if (appState.homeSearchText) {
+                list = list.filter(p => p.name.toLowerCase().includes(appState.homeSearchText));
             }
 
             homeProductListEl.innerHTML = list.map(p => `
