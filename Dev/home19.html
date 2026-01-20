@@ -30,6 +30,7 @@
             border-bottom: 2px solid transparent;
             min-width: 0;
             padding: 0 1rem;
+            flex-shrink: 0;
         }
         .tab-active {
             border-bottom-color: #22c55e;
@@ -187,40 +188,7 @@
             border-radius: 12px;
             background: white;
             white-space: nowrap;
-        }
-
-        /* Tooltip (Speech Bubble) */
-        .tooltip-bubble {
-            position: absolute;
-            top: 50px;
-            left: 10px;
-            background: rgba(30, 41, 59, 0.95);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 500;
-            z-index: 50;
-            white-space: nowrap;
-            opacity: 0;
-            transform: translateY(-5px);
-            transition: opacity 0.3s, transform 0.3s;
-            pointer-events: none;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .tooltip-bubble::before {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: 12px;
-            width: 8px;
-            height: 8px;
-            background: rgba(30, 41, 59, 0.95);
-            transform: rotate(45deg);
-        }
-        .tooltip-visible {
-            opacity: 1;
-            transform: translateY(0);
+            flex-shrink: 0;
         }
 
         /* Category Bar Styles */
@@ -234,7 +202,7 @@
         .category-btn.active { background-color: #f0fdf4; }
         .category-btn.active span { color: #16a34a; font-weight: 700; }
 
-        /* Sub Section Bar Styles */
+        /* Sub Section Bar Styles & Animation */
         .sub-section-bar {
             display: flex;
             justify-content: space-between;
@@ -244,6 +212,27 @@
             border-bottom: 1px solid #f3f4f6;
             font-size: 13px;
         }
+        
+        .sort-bar-transition {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease;
+            max-height: 60px; /* Approximate height */
+            opacity: 1;
+            overflow: hidden; /* 애니메이션 중에는 숨김 */
+        }
+        
+        .sort-bar-overflow-visible {
+            overflow: visible !important; /* 드롭다운 표시를 위해 visible */
+        }
+        
+        .sort-bar-collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            border-bottom: none;
+            overflow: hidden !important; /* 접혔을 때는 숨김 */
+        }
+
         .delivery-btn {
             display: flex; align-items: center; gap: 4px;
             color: #374151; font-weight: 600;
@@ -265,7 +254,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             width: 140px;
-            z-index: 40;
+            z-index: 50; /* Dropdown z-index increased */
             display: none;
         }
         .sort-dropdown-menu.active { display: block; }
@@ -293,30 +282,6 @@
             z-index: 5;
         }
         
-        /* Virtual Keyboard */
-        #virtual-keyboard {
-            transition: transform 0.3s cubic-bezier(0.1, 0.7, 0.1, 1);
-            transform: translateY(100%);
-        }
-        #virtual-keyboard.keyboard-visible {
-            transform: translateY(0);
-        }
-        .mock-key {
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 500;
-            color: #333;
-            cursor: pointer;
-        }
-        .mock-key:active {
-            background-color: #e5e7eb;
-        }
-        
         /* Safe area bottom fix */
         .safe-pb { padding-bottom: env(safe-area-inset-bottom); }
     </style>
@@ -325,11 +290,8 @@
 
     <div id="app" class="max-w-md mx-auto bg-white shadow-lg min-h-screen pb-20 relative overflow-hidden">
 
-        <!-- Search Overlay (Modal) -->
-        <div id="search-overlay" class="fixed inset-0 bg-white/95 z-20 hidden"></div>
-
         <!-- HEADER -->
-        <header class="sticky top-0 bg-white z-30 shadow-sm border-b">
+        <header class="sticky top-0 bg-white z-40 shadow-sm border-b">
             <div class="relative flex justify-between items-center p-3 h-[57px]">
                 <!-- Mode Switch Button -->
                 <button id="mode-switch-btn" class="flex items-center space-x-1.5 text-gray-600 hover:bg-gray-100 rounded-lg px-2 py-1.5 transition relative">
@@ -337,11 +299,6 @@
                     <span id="mode-text" class="text-sm font-bold">주문하기</span>
                 </button>
                 
-                <!-- Tooltip -->
-                <div id="mode-tooltip" class="tooltip-bubble">
-                    주문하기가 기본 접속 화면으로 설정되었습니다.
-                </div>
-
                 <h1 id="header-title" class="absolute left-1/2 -translate-x-1/2 text-2xl font-extrabold text-gray-600 cursor-pointer">NH라인</h1>
                 <div class="flex items-center space-x-2">
                     <span class="text-xs font-semibold">OP</span>
@@ -355,7 +312,7 @@
 
         <!-- HOME MAIN (MALL MODE) -->
         <main id="home-view" class="hidden">
-             <!-- Category Bar (Moved Here) -->
+             <!-- Category Bar -->
              <div id="category-bar" class="flex justify-around items-center bg-white py-2 px-1 border-b sticky top-[57px] z-30">
                 <button class="category-btn" onclick="filterByCategory('vegetable')">
                     <span class="text-2xl">🥬</span>
@@ -387,11 +344,11 @@
                 <button class="py-2 text-sm text-gray-500">마감임박</button>
              </div>
 
-             <!-- Home Search Box (New for Home) -->
+             <!-- Home Search Box -->
              <div id="home-search-container" class="p-3 border-b bg-white search-hidden shadow-inner sticky top-[125px] z-30">
                 <div class="flex items-center w-full">
                     <div class="relative flex-grow">
-                        <input type="text" id="home-search-input" readonly placeholder="전체 상품 검색" class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-sm bg-gray-50">
+                        <input type="text" id="home-search-input" placeholder="전체 상품 검색" class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-sm bg-gray-50">
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
@@ -404,13 +361,15 @@
 
         <!-- QUICK ORDER MAIN (ORDER MODE) -->
         <main id="quick-order-view" class="hidden">
-            <div id="sub-header" class="z-30 shadow-md bg-gray-100 relative">
-                <div id="my-list-container" class="flex justify-between items-center px-0 bg-white border-b h-[40px]">
-                    <div id="my-list-tabs" class="flex flex-1 overflow-x-auto no-scrollbar items-center h-full"></div>
+            <!-- Sub Header (Sticky) -->
+            <div id="sub-header" class="sticky top-[57px] z-30 shadow-md bg-gray-100 relative">
+                <!-- 리스트 바 -->
+                <div id="my-list-container" class="flex justify-between items-center px-0 bg-white border-b h-[40px] overflow-hidden">
+                    <div id="my-list-tabs" class="flex flex-1 items-center h-full no-scrollbar"></div>
                 </div>
                 
-                <!-- Sub Section Bar -->
-                <div id="sub-section-bar" class="sub-section-bar hidden">
+                <!-- Sub Section Bar (Sort & Delivery) with Animation -->
+                <div id="sub-section-bar" class="sub-section-bar hidden sort-bar-transition">
                     <!-- Left: Delivery Date -->
                     <div id="delivery-date-btn" class="delivery-btn" onclick="openDeliverySheet()">
                         <i class="far fa-calendar-alt text-lg text-green-600 mr-1"></i>
@@ -435,7 +394,7 @@
                 <div id="search-container" class="p-3 border-b bg-white search-hidden shadow-inner">
                     <div class="flex items-center w-full">
                         <div class="relative flex-grow">
-                            <input type="text" id="product-search-input" readonly placeholder="담은 상품 내 검색" class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-sm bg-gray-50">
+                            <input type="text" id="product-search-input" placeholder="담은 상품 내 검색" class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-sm bg-gray-50">
                             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                                 <i class="fas fa-search text-gray-400"></i>
                             </div>
@@ -443,9 +402,12 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Product List -->
             <div id="product-list-container" class="pb-24">
                 <div id="product-list" class="bg-white border-t"></div>
             </div>
+            
             <div id="order-confirmation-container" class="hidden pb-24">
                 <div class="flex justify-between items-center px-4 py-3 bg-gray-100">
                     <div class="flex items-baseline space-x-2">
@@ -647,33 +609,6 @@
             </div>
         </div>
 
-        <!-- Virtual Keyboard Simulation -->
-        <div id="virtual-keyboard" class="fixed bottom-0 left-0 right-0 bg-gray-200 pb-safe z-50 shadow-[0_-4px_15px_rgba(0,0,0,0.1)]">
-            <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b border-gray-300">
-                <span class="text-xs text-gray-500">입력 시뮬레이션</span>
-                <button onclick="closeSearch()" class="text-xs font-bold text-blue-600">완료</button>
-            </div>
-            <div class="p-2 space-y-2">
-                <div class="flex gap-1 justify-center">
-                    <div class="mock-key w-8 h-10" onclick="typeKey('Q')">Q</div><div class="mock-key w-8 h-10" onclick="typeKey('W')">W</div><div class="mock-key w-8 h-10" onclick="typeKey('E')">E</div><div class="mock-key w-8 h-10" onclick="typeKey('R')">R</div><div class="mock-key w-8 h-10" onclick="typeKey('T')">T</div><div class="mock-key w-8 h-10" onclick="typeKey('Y')">Y</div><div class="mock-key w-8 h-10" onclick="typeKey('U')">U</div><div class="mock-key w-8 h-10" onclick="typeKey('I')">I</div><div class="mock-key w-8 h-10" onclick="typeKey('O')">O</div><div class="mock-key w-8 h-10" onclick="typeKey('P')">P</div>
-                </div>
-                <div class="flex gap-1 justify-center px-4">
-                    <div class="mock-key w-8 h-10" onclick="typeKey('A')">A</div><div class="mock-key w-8 h-10" onclick="typeKey('S')">S</div><div class="mock-key w-8 h-10" onclick="typeKey('D')">D</div><div class="mock-key w-8 h-10" onclick="typeKey('F')">F</div><div class="mock-key w-8 h-10" onclick="typeKey('G')">G</div><div class="mock-key w-8 h-10" onclick="typeKey('H')">H</div><div class="mock-key w-8 h-10" onclick="typeKey('J')">J</div><div class="mock-key w-8 h-10" onclick="typeKey('K')">K</div><div class="mock-key w-8 h-10" onclick="typeKey('L')">L</div>
-                </div>
-                <div class="flex gap-1 justify-center px-8">
-                    <div class="mock-key flex-grow h-10 bg-gray-300"><i class="fas fa-arrow-up text-sm"></i></div>
-                    <div class="mock-key w-8 h-10" onclick="typeKey('Z')">Z</div><div class="mock-key w-8 h-10" onclick="typeKey('X')">X</div><div class="mock-key w-8 h-10" onclick="typeKey('C')">C</div><div class="mock-key w-8 h-10" onclick="typeKey('V')">V</div><div class="mock-key w-8 h-10" onclick="typeKey('B')">B</div><div class="mock-key w-8 h-10" onclick="typeKey('N')">N</div><div class="mock-key w-8 h-10" onclick="typeKey('M')">M</div>
-                    <div class="mock-key flex-grow h-10 bg-gray-300" onclick="typeKey('BACK')"><i class="fas fa-backspace text-sm"></i></div>
-                </div>
-                <div class="flex gap-1 justify-center px-1">
-                    <div class="mock-key w-12 h-10 bg-gray-300 text-xs">123</div>
-                    <div class="mock-key flex-grow h-10" onclick="typeKey(' ')">space</div>
-                    <div class="mock-key w-16 h-10 bg-blue-500 text-white text-xs" onclick="closeSearch()">Go</div>
-                </div>
-            </div>
-            <div class="h-6 w-full"></div>
-        </div>
-
         <!-- FOOTER (Main) -->
         <footer class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t z-30 flex h-[60px] shadow-[0_-2px_10px_rgba(0,0,0,0.05)] safe-pb">
             <button id="footer-search-btn" class="flex-1 flex flex-col items-center justify-center text-gray-500 border-r border-gray-100 hover:text-green-600 transition-colors">
@@ -707,7 +642,7 @@
             },
             cart: {},
             listNames: { 1: '리스트1', 2: '리스트2', 3: '리스트3' },
-            currentView: 'quick-order',
+            currentView: 'home', // Default: Home
             currentMyList: -1,
             clTab: 'all',
             tempChanges: {},
@@ -750,8 +685,6 @@
         const modeTooltip = document.getElementById('mode-tooltip');
         const modeIcon = document.getElementById('mode-icon');
         const modeText = document.getElementById('mode-text');
-        const searchOverlay = document.getElementById('search-overlay');
-        const virtualKeyboard = document.getElementById('virtual-keyboard');
         
         // New Elements
         const subSectionBar = document.getElementById('sub-section-bar');
@@ -770,6 +703,7 @@
         function getActiveLists() {
             const activeSet = new Set();
             getAllProducts().forEach(p => (p.myList || []).forEach(id => activeSet.add(id)));
+            // Return only lists that have items
             return [1, 2, 3].filter(id => activeSet.has(id));
         }
 
@@ -789,6 +723,12 @@
             homeView.classList.add('hidden');
             quickOrderView.classList.remove('hidden');
             createListView.classList.add('hidden');
+            
+            // 페이지 접속 시 기본 탭을 찜한상품(-1)으로 설정
+            if(saveToStorage) {
+                appState.currentMyList = -1;
+            }
+            
             renderListTabs();
             renderSubSectionBar();
             updateFooterUI();
@@ -802,7 +742,6 @@
         }
 
         function updateHeaderUI() {
-            // 검색 중이어도 버튼 상태 변경하지 않음 (뒤로가기 로직 삭제)
             if (appState.currentView === 'home') {
                 // 상품목록(Mall) 모드
                 modeIcon.className = "fas fa-bars text-lg";
@@ -829,7 +768,6 @@
         modeSwitchBtn.onclick = function() {
             if (appState.isSearching) {
                 closeSearch();
-                // return을 제거하여 검색 종료 후 모드 전환이 이어지도록 함
             }
             if (appState.currentView === 'home') {
                 showQuickOrderView(true);
@@ -844,22 +782,25 @@
 
         // --- Sub Section Bar Logic ---
         function renderSubSectionBar() {
-            // Only show in Quick Order view
             if (appState.currentView !== 'quick-order') return;
             
             subSectionBar.classList.remove('hidden');
             
-            // Toggle Sort Filter based on currentMyList (0 = Regular Special)
-            if (appState.currentMyList === 0) {
-                sortContainer.style.display = 'none';
-            } else {
+            // 찜한상품(-1)만 정렬 필터 노출, 나머지는 숨김
+            if (appState.currentMyList === -1) {
                 sortContainer.style.display = 'block';
+            } else {
+                sortContainer.style.display = 'none';
             }
             
-            // Update Delivery Date Text
+            // Re-apply sort-bar-overflow-visible if not collapsed to ensure dropdown works
+            const subSectionBarEl = document.getElementById('sub-section-bar');
+            if (!subSectionBarEl.classList.contains('sort-bar-collapsed')) {
+                 subSectionBarEl.classList.add('sort-bar-overflow-visible');
+            }
+
             currentDeliveryDateEl.textContent = appState.deliveryDate;
             
-            // Update Sort Label
             const sortMap = { 'latest': '최신순', 'category': '카테고리순', 'frequency': '자주 쓰는 상품순' };
             currentSortLabelEl.textContent = sortMap[appState.currentSort];
             
@@ -875,16 +816,13 @@
 
         window.changeSort = function(sortType) {
             appState.currentSort = sortType;
-            renderSubSectionBar(); // Update label
-            renderProducts(); // Re-sort and render list
+            renderSubSectionBar();
+            renderProducts();
             sortDropdownMenu.classList.remove('active');
-            
-            // Scroll to top
             window.scrollTo(0, 0);
             document.getElementById('product-list-container').scrollTop = 0;
         };
         
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.sort-dropdown-container')) {
                 sortDropdownMenu.classList.remove('active');
@@ -961,6 +899,9 @@
             const currentTab = appState.clTab;
             const liked = getAllProducts().filter(p => p.liked);
             let filtered = (currentTab === 'all') ? liked : liked.filter(p => (appState.tempChanges[p.id] || []).includes(parseInt(currentTab)));
+
+            // Apply Sorting to Create List View as well (Sync with Quick Order Sort)
+            filtered = getSortedList(filtered, appState.currentSort);
 
             if (filtered.length === 0) {
                 clItemsEl.innerHTML = `<div class="p-10 text-center text-gray-400 text-sm">표시할 상품이 없습니다.</div>`;
@@ -1109,15 +1050,6 @@
             appState.isSearching = !appState.isSearching;
             updateHeaderUI();
 
-            if (appState.isSearching) {
-                // Show Overlay & Keyboard
-                searchOverlay.classList.remove('hidden');
-                virtualKeyboard.classList.add('keyboard-visible');
-            } else {
-                searchOverlay.classList.add('hidden');
-                virtualKeyboard.classList.remove('keyboard-visible');
-            }
-
             if (appState.currentView === 'home') {
                 homeSearchContainer.classList.toggle('search-hidden', !appState.isSearching);
                 if(appState.isSearching) setTimeout(() => homeSearchInput.focus(), 300);
@@ -1140,8 +1072,6 @@
             appState.isSearching = false;
             searchContainer.classList.add('search-hidden');
             homeSearchContainer.classList.add('search-hidden');
-            searchOverlay.classList.add('hidden');
-            virtualKeyboard.classList.remove('keyboard-visible');
             productSearchInput.value = '';
             homeSearchInput.value = '';
             appState.homeSearchText = '';
@@ -1150,31 +1080,8 @@
             renderHomeView();
         };
 
-        // --- Typing Simulation Function ---
-        window.typeKey = function(key) {
-            let activeInput = appState.currentView === 'home' ? homeSearchInput : productSearchInput;
-            
-            if (key === 'BACK') {
-                activeInput.value = activeInput.value.slice(0, -1);
-            } else {
-                activeInput.value += key.toLowerCase();
-            }
-            
-            // Trigger input event manually
-            const event = new Event('input', { bubbles: true });
-            activeInput.dispatchEvent(event);
-        };
-
         productSearchInput.oninput = function(e) {
             const term = e.target.value.toLowerCase();
-            
-            // Toggle overlay based on input
-            if (term.length > 0) {
-                document.getElementById('search-overlay').classList.add('hidden');
-            } else {
-                document.getElementById('search-overlay').classList.remove('hidden');
-            }
-
             const list = getAllProducts().filter(p => p.liked && p.name.toLowerCase().includes(term));
             
             // Append "Expand Search" button logic
@@ -1192,14 +1099,6 @@
         homeSearchInput.oninput = function(e) {
             const term = e.target.value.toLowerCase();
             appState.homeSearchText = term;
-
-            // Toggle overlay based on input
-            if (term.length > 0) {
-                document.getElementById('search-overlay').classList.add('hidden');
-            } else {
-                document.getElementById('search-overlay').classList.remove('hidden');
-            }
-
             renderHomeView();
         }
 
@@ -1220,14 +1119,6 @@
             homeSearchInput.value = query;
             homeSearchInput.focus();
             
-            // Ensure Overlay & Keyboard persist
-            if (query.length > 0) {
-                searchOverlay.classList.add('hidden'); // Hide overlay if we have text
-            } else {
-                searchOverlay.classList.remove('hidden');
-            }
-            virtualKeyboard.classList.add('keyboard-visible');
-            
             renderHomeView();
         };
 
@@ -1241,13 +1132,10 @@
                 const qty = appState.cart[p.id] || 0;
                 const rowBg = qty > 0 ? 'bg-green-50' : 'bg-white';
                 
-                // Add Delete Button Logic for Quick Order View (except Special List)
-                const isSpecial = appState.currentMyList === 0;
-                const deleteBtn = !isSpecial ? `<button class="w-8 h-full mr-1 text-gray-300 hover:text-red-500 flex items-center justify-center" onclick="deleteProduct(${p.id})"><i class="far fa-trash-alt"></i></button>` : '';
-
+                // 휴지통 버튼 로직 제거하고 이미지를 추가
                 return `
             <div class="product-item flex items-center p-3 ${rowBg} border-b">
-                ${deleteBtn}
+                <img src="${p.img}" class="w-12 h-12 rounded mr-3">
                 <div class="flex-grow"><div class="text-sm font-bold">${p.name}</div><div class="text-xs text-gray-500">${p.price.toLocaleString()}원</div></div>
                 <div class="flex items-center border rounded bg-white"><button class="w-8 h-8" onclick="updateQty(${p.id},-1)">-</button><div class="w-8 text-center text-sm font-bold">${qty}</div><button class="w-8 h-8" onclick="updateQty(${p.id},1)">+</button></div>
             </div>`;
@@ -1285,7 +1173,6 @@
                 btnClass += "cursor-pointer hover:bg-gray-50";
             } else {
                 btnClass += "cursor-default";
-                // 비활성 상태일 때도 색상은 변경하지 않음 (기본색 유지)
             }
             
             footerCtaBtn.className = btnClass;
@@ -1308,25 +1195,13 @@
             }
 
             homeProductListEl.innerHTML = list.map(p => `
-            <div class="flex items-center p-3 bg-white border-b">
-                <!-- Left: Checkbox -->
-                <div class="mr-3">
-                    <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500 accent-green-600" ${p.liked?'checked':''} onchange="toggleLike(${p.id}, this.checked)">
+            <div class="flex items-center p-4 bg-white border-b">
+                <img src="${p.img}" class="w-16 h-16 rounded mr-4">
+                <div class="flex-grow">
+                    <div class="font-bold">${p.name}</div>
+                    <div class="text-green-600 font-bold">${p.price.toLocaleString()}원</div>
                 </div>
-                <!-- Middle: Image + Info -->
-                <div class="flex flex-grow items-center">
-                    <img src="${p.img}" class="w-14 h-14 rounded mr-3">
-                    <div>
-                        <div class="font-bold text-sm">${p.name}</div>
-                        <div class="text-green-600 font-bold text-xs">${p.price.toLocaleString()}원</div>
-                    </div>
-                </div>
-                <!-- Right: Quantity -->
-                <div class="flex items-center border rounded bg-white">
-                    <button class="w-8 h-8 flex items-center justify-center text-gray-500" onclick="updateQty(${p.id},-1)">-</button>
-                    <div class="w-8 text-center text-sm font-bold">${appState.cart[p.id]||0}</div>
-                    <button class="w-8 h-8 flex items-center justify-center text-gray-500" onclick="updateQty(${p.id},1)">+</button>
-                </div>
+                <input type="checkbox" class="w-6 h-6 rounded text-green-600 border-gray-300 accent-green-600" ${p.liked?'checked':''} onchange="toggleLike(${p.id}, this.checked)">
             </div>`).join('');
         }
 
@@ -1349,13 +1224,24 @@
             <button class="tab-btn ${appState.currentMyList===-1?'tab-active':'tab-inactive'} px-4" onclick="switchMainList(-1)">찜한상품</button>` +
             active.map(id => `<button class="tab-btn ${appState.currentMyList===id?'tab-active':'tab-inactive'} px-4" onclick="switchMainList(${id})">${appState.listNames[id]}</button>`).join('') +
             `<div class="flex-grow"></div><button class="add-list-btn-wide ml-2" onclick="openCreateListView()">+ 리스트 만들기</button>`;
+
+            // Dynamic Scroll Control Logic (Dev Spec)
+            setTimeout(() => {
+                const container = myListTabsContainer;
+                // 만약 탭들의 총 너비가 컨테이너 너비보다 크면 스크롤 허용
+                if (container.scrollWidth > container.clientWidth) {
+                    container.classList.remove('overflow-hidden', 'justify-start');
+                    container.classList.add('overflow-x-auto');
+                } else {
+                    // 아니면 스크롤 막고 좌측 정렬
+                    container.classList.remove('overflow-x-auto');
+                    container.classList.add('overflow-hidden', 'justify-start');
+                }
+            }, 0);
         }
 
         window.switchMainList = function(id) { 
             appState.currentMyList = id; 
-            // Don't reset category when switching lists in quick order, 
-            // but category bar is now in home view, so this might be irrelevant here.
-            // Keeping it simple.
             renderListTabs(); 
             renderSubSectionBar(); 
             renderProducts(); 
@@ -1391,18 +1277,9 @@
             });
         }
 
-        function renderProducts() {
-            const list = getAllProducts().filter(p => p.liked);
-            let filtered = [];
-            
-            // 1. List Filter
-            if(appState.currentMyList === 0) filtered = getAllProducts().slice(0,2);
-            else if(appState.currentMyList === -1) filtered = list;
-            else filtered = list.filter(p => (p.myList||[]).includes(appState.currentMyList));
-            
-            // (Category filter removed from here as bar moved to home)
-
-            // Category Mapping (English -> Korean)
+        // Helper function for sorting products
+        function getSortedList(list, sortType) {
+            // Category Mapping (English -> Korean) for sort
             const categoryMap = {
                 'vegetable': '채소/과일',
                 'seafood': '수산/축산',
@@ -1410,15 +1287,16 @@
                 'sauce': '양념/소스',
                 'kitchen': '주방/잡화'
             };
-            
-            // 3. Sort Logic
-            if (appState.currentSort === 'latest') {
-                filtered.sort((a, b) => (b.likedTimestamp || 0) - (a.likedTimestamp || 0));
-            } else if (appState.currentSort === 'category') {
-                // Custom Category Order: 채소/과일 -> 수산/축산 -> 양념/소스 -> others
+
+            const sortedList = [...list]; // Create a copy
+
+            if (sortType === 'latest') {
+                sortedList.sort((a, b) => (b.likedTimestamp || 0) - (a.likedTimestamp || 0));
+            } else if (sortType === 'category') {
+                // Custom Category Order
                 const catOrder = ['vegetable', 'seafood', 'sauce', 'processed', 'kitchen'];
                 
-                filtered.sort((a, b) => {
+                sortedList.sort((a, b) => {
                     const catA = a.category || '';
                     const catB = b.category || '';
                     
@@ -1432,9 +1310,23 @@
                     
                     return (a.name || '').localeCompare(b.name || '');
                 });
-            } else if (appState.currentSort === 'frequency') {
-                filtered.sort((a, b) => (b.orderCount || 0) - (a.orderCount || 0));
+            } else if (sortType === 'frequency') {
+                sortedList.sort((a, b) => (b.orderCount || 0) - (a.orderCount || 0));
             }
+            return sortedList;
+        }
+
+        function renderProducts() {
+            const list = getAllProducts().filter(p => p.liked);
+            let filtered = [];
+            
+            // 1. List Filter
+            if(appState.currentMyList === 0) filtered = getAllProducts().slice(0,2);
+            else if(appState.currentMyList === -1) filtered = list;
+            else filtered = list.filter(p => (p.myList||[]).includes(appState.currentMyList));
+            
+            // 3. Sort Logic using Helper
+            filtered = getSortedList(filtered, appState.currentSort);
             
             // 4. Grouping & Rendering
             let html = '';
@@ -1451,6 +1343,14 @@
             else if (appState.currentSort === 'category') {
                 const categories = [...new Set(filtered.map(p => p.category))];
                 categories.forEach(catKey => {
+                    // Simple map for display
+                    const categoryMap = {
+                        'vegetable': '채소/과일',
+                        'seafood': '수산/축산',
+                        'processed': '식품/가공',
+                        'sauce': '양념/소스',
+                        'kitchen': '주방/잡화'
+                    };
                     const catName = categoryMap[catKey] || catKey;
                     html += `<div class="list-section-header">${catName}</div>`;
                     const catItems = filtered.filter(p => p.category === catKey);
@@ -1494,11 +1394,42 @@
 
         // Start Logic: Check LocalStorage
         const savedMode = localStorage.getItem('orderz_start_mode');
-        if (savedMode === 'home') {
-            showHomeView();
+        if (savedMode === 'quick-order') {
+            showQuickOrderView(); // Only if explicitly saved as quick-order
         } else {
-            showQuickOrderView(); // Default is quick-order
+            showHomeView(); // Default is home
         }
+
+        // Scroll Event Listener for Sort Bar Interaction
+        let lastScrollY = window.scrollY;
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (appState.currentView !== 'quick-order') return;
+            
+            const currentScrollY = window.scrollY;
+            const subSectionBar = document.getElementById('sub-section-bar');
+            
+            if (Math.abs(currentScrollY - lastScrollY) < 10) return;
+
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                // Down -> Collapse
+                clearTimeout(scrollTimeout);
+                subSectionBar.classList.remove('sort-bar-overflow-visible');
+                subSectionBar.classList.add('sort-bar-collapsed');
+            } else {
+                // Up -> Expand
+                subSectionBar.classList.remove('sort-bar-collapsed');
+                
+                // Add visible overflow after animation ends to allow dropdown
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    if(!subSectionBar.classList.contains('sort-bar-collapsed')) {
+                        subSectionBar.classList.add('sort-bar-overflow-visible');
+                    }
+                }, 300);
+            }
+            lastScrollY = currentScrollY;
+        });
     });
 </script>
 </body>
