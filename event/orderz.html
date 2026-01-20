@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>오더즈 - 믿고 주문하는 직경매 농산물</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+            color: #1f2937;
+            overflow-x: hidden; 
+        }
+        .text-shadow-strong {
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .break-keep {
+            word-break: keep-all;
+        }
+        
+        /* Entrance Fade In Up */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translate3d(0, 30px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Pop Animation (Scale Up & Down once) */
+        @keyframes popScale {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .animate-pop {
+            /* 0.5초 동안 실행, 0.8초(등장 후) 대기, 1번만 실행 */
+            animation: popScale 0.5s ease-in-out 0.8s 1 forwards;
+            display: inline-block; /* transform 적용을 위해 inline-block 설정 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 md:py-4">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-black text-emerald-800 tracking-tight cursor-pointer">ORDERZ</h1>
+            <a href="https://orderz.kr/plugin/social/popup.php?provider=kakao&url=https%3A%2F%2Forderz.kr%2F" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-xs hover:bg-emerald-700 transition shadow-md no-underline whitespace-nowrap">
+                1초 회원가입
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section: Trust Message -->
+    <!-- Reverted to Centered Layout while keeping Mobile Image Fix -->
+    <section class="relative pt-32 pb-20 px-5 overflow-hidden flex flex-col items-center justify-center min-h-[600px] md:min-h-[500px] bg-black">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <!-- Mobile Responsive Image Switching -->
+            <picture>
+                <!-- Mobile Image (main2.jpg) -->
+                <source media="(max-width: 767px)" srcset="https://oneapp2.godohosting.com/%EC%95%8C%EB%A6%AC%EA%B3%A01%EC%A3%BC%EC%B0%A8/main2.jpg">
+                <!-- Desktop Image (main.png) -->
+                <img src="https://oneapp2.godohosting.com/%EC%95%8C%EB%A6%AC%EA%B3%A01%EC%A3%BC%EC%B0%A8/main.png" class="w-full h-full object-cover object-center opacity-80" alt="Fresh Vegetables">
+            </picture>
+            
+            <!-- Overlay Brightened: bg-black/60 -> bg-black/40 -->
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        <!-- Content Container -->
+        <div class="relative z-10 w-full max-w-3xl mx-auto h-full flex flex-col justify-center animate-fade-in-up md:items-center">
+            
+            <!-- Badge (Hidden on Mobile, Visible on Desktop) -->
+            <!-- Added 'hidden md:block' to hide on mobile -->
+            <div class="text-center mb-8 hidden md:block">
+                <span class="inline-block py-2 px-6 rounded-full bg-white/10 backdrop-blur-md text-white text-xl font-bold shadow-lg border border-white/20">
+                    식자재, 안 보고 시켜도 괜찮을까?
+                </span>
+            </div>
+            
+            <!-- Main Headline (Solution) - Large & White -->
+            <div class="text-center w-full mt-0 md:mt-0">
+                <!-- Added 'animate-pop' class to the h2 container or inner span for the effect -->
+                <h2 class="text-4xl md:text-6xl font-black leading-tight mb-8 text-white text-shadow-strong break-keep tracking-tight animate-pop origin-center">
+                    사장님의 고민을<br>
+                    <span class="text-emerald-400">해결해 드립니다</span>
+                </h2>
+                
+                <!-- Decorative Line -->
+                <div class="w-20 h-1.5 bg-white/30 mx-auto rounded-full shadow-lg"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3 Core Promises -->
+    <!-- Background Changed: bg-white -> bg-stone-50 (Warm Gray) to contrast with white cards -->
+    <section class="py-16 bg-stone-50">
+        <div class="max-w-5xl mx-auto px-5">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">오더즈의 3가지 약속</h3>
+                <p class="text-gray-500 text-sm md:text-base">확실하지 않으면 출고하지 않습니다</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start">
+                <!-- Promise 1 -->
+                <div class="group bg-white rounded-3xl p-8 text-center border-2 border-emerald-500 shadow-xl hover:shadow-2xl transition duration-300 hover:-translate-y-1 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl">신선 보장</div>
+                    <div class="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-inner text-gray-700 group-hover:scale-110 transition-transform">🚛</div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">당일 경매 출고</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed break-keep">재고 없이 그날 경매 받은<br>가장 신선한 상품만 보냅니다.</p>
+                </div>
+                
+                <!-- Promise 2 (Highlighted & Elevated) -->
+                <!-- Added 'transform md:-translate-y-4 z-10' to lift the box on desktop -->
+                <div class="group bg-white rounded-3xl p-8 text-center border-2 border-emerald-500 shadow-2xl hover:shadow-2xl transition duration-300 hover:-translate-y-5 relative overflow-hidden transform md:-translate-y-4 z-10 ring-4 ring-emerald-50">
+                    <div class="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl">품질 보장</div>
+                    <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-inner text-emerald-600 group-hover:scale-110 transition-transform">💯</div>
+                    <h4 class="text-xl font-bold text-emerald-900 mb-3">100% 반품 보장</h4>
+                    <p class="text-emerald-700 text-sm leading-relaxed break-keep font-medium">품질에 만족하지 못하시면<br>이유 불문 100% 반품해 드립니다.</p>
+                </div>
+                
+                <!-- Promise 3 -->
+                <div class="group bg-white rounded-3xl p-8 text-center border-2 border-emerald-500 shadow-xl hover:shadow-2xl transition duration-300 hover:-translate-y-1 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl">신뢰 보장</div>
+                    <div class="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-inner text-gray-700 group-hover:scale-110 transition-transform">👀</div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">직접 확인 가능</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed break-keep">매장에 방문하셔서<br>직접 눈으로 보고 픽업하세요.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map / Store Info -->
+    <!-- Background Changed: bg-gray-100 -> bg-white to differentiate from the section above -->
+    <section class="py-16 bg-white border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-5 text-center">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8">📍 오더즈 오프라인 매장 안내</h3>
+            
+            <!-- Clean Info Card -->
+            <!-- Background changed to bg-stone-50 to pop against white section -->
+            <div class="bg-stone-50 rounded-3xl p-8 md:p-12 shadow-inner border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 text-left">
+                
+                <!-- Info Side -->
+                <div class="flex-1 w-full">
+                    <h4 class="font-bold text-2xl text-gray-900 mb-3">오더즈 물류센터</h4>
+                    <p class="text-gray-600 text-sm md:text-base mb-6 leading-relaxed border-l-4 border-emerald-500 pl-4">
+                        경남 창원시 의창구 무역로 569<br>
+                        <span class="text-gray-400 text-xs">(팔용동, 창원농산물도매시장 인근)</span>
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <div class="flex items-center gap-1.5 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
+                            <span class="text-lg">📅</span>
+                            <span class="text-xs md:text-sm font-bold text-gray-600">예약 가능</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
+                            <span class="text-lg">📦</span>
+                            <span class="text-xs md:text-sm font-bold text-gray-600">방문 수령</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divider (Mobile: Horizontal / Desktop: Vertical) -->
+                <div class="w-full h-px md:w-px md:h-32 bg-gray-300"></div>
+
+                <!-- Button Side -->
+                <div class="w-full md:w-auto flex-shrink-0 text-center">
+                    <a href="https://map.naver.com/p/entry/place/2051950421?c=15.00,0,0,0,dh" target="_blank" class="flex items-center justify-center gap-3 bg-[#03C75A] text-white px-8 py-4 rounded-2xl font-bold text-base md:text-lg hover:bg-[#02b351] transition shadow-lg hover:shadow-green-500/30 w-full md:w-auto group no-underline">
+                        <span class="bg-white/20 p-1.5 rounded-full group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        </span>
+                        <span>네이버 지도로 보기</span>
+                    </a>
+                    <p class="text-gray-400 text-xs mt-3">클릭하면 지도로 이동합니다</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 pb-24 bg-white px-5 text-center">
+        <div class="max-w-2xl mx-auto">
+            <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 break-keep">오늘 가장 신선한 야채 시세는?</h3>
+            <p class="text-gray-500 mb-10 break-keep text-sm md:text-base">매일 변동되는 도매가 그대로, 투명하게 공개합니다.</p>
+            
+            <a href="https://orderz.kr/shop/list.php?ca_id=8020&yt_code=01217" class="relative block w-full md:w-auto md:inline-block bg-emerald-600 text-white font-bold text-lg md:text-xl py-5 px-12 rounded-2xl hover:bg-emerald-700 transition shadow-xl hover:shadow-2xl hover:-translate-y-1 no-underline overflow-hidden group ring-4 ring-emerald-50">
+                <span class="relative z-10 flex items-center justify-center gap-2">
+                    금일 야채 시세 확인하기
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </span>
+                <!-- Glossy Effect -->
+                <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
+            </a>
+            <p class="mt-4 text-xs md:text-sm text-gray-400 animate-pulse">👆 클릭해서 부담 없이 구경만 하셔도 됩니다</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-0 py-10 md:py-16">
+        <div class="max-w-7xl mx-auto px-5 md:px-6 text-center text-gray-400 text-xs md:text-sm">
+            <h2 class="text-xl md:text-2xl font-black text-white mb-4 md:mb-6 tracking-tight">ORDERZ</h2>
+            
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6 mb-6 md:mb-8 text-xs md:text-sm">
+                <a href="https://orderz.kr/bbs/content.php?co_id=provision" target="_blank" class="hover:text-white transition">이용약관</a>
+                <a href="https://orderz.kr/bbs/content.php?co_id=privacy" target="_blank" class="hover:text-white transition font-bold">개인정보처리방침</a>
+                <a href="https://www.ftc.go.kr/bizCommPop.do" target="_blank" class="hover:text-white transition">사업자정보확인</a>
+            </div>
+
+            <div class="mb-8 text-[10px] md:text-xs text-gray-500 leading-relaxed space-y-1">
+                <p class="flex flex-wrap justify-center gap-x-2">
+                    <span>회사명 : 원앱</span>
+                    <span class="hidden md:inline text-gray-700">|</span>
+                    <span>대표 : 이무철</span>
+                    <span class="hidden md:inline text-gray-700">|</span>
+                    <span>개인정보 보호책임자 : 이무철</span>
+                </p>
+                <p>주소 : 서울특별시 송파구 양재대로 932, 9층 19호</p>
+                <p class="flex flex-wrap justify-center gap-x-2">
+                    <span>사업자 등록번호 : 380-14-01523</span>
+                    <span class="hidden md:inline text-gray-700">|</span>
+                    <span>통신판매업신고번호 : 제2021-서울송파-2063호</span>
+                </p>
+                <p class="flex flex-wrap justify-center gap-x-2">
+                    <span>전화 : 02-6959-1374</span>
+                    <span class="hidden md:inline text-gray-700">|</span>
+                    <span>팩스 : 070-4808-3833</span>
+                </p>
+            </div>
+
+            <p class="mb-1 break-keep text-gray-600">본 이벤트는 당사 사정에 의해 사전 예고 없이 변경될 수 있습니다.</p>
+            <p class="text-gray-700">Copyright © 2022 원앱. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
