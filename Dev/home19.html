@@ -191,6 +191,40 @@
             flex-shrink: 0;
         }
 
+        /* Tooltip (Speech Bubble) */
+        .tooltip-bubble {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background: rgba(30, 41, 59, 0.95);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            z-index: 50;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .tooltip-bubble::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 12px;
+            width: 8px;
+            height: 8px;
+            background: rgba(30, 41, 59, 0.95);
+            transform: rotate(45deg);
+        }
+        .tooltip-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Category Bar Styles */
         .category-btn {
             display: flex; flex-direction: column; align-items: center; gap: 2px;
@@ -299,6 +333,12 @@
                     <span id="mode-text" class="text-sm font-bold">주문하기</span>
                 </button>
                 
+                <!-- Tooltip -->
+                <div id="mode-tooltip" class="tooltip-bubble">
+                    주문하기가 기본 접속 화면으로 설정되었습니다.
+                </div>
+
+                <!-- Logo: 홈으로만 이동하는 로직 적용 -->
                 <h1 id="header-title" class="absolute left-1/2 -translate-x-1/2 text-2xl font-extrabold text-gray-600 cursor-pointer">NH라인</h1>
                 <div class="flex items-center space-x-2">
                     <span class="text-xs font-semibold">OP</span>
@@ -764,7 +804,7 @@
             }, 2500);
         }
 
-        // Mode Switch Logic
+        // Mode Switch Logic: 토글 방식 유지
         modeSwitchBtn.onclick = function() {
             if (appState.isSearching) {
                 closeSearch();
@@ -778,7 +818,16 @@
             }
         };
         
-        headerTitle.onclick = modeSwitchBtn.onclick;
+        // Logo Click Logic: '홈(상품목록)'으로만 이동하도록 변경
+        headerTitle.onclick = function() {
+            if (appState.currentView !== 'home') {
+                if (appState.isSearching) {
+                    closeSearch();
+                }
+                showHomeView(true);
+                showModeTooltip("상품목록이 기본 접속 화면으로 설정되었습니다.");
+            }
+        };
 
         // --- Sub Section Bar Logic ---
         function renderSubSectionBar() {
@@ -786,7 +835,8 @@
             
             subSectionBar.classList.remove('hidden');
             
-            // 찜한상품(-1)만 정렬 필터 노출, 나머지는 숨김
+            // 변경된 로직: 찜한상품(-1)일 때만 정렬 필터 노출
+            // 단골특가(0) 및 사용자 리스트(1, 2, 3)에서는 정렬 필터 숨김
             if (appState.currentMyList === -1) {
                 sortContainer.style.display = 'block';
             } else {
