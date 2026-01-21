@@ -129,13 +129,13 @@
         }
         .faq-header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 1rem 1.25rem; /* py-4 equivalent */
+            padding: 1rem 1.25rem;
             cursor: pointer;
             transition: background-color 0.2s;
         }
         .faq-header:active { background-color: #f9fafb; }
         .faq-question {
-            font-size: 0.875rem; /* text-sm */
+            font-size: 0.875rem;
             font-weight: 700;
             color: #374151;
             display: flex; align-items: center;
@@ -532,23 +532,25 @@
                 <div class="h-6 bg-white w-full"></div>
             </div>
 
-            <!-- Guide & Setting Modal (RESTRUCTURED) -->
+            <!-- Guide & Setting Modal (FIXED HEIGHT) -->
             <div id="guide-modal-overlay" class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity opacity-0">
                 <div class="flex items-center justify-center min-h-screen px-4">
-                    <div class="bg-gray-50 rounded-2xl shadow-2xl w-full max-w-sm max-h-[85vh] overflow-hidden transform transition-transform scale-95 flex flex-col" id="guide-modal-content">
+                    <!-- Added fixed height h-[70vh] here -->
+                    <div class="bg-gray-50 rounded-2xl shadow-2xl w-full max-w-sm h-[70vh] overflow-hidden transform transition-transform scale-95 flex flex-col" id="guide-modal-content">
                         <!-- Header -->
-                        <div class="flex justify-between items-center p-5 bg-white border-b sticky top-0 z-10">
+                        <div class="flex justify-between items-center p-5 bg-white border-b sticky top-0 z-10 flex-none">
                             <h3 class="text-lg font-bold text-gray-900">이용 안내 및 설정</h3>
                             <button onclick="closeGuide()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-lg"></i></button>
                         </div>
                         
                         <!-- Tabs -->
-                        <div class="flex border-b bg-white z-10 sticky top-[68px]">
+                        <div class="flex border-b bg-white z-10 sticky top-[68px] flex-none">
                             <button id="tab-faq" class="guide-tab-btn active" onclick="switchGuideTab('faq')">이용안내</button>
                             <button id="tab-rename" class="guide-tab-btn" onclick="switchGuideTab('rename')">이름설정</button>
                             <button id="tab-start" class="guide-tab-btn" onclick="switchGuideTab('start')">시작화면</button>
                         </div>
                         
+                        <!-- Content Area (Scrollable) -->
                         <div class="flex-grow overflow-y-auto bg-gray-50">
                             <!-- Section: FAQ -->
                             <div id="guide-section-faq" class="block">
@@ -704,7 +706,7 @@
                             <div id="guide-section-start" class="hidden">
                                 <div class="p-5">
                                     <div class="text-sm text-gray-600 mb-4 font-bold">
-                                        앱 실행 시 가장 먼저 보일 화면을 선택하세요.
+                                        앱 실행(접속)시 가장 먼저 보일 화면을 선택하세요.
                                     </div>
 
                                     <div class="space-y-3">
