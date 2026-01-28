@@ -1,0 +1,328 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { MapPin, ArrowRight, Truck, CheckCircle, ShieldCheck, ChevronRight, Star, Gavel, Clock, MessageCircle, Phone } from 'lucide-react';
+
+const App = () => {
+  // ✅ 여기만 수정하면 전체 내용이 바뀝니다! ('창원' 또는 '김해')
+  const targetRegion = '창원'; 
+  
+  // 지역별 데이터 설정
+  const regionData = {
+    '창원': {
+      subRegion: '상남동', // 후기에 들어갈 동네 이름
+      count: '524',
+      bgText: '창원/김해', // 헤더 등 포괄적 표현이 필요할 때
+    },
+    '김해': {
+      subRegion: '내동',
+      count: '312', // 김해 쪽 실제 데이터나 예상치로 변경 가능
+      bgText: '김해/창원',
+    }
+  };
+
+  const currentData = regionData[targetRegion] || regionData['창원'];
+
+  // 애니메이션 상태 관리
+  const [activeStep, setActiveStep] = useState(0);
+  const [startAnimation, setStartAnimation] = useState(false);
+  const timelineRef = useRef(null);
+
+  // 스크롤 감지
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setStartAnimation(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.2 });
+
+    if (timelineRef.current) {
+      observer.observe(timelineRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // 애니메이션 타이머 실행
+  useEffect(() => {
+    if (startAnimation) {
+      const timers = [
+        setTimeout(() => setActiveStep(1), 500),
+        setTimeout(() => setActiveStep(2), 1500),
+        setTimeout(() => setActiveStep(3), 2500),
+      ];
+      return () => timers.forEach(clearTimeout);
+    }
+  }, [startAnimation]);
+
+
+  // 단계별 스타일 헬퍼 함수
+  const getCircleStyle = (stepNum) => {
+    if (activeStep >= stepNum) {
+      return 'bg-[#00C73C] text-white scale-110 shadow-lg transition-all duration-700';
+    }
+    return 'bg-gray-300 text-gray-500 scale-100 shadow-sm transition-all duration-700'; // 비활성 상태도 조금 더 진하게(gray-300)
+  };
+
+  const getTextStyle = (stepNum) => {
+    if (activeStep >= stepNum) return 'text-gray-900 font-extrabold transition-colors duration-700';
+    return 'text-gray-400 font-bold transition-colors duration-700';
+  };
+
+  // 링크 이동 함수
+  const handleLink = (url) => {
+    window.location.href = url;
+  };
+
+  return (
+    <div className="min-h-screen bg-white font-sans max-w-md mx-auto shadow-2xl overflow-hidden relative pb-[140px]">
+      {/* 상단 헤더 */}
+      <header className="bg-white py-3 px-4 border-b border-gray-100 flex justify-between items-center sticky top-0 z-50">
+        <h1 className="text-xl font-extrabold text-[#00C73C] tracking-tighter cursor-pointer" onClick={() => handleLink('https://orderz.kr/')}>ORDERZ</h1>
+        {/* ✅ 수정됨: 카카오톡 문의 링크 연결 (chat) */}
+        <button 
+          onClick={() => handleLink('http://pf.kakao.com/_PkUxgs/chat')}
+          className="text-xs font-bold text-[#371D1E] bg-[#FAE100] rounded px-3 py-1.5 flex items-center gap-1.5 hover:bg-[#FFE812] transition shadow-sm"
+        >
+          <MessageCircle size={14} fill="#371D1E" /> 1:1 문의
+        </button>
+      </header>
+
+      {/* 히어로 섹션 (Dark) */}
+      <section className="relative bg-gray-900 text-white py-12 px-6 text-center overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M10,30 Q30,10 50,30 T90,30" stroke="white" strokeWidth="0.5" fill="none" />
+            <path d="M10,50 Q30,30 50,50 T90,50" stroke="white" strokeWidth="0.5" fill="none" />
+          </svg>
+        </div>
+        
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-1 bg-[#00C73C] text-white text-xs font-bold px-2 py-1 rounded mb-4 animate-bounce">
+            <MapPin size={12} /> 현재 {currentData.count}곳 배송 중
+          </div>
+          <h2 className="text-2xl font-bold leading-tight mb-2">
+            {targetRegion} 사장님들이<br />
+            매일 아침 <span className="text-[#00C73C]">오더즈 트럭</span>을<br />
+            기다리는 진짜 이유
+          </h2>
+          <p className="text-gray-300 text-sm mt-3 leading-relaxed">
+            "옆 가게는 벌써 이 가격에 받고 있습니다."<br/>
+            이제 사장님도 비싸게 사지 마세요.
+          </p>
+        </div>
+      </section>
+
+      {/* 상품 섹션 (White) */}
+      <section className="py-10 px-4 bg-white mb-0">
+        <div className="mb-6 flex items-center gap-2">
+          <div className="bg-red-100 p-2 rounded-full text-red-600">
+            <Gavel size={20} />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-gray-900">오늘 새벽 '경매 낙찰가'</h3>
+            <p className="text-xs text-gray-500 mt-0.5">중간 유통 없이 경매장에서 바로 보냅니다.</p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {/* 상품 1 */}
+          <div 
+            onClick={() => handleLink('https://orderz.kr/shop/listtype.php?type=1')}
+            className="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-[#00C73C] transition cursor-pointer bg-white group hover:shadow-md"
+          >
+            <div className="w-20 h-20 bg-orange-50 rounded-md flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+              🧅
+            </div>
+            <div className="flex-1 flex flex-col justify-center">
+              <div className="flex justify-between items-start mb-1">
+                <h4 className="font-bold text-gray-800 text-base">국산 저장 양파 (15kg)</h4>
+                <span className="text-[10px] font-bold text-[#00C73C] bg-green-50 px-1.5 py-0.5 rounded border border-green-100">오늘시세</span>
+              </div>
+              <div className="flex items-end gap-1 mt-1">
+                <span className="text-2xl font-extrabold text-gray-900">14,900</span>
+                <span className="text-sm font-bold text-gray-600 mb-1">원</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 상품 2 */}
+          <div 
+            onClick={() => handleLink('https://orderz.kr/shop/listtype.php?type=1')}
+            className="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-[#00C73C] transition cursor-pointer bg-white group hover:shadow-md"
+          >
+            <div className="w-20 h-20 bg-yellow-50 rounded-md flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+              🥚
+            </div>
+            <div className="flex-1 flex flex-col justify-center">
+              <div className="flex justify-between items-start mb-1">
+                <h4 className="font-bold text-gray-800 text-base">대란 (30구/한판)</h4>
+                <span className="text-[10px] font-bold text-[#00C73C] bg-green-50 px-1.5 py-0.5 rounded border border-green-100">오늘시세</span>
+              </div>
+              <div className="flex items-end gap-1 mt-1">
+                <span className="text-2xl font-extrabold text-gray-900">5,900</span>
+                <span className="text-sm font-bold text-gray-600 mb-1">원</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 상품 3 - 청양고추 */}
+          <div 
+            onClick={() => handleLink('https://orderz.kr/shop/listtype.php?type=1')}
+            className="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-[#00C73C] transition cursor-pointer bg-white group hover:shadow-md"
+          >
+            <div className="w-20 h-20 bg-green-50 rounded-md flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+              🌶️
+            </div>
+            <div className="flex-1 flex flex-col justify-center">
+               <div className="flex justify-between items-start mb-1">
+                <h4 className="font-bold text-gray-800 text-base">청양고추 (10kg)</h4>
+                <span className="text-[10px] font-bold text-[#00C73C] bg-green-50 px-1.5 py-0.5 rounded border border-green-100">오늘시세</span>
+              </div>
+              <div className="flex items-end gap-1 mt-1">
+                <span className="text-2xl font-extrabold text-gray-900">48,900</span>
+                <span className="text-sm font-bold text-gray-600 mb-1">원</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ✅ 수정됨: 버튼 영역 링크 연결 및 아이콘 삭제 */}
+        <div className="mt-6 flex flex-col gap-2">
+          {/* 경매 더보기 (메인) */}
+          <button 
+            onClick={() => handleLink('https://orderz.kr/shop/listtype.php?type=1')}
+            className="w-full py-3.5 border border-gray-300 rounded-lg text-sm font-bold text-gray-600 flex items-center justify-center gap-1 hover:bg-gray-50 transition"
+          >
+            오늘 경매 상품 더보기 <ChevronRight size={16} />
+          </button>
+          
+          {/* 식자재 행사 보기 (서브) - 아이콘 삭제됨 */}
+          <button 
+            onClick={() => handleLink('https://orderz.kr/shop/listtype.php?type=3')}
+            className="w-full py-3.5 bg-gray-50 rounded-lg text-sm font-bold text-gray-600 flex items-center justify-center gap-1 hover:bg-gray-100 transition"
+          >
+            진행 중인 식자재 행사 보기 <ChevronRight size={16} />
+          </button>
+        </div>
+      </section>
+
+      {/* ✅ 수정됨: 유통 과정 타임라인 (배경색: Gray-100으로 진하게 변경하여 구분감 강화) */}
+      <section ref={timelineRef} className="py-12 px-6 bg-gray-100 border-t border-gray-200">
+        <h3 className="text-lg font-bold text-gray-900 mb-8 text-center">
+          "오더즈는 왜 이렇게 쌀까요?"<br/>
+          <span className="text-sm font-normal text-gray-500"><span className="text-[#00C73C] font-bold underline decoration-2 underline-offset-2">경매장 직거래</span>로 중간 단계를 없앴습니다</span>
+        </h3>
+        
+        <div className="flex justify-between items-start text-center relative px-2">
+          {/* 연결선 */}
+          <div className="absolute top-5 left-2 right-2 h-0.5 bg-gray-300 -z-10">
+            <div 
+              className="h-full bg-[#00C73C] transition-all duration-1000 ease-linear"
+              style={{ width: activeStep === 0 ? '0%' : activeStep === 1 ? '33%' : activeStep === 2 ? '66%' : '100%' }}
+            ></div>
+          </div>
+
+          {/* Step 1 */}
+          <div className="flex flex-col items-center flex-1">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 border-4 border-gray-100 ${getCircleStyle(1)}`}>
+              <span className="font-bold text-[10px]">20:00</span>
+            </div>
+            <p className={`text-xs ${getTextStyle(1)}`}>가락시장</p>
+            <p className="text-[10px] text-gray-500 mt-1">경매 낙찰</p>
+          </div>
+
+          {/* Step 2 */}
+           <div className="flex flex-col items-center flex-1">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 border-4 border-gray-100 ${getCircleStyle(2)}`}>
+              <span className="font-bold text-[10px]">02:00</span>
+            </div>
+            <p className={`text-xs ${getTextStyle(2)}`}>창원공판장</p>
+            <p className="text-[10px] text-gray-500 mt-1">경매 낙찰</p>
+          </div>
+
+          {/* Step 3 */}
+          <div className="flex flex-col items-center flex-1">
+             <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 border-4 border-gray-100 ${getCircleStyle(3)}`}>
+              <span className="font-bold text-[10px]">08~12</span>
+            </div>
+            <p className={`text-xs ${getTextStyle(3)}`}>가게 도착</p>
+            <p className="text-[10px] text-gray-500 mt-1">직배송</p>
+          </div>
+        </div>
+
+        {/* 배경색에 맞춰 내부 박스 디자인 변경 (White Box + Shadow) */}
+        <div className="mt-8 bg-white p-4 rounded-xl text-center shadow-md border border-gray-200">
+           <p className="text-xs text-gray-700">
+             <span className="font-bold text-red-500">중간 도매상 ❌ 대리점 ❌</span><br/>
+             당일 경매로 최저가와 신선함을 잡았습니다.
+           </p>
+        </div>
+      </section>
+
+      {/* 동료 신뢰 (Social Proof) (배경색: White) */}
+      <section className="py-12 px-6 bg-white border-t border-gray-100">
+        <h3 className="text-lg font-bold text-gray-900 mb-6 text-center">
+          "{targetRegion} 지역 {currentData.count}곳의 식당이<br/>
+          <span className="text-[#00C73C]">오더즈</span>를 선택한 이유"
+        </h3>
+        
+        <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100 relative overflow-hidden group hover:border-[#00C73C] transition-colors">
+          <div className="space-y-6 relative z-10">
+            <div className="flex items-start gap-3">
+              <div className="mt-1 min-w-[24px] text-yellow-400">
+                 <Star size={18} fill="#FFD700" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-800 font-medium leading-relaxed">
+                  "원래 쓰던 쌈무 브랜드가 없길래 문의했더니, 다음날 똑같은 걸로 바로 구해서 보내주셨어요. 덕분에 거래처 여러 군데 안 쓰고 여기서 한 번에 다 시킵니다."
+                </p>
+                <p className="text-xs text-gray-400 mt-2 font-medium">{targetRegion} {currentData.subRegion} 고깃집 사장님</p>
+              </div>
+            </div>
+            <div className="h-px bg-gray-100"></div>
+            <div className="flex items-start gap-3">
+              <div className="mt-1 min-w-[24px] text-yellow-400">
+                 <Star size={18} fill="#FFD700" />
+              </div>
+              <div>
+                {/* 후기 내용 수정됨 */}
+                <p className="text-sm text-gray-800 font-medium leading-relaxed">
+                  "경매장에서 바로 와서 그런지 야채 신선도가 확실히 달라요. 손님들이 신선하다는 말을 먼저 합니다."
+                </p>
+                <p className="text-xs text-gray-400 mt-2 font-medium">{targetRegion} 용호동 샐러드집 사장님</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 카카오톡 버튼 (배경색: Gray-50) */}
+      <section className="py-8 px-4 bg-gray-50 border-t border-gray-100">
+        <button 
+          onClick={() => handleLink('http://pf.kakao.com/_PkUxgs/friend')}
+          className="w-full bg-[#FAE100] text-[#371D1E] font-bold py-3.5 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-yellow-400 transition shadow-sm border border-yellow-300"
+        >
+          <MessageCircle size={18} /> 이벤트·소식 구경하기
+        </button>
+      </section>
+
+      {/* ✅ 하단 고정 CTA - 로그인 링크 연결 */}
+      <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50">
+        <div className="bg-white text-gray-500 text-xs py-2 text-center border-t border-gray-200">
+          첫 거래 사장님 <span className="text-[#00C73C] font-bold ml-1">식자재 1.5만원 쿠폰 + 무료배송</span>
+        </div>
+        
+        <div className="bg-white p-4 pt-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)]">
+          <button 
+            onClick={() => handleLink('https://orderz.kr/bbs/login.php?url=https://orderz.kr/?device=mobile')}
+            className="w-full bg-[#00C73C] text-white font-bold py-3.5 rounded-lg text-lg flex items-center justify-center gap-2 shadow-lg hover:bg-green-600 transition active:scale-[0.98]"
+          >
+            1.5만원 쿠폰 + 무료배송 받기 <ArrowRight size={20} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
