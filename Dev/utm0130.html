@@ -102,16 +102,7 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .info-badge {
-            font-size: 9px;
-            font-weight: 800;
-            padding: 1px 4px;
-            border-radius: 3px;
-            margin-right: 4px;
-            text-transform: uppercase;
-        }
-
-        /* 공통 입력창 스타일 - 필수 항목 강조용 */
+        /* 필수 항목 강조용 */
         .input-required {
             background-color: #eff6ff !important;
             border-color: #bfdbfe !important;
@@ -212,7 +203,7 @@
                             <td colspan="3">
                                 <div class="md:col-span-2">
                                     <label class="block text-xs font-bold text-slate-700 mb-1 uppercase">이동 목적지 (Next URL)</label>
-                                    <input type="text" id="inputNext" class="w-full border border-slate-200 bg-white px-3 py-2.5 rounded text-slate-600 focus:border-blue-500 focus:outline-none text-sm transition" placeholder="/event/coupon.php" oninput="updatePreview()">
+                                    <input type="text" id="inputNext" class="w-full border border-slate-300 bg-white px-3 py-2.5 rounded text-slate-600 focus:border-blue-500 focus:outline-none text-sm transition" placeholder="/event/coupon.php" oninput="updatePreview()">
                                     <p class="text-[10px] text-red-500 mt-2 font-bold flex items-center">
                                         <i class="fas fa-shield-alt mr-1"></i> 보안: https://orderz.kr 뒤에 붙는 내부 경로(/)만 입력하세요.
                                     </p>
@@ -242,7 +233,7 @@
                                 <div class="step4-box border-blue-100 shadow-sm">
                                     <div class="flex items-center gap-2 mb-3">
                                         <span class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded font-bold uppercase tracking-widest">2. 단축 코드 (Short Code)</span>
-                                        <span class="text-[10px] text-blue-600 font-normal italic font-medium">*(영문, 숫자, _만 가능) 성과 분석을 위해 날짜 포함 권장</span>
+                                        <span class="text-[10px] text-blue-600 font-normal italic font-medium">*(영문, 숫자, _만 가능) 예: summer_sale_2026_01</span>
                                     </div>
                                     
                                     <div class="flex items-center gap-3">
@@ -274,20 +265,14 @@
             <div class="flex justify-between items-start mb-4 px-1">
                 <div class="flex flex-col gap-1.5">
                     <h2 class="text-base font-bold text-slate-700 border-l-4 border-slate-600 pl-3">생성 목록</h2>
-                    <div class="flex items-center gap-1 ml-4">
-                        <span class="info-badge bg-blue-100 text-blue-600 border border-blue-200">Tip</span>
-                        <p class="text-[11px] text-slate-500 font-medium tracking-tight">링크 생성 후 <b>'ON'</b>으로 변경하고 <b>운영 기간</b>을 지정해야 실제 접속이 허용됩니다.</p>
-                    </div>
+                    <p class="text-[11px] text-slate-500 ml-4 font-medium tracking-tight">※ 링크 생성 후 <b>'ON'</b>으로 변경하고 <b>운영 기간</b>을 지정해야 실제 유입이 가능합니다.</p>
                 </div>
                 
                 <div class="flex flex-col items-end gap-2">
-                    <div class="flex items-center gap-1.5 text-[10px] text-slate-400 font-medium">
-                        <i class="fas fa-keyboard"></i>
-                        <span>다중 검색: 쉼표(,)를 사용하여 여러 키워드를 동시에 검색할 수 있습니다.</span>
-                    </div>
+                    <p class="text-[10px] text-blue-500 font-semibold italic">※ 쉼표(,)를 사용하여 캠페인명, 단축코드, 유통사, 채널을 다중 검색(OR)할 수 있습니다.</p>
                     <div class="relative">
                         <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                        <input type="text" id="searchInput" placeholder="캠페인명, 단축코드, 유통사, 채널..." class="border border-slate-300 pl-9 pr-4 py-2.5 text-xs rounded-lg w-96 outline-none focus:border-blue-500 transition shadow-sm bg-white font-medium" onkeyup="filterList()">
+                        <input type="text" id="searchInput" placeholder="검색어 입력 (예: 여름, OFF001, instagram)" class="border border-slate-300 pl-9 pr-4 py-2.5 text-xs rounded-lg w-[400px] outline-none focus:border-blue-500 transition shadow-sm bg-white font-medium" onkeyup="filterList()">
                     </div>
                 </div>
             </div>
@@ -315,6 +300,7 @@
     <script>
         const TODAY = "2026-01-30";
 
+        // 초기 데이터 (ID 내림차순 정렬되어 노출됨)
         let linkData = [
             { id: 104, code: "feb_event", full_url: "https://orderz.kr/join?utm_campaign=feb_event", base_url: "https://orderz.kr/join", memo: "2월 설날 대박 기획전", yt: "-", active: true, hits: 0, channel: "messaging", start_date: "2026-02-01", end_date: "2026-02-28" },
             { id: 103, code: "jan_sale", full_url: "https://orderz.kr/join?utm_campaign=jan_sale", base_url: "https://orderz.kr/join", memo: "1월 시즌오프 세일", yt: "OFF001", active: true, hits: 1450, channel: "paid_social", start_date: "2026-01-01", end_date: "2026-02-15" },
@@ -360,6 +346,7 @@
             return { label: '정지중', class: 'badge-stopped' };
         }
 
+        // 6-2 검증: 쉼표 다중 검색 OR 조건 로직
         function renderList(data = linkData) {
             DOM.listBody.innerHTML = "";
             const sortedData = [...data].sort((a, b) => b.id - a.id);
@@ -420,9 +407,11 @@
             });
         }
 
+        // 6-1, 6-2 검증: 다중 필드 OR 검색 로직
         function filterList() {
             const input = document.getElementById('searchInput').value.toLowerCase();
             if (!input.trim()) { renderList(linkData); return; }
+            
             const keywords = input.split(',').map(k => k.trim()).filter(k => k !== "");
             const filtered = linkData.filter(item => {
                 return keywords.some(kw => {
@@ -449,6 +438,7 @@
             renderList();
         }
 
+        // 1-1, 1-4 검증: 기본 입력 및 보안 경로 검증
         function createLink() {
             const memo = DOM.inputMemo.value.trim();
             const code = DOM.inputCode.value.trim();
@@ -457,10 +447,11 @@
 
             if (!memo || !code || !baseUrl) return modalAlert("필수 항목(*)을 모두 입력해주세요.");
             if (!/^[a-z0-9_-]+$/.test(code)) return modalAlert("단축 코드는 영문 소문자, 숫자, 언더바(_)만 허용됩니다.");
-            if (next && !next.startsWith('/')) return modalAlert("보안상 리다이렉트 경로는 반드시 '/'로 시작해야 합니다.");
+            if (next && !next.startsWith('/')) return modalAlert("보안상 이동 목적지 경로는 반드시 '/'로 시작해야 합니다.");
             
+            // 1-2 검증: 운영중인 중복 코드 차단
             if (linkData.find(l => l.code === code && l.active)) {
-                return modalAlert(`⚠️ [${code}]는 현재 운영 중인 캠페인이 있습니다.<br>목록에서 기존 캠페인을 먼저 정지해주세요.`);
+                return modalAlert(`⚠️ [${code}]는 현재 운영 중인 캠페인이 있습니다.<br>기존 캠페인을 먼저 정지해주세요.`);
             }
 
             linkData.push({ 
@@ -470,7 +461,7 @@
                 base_url: baseUrl, 
                 memo, 
                 yt: DOM.inputYt.value.trim() || '-', 
-                active: false, 
+                active: false, // 4-3 검증: 생성 직후엔 OFF 상태 (운영자가 직접 확인 후 활성화 유도)
                 hits: 0, 
                 channel: DOM.inputSrc.value, 
                 start_date: TODAY, 
@@ -478,19 +469,24 @@
             });
             
             renderList();
-            modalAlert(`단축 링크가 성공적으로 생성되었습니다.<br>하단 목록에서 <b>활성화(ON)</b> 및 <b>운영 기간</b> 설정을 완료해 주세요.`);
+            modalAlert(`단축 링크가 생성되었습니다.<br>하단 목록에서 <b>ON 활성화</b> 및 <b>운영 기간</b> 설정을 완료해 주세요.`);
             DOM.inputMemo.value = DOM.inputYt.value = DOM.inputCode.value = DOM.inputNext.value = "";
             updatePreview();
         }
 
+        // 4-3 검증: 배타적 활성화 로직
         function toggleActive(id) {
             const target = linkData.find(l => l.id === id);
             if (!target) return;
+            
+            // 켜기 시도 시 중복 운영 체크
             if (!target.active && linkData.find(l => l.code === target.code && l.active && l.id !== id)) {
-                modalAlert(`⚠️ 동일 코드가 이미 운영 중입니다.`);
+                modalAlert(`⚠️ 동일 코드가 이미 운영 중입니다.<br>기존 코드를 끄고 활성화해 주세요.`);
                 renderList();
                 return;
             }
+            
+            // 운영 중 캠페인 OFF 시 간단 확인 (UI상 체크박스 해제로 처리)
             target.active = !target.active;
             renderList();
         }
