@@ -90,13 +90,16 @@
 
         <!-- 상품 섹션 -->
         <section class="py-10 px-5 bg-white">
-            <div class="mb-6 flex items-center gap-2">
-                <div class="bg-red-100 p-2 rounded-full text-red-600">
+            <div class="mb-6 flex items-start gap-2">
+                <div class="bg-red-100 p-2 rounded-full text-red-600 mt-0.5">
                     <i data-lucide="gavel" class="w-5 h-5"></i>
                 </div>
-                <div>
-                    <h3 class="text-[18px] font-bold text-gray-900 tracking-tight">오늘 새벽 '경매 낙찰가'</h3>
-                    <p class="text-[13px] text-gray-500">중간 유통 없이 경매장에서 바로 보냅니다.</p>
+                <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-[18px] font-bold text-gray-900 tracking-tight">오늘 새벽 '경매 낙찰가'</h3>
+                        <!-- 내일 09시 갱신 삭제됨 -->
+                    </div>
+                    <p class="text-[13px] text-gray-500 mt-0.5">중간 유통 없이 경매장에서 바로 보냅니다.</p>
                 </div>
             </div>
 
@@ -206,14 +209,14 @@
         </section>
 
         <!-- 후기 섹션 (가로 롤링) -->
-        <section class="py-14 bg-white">
+        <section id="review-section" class="py-14 bg-white">
             <h3 class="text-[18px] font-bold text-gray-900 mb-8 text-center tracking-tight italic text-main px-5">
                 실제 사장님의 후기
             </h3>
             
             <div id="review-container" class="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory px-5 pb-4 scroll-smooth">
                 
-                <!-- 후기 1 -->
+                <!-- 후기 1: 창원 상남동 -->
                 <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm w-[85vw] max-w-[320px] flex-shrink-0 snap-center">
                     <div class="flex items-center gap-0.5 mb-3">
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
@@ -225,10 +228,10 @@
                     <p class="text-[16px] text-gray-800 font-extrabold leading-snug mb-3">
                         “평소 쓰던 식자재 다 구해주니 오더즈에서 주문 한 번에 끝내요.”
                     </p>
-                    <span class="text-[12px] text-gray-400 font-medium"><span id="subregion-1">창원 상남동</span> 고깃집 사장님</span>
+                    <span class="text-[12px] text-gray-400 font-medium">창원 상남동 고깃집 사장님</span>
                 </div>
 
-                <!-- 후기 2 -->
+                <!-- 후기 2: 창원 용호동 -->
                 <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm w-[85vw] max-w-[320px] flex-shrink-0 snap-center">
                     <div class="flex items-center gap-0.5 mb-3">
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
@@ -240,10 +243,10 @@
                     <p class="text-[16px] text-gray-800 font-extrabold leading-snug mb-3">
                         “야채 신선도가 확실히 달라요. 손님들이 먼저 압니다.”
                     </p>
-                    <span class="text-[12px] text-gray-400 font-medium"><span id="region-name-2">창원</span> <span id="salad-region">용호동</span> 샐러드집 사장님</span>
+                    <span class="text-[12px] text-gray-400 font-medium">창원 용호동 샐러드집 사장님</span>
                 </div>
                 
-                <!-- 후기 3 (문구 수정됨) -->
+                <!-- 후기 3: 창원 소답동 -->
                 <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm w-[85vw] max-w-[320px] flex-shrink-0 snap-center">
                     <div class="flex items-center gap-0.5 mb-3">
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
@@ -255,7 +258,7 @@
                     <p class="text-[16px] text-gray-800 font-extrabold leading-snug mb-3">
                         “재료가 급히 떨어져서 픽업해왔어요. 덕분에 저녁 장사 무사히 마쳤습니다.”
                     </p>
-                    <span class="text-[12px] text-gray-400 font-medium"><span id="region-name-4">창원</span> 소답동 한식당 사장님</span>
+                    <span class="text-[12px] text-gray-400 font-medium">창원 소답동 한식당 사장님</span>
                 </div>
             </div>
             
@@ -291,23 +294,8 @@
     <script>
         lucide.createIcons();
 
-        // 창원 버전으로 활성화
-        const targetRegion = '창원'; 
-        const regionData = {
-            '창원': { subRegion: '창원 상남동', saladRegion: '용호동', count: '524' },
-            '김해': { subRegion: '김해 내동', saladRegion: '장유', count: '312' }
-        };
-
-        const currentData = regionData[targetRegion] || regionData['창원'];
-
-        document.getElementById('target-region').textContent = targetRegion;
-        document.getElementById('delivery-count').textContent = currentData.count;
-        document.getElementById('subregion-1').textContent = currentData.subRegion;
-        document.getElementById('salad-region').textContent = currentData.saladRegion;
-        document.getElementById('region-name-2').textContent = targetRegion;
-        document.getElementById('region-name-3').textContent = targetRegion;
-        document.getElementById('region-name-4').textContent = targetRegion;
-
+        // 1. 통합 데이터 직접 설정
+        
         function handleLink(url) {
             window.location.href = url;
         }
@@ -343,46 +331,66 @@
 
         if (timelineSection) observer.observe(timelineSection);
 
-        // 후기 자동 롤링 (Carousel)
+        // 후기 자동 롤링 (Carousel) - 스크롤 감지 추가
         const reviewContainer = document.getElementById('review-container');
         const dots = document.getElementById('scroll-dots').children;
         let isUserInteracting = false;
+        let carouselInterval;
 
         reviewContainer.addEventListener('touchstart', () => { isUserInteracting = true; });
         reviewContainer.addEventListener('touchend', () => { setTimeout(() => isUserInteracting = false, 3000); });
 
-        setInterval(() => {
-            if (isUserInteracting) return;
+        // 롤링 로직 함수
+        const startCarousel = () => {
+            if (carouselInterval) return;
 
-            const firstCard = reviewContainer.querySelector('div');
-            if (!firstCard) return;
-            
-            const scrollAmount = firstCard.offsetWidth + 16; 
-            
-            const maxScroll = reviewContainer.scrollWidth - reviewContainer.clientWidth;
-            let nextScrollLeft = reviewContainer.scrollLeft + scrollAmount;
-            
-            if (reviewContainer.scrollLeft >= maxScroll - 10) {
-                nextScrollLeft = 0;
+            carouselInterval = setInterval(() => {
+                if (isUserInteracting) return;
+
+                const firstCard = reviewContainer.querySelector('div');
+                if (!firstCard) return;
+                
+                const scrollAmount = firstCard.offsetWidth + 16; 
+                
+                const maxScroll = reviewContainer.scrollWidth - reviewContainer.clientWidth;
+                let nextScrollLeft = reviewContainer.scrollLeft + scrollAmount;
+                
+                if (reviewContainer.scrollLeft >= maxScroll - 10) {
+                    nextScrollLeft = 0;
+                }
+
+                reviewContainer.scrollTo({
+                    left: nextScrollLeft,
+                    behavior: 'smooth'
+                });
+
+                const currentIndex = Math.round(nextScrollLeft / scrollAmount);
+                for(let i=0; i<dots.length; i++) {
+                    dots[i].classList.remove('bg-main');
+                    dots[i].classList.add('bg-gray-200');
+                }
+                const dotIndex = (currentIndex >= dots.length) ? 0 : currentIndex;
+                if(dots[dotIndex]) {
+                    dots[dotIndex].classList.remove('bg-gray-200');
+                    dots[dotIndex].classList.add('bg-main');
+                }
+
+            }, 3000);
+        };
+
+        // 후기 섹션 감지 Observer
+        const reviewSection = document.getElementById('review-section');
+        const reviewObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                startCarousel();
+                // 한번 시작하면 계속 돌리거나, 필요하면 disconnect()
+                // 여기서는 계속 돌도록 둠
             }
+        }, { threshold: 0.2 });
 
-            reviewContainer.scrollTo({
-                left: nextScrollLeft,
-                behavior: 'smooth'
-            });
-
-            const currentIndex = Math.round(nextScrollLeft / scrollAmount);
-            for(let i=0; i<dots.length; i++) {
-                dots[i].classList.remove('bg-main');
-                dots[i].classList.add('bg-gray-200');
-            }
-            const dotIndex = (currentIndex >= dots.length) ? 0 : currentIndex;
-            if(dots[dotIndex]) {
-                dots[dotIndex].classList.remove('bg-gray-200');
-                dots[dotIndex].classList.add('bg-main');
-            }
-
-        }, 3000);
+        if (reviewSection) {
+            reviewObserver.observe(reviewSection);
+        }
     </script>
 </body>
 </html>
