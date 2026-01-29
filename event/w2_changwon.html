@@ -24,7 +24,7 @@
         .border-main { border-color: #0C5608; }
         .hover-bg-main:hover { background-color: #083d06; }
         
-        /* 포인트 컬러 (오더즈 트럭 강조용) */
+        /* 포인트 컬러 (강조용) */
         .text-point { color: #DFFF00; text-shadow: 0px 2px 5px rgba(0,0,0,0.6); }
     </style>
 </head>
@@ -43,7 +43,7 @@
             </button>
         </header>
 
-        <!-- 히어로 섹션 -->
+        <!-- 히어로 섹션 (카피 되돌림) -->
         <section class="relative text-white py-16 px-6 text-center overflow-hidden">
             <div class="absolute inset-0 z-0">
                 <img src="https://oneapp2.godohosting.com/%EC%95%8C%EB%A6%AC%EA%B3%A02%EC%A3%BC%EC%B0%A8/main.jpg" alt="메인 배경" class="w-full h-full object-cover">
@@ -54,6 +54,7 @@
                 <div class="inline-flex items-center gap-1 bg-main text-white text-xs font-bold px-2 py-1 rounded mb-4 animate-bounce shadow-md border border-white/20">
                     <i data-lucide="map-pin" class="w-3 h-3"></i> 현재 <span id="delivery-count">524</span>곳 배송 중
                 </div>
+                <!-- 수정됨: 요청하신 이전 문구로 복구 -->
                 <h2 class="text-2xl font-bold leading-tight mb-2">
                     <span id="target-region">창원</span> 사장님들이<br />
                     매일 아침 <span class="text-point font-black italic tracking-tight">오더즈 트럭</span>을<br />
@@ -79,7 +80,7 @@
             </div>
 
             <div class="space-y-4">
-                <!-- 상품 1 -->
+                <!-- 상품 1: 양배추 -->
                 <div 
                     onclick="handleLink('https://orderz.kr/shop/item.php?it_id=101014120')"
                     class="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-main transition cursor-pointer bg-white group hover:shadow-md"
@@ -99,7 +100,7 @@
                     </div>
                 </div>
 
-                <!-- 상품 2 -->
+                <!-- 상품 2: 청양고추 -->
                 <div 
                     onclick="handleLink('https://orderz.kr/shop/item.php?it_id=103036112')"
                     class="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-main transition cursor-pointer bg-white group hover:shadow-md"
@@ -119,7 +120,7 @@
                     </div>
                 </div>
 
-                <!-- 상품 3 -->
+                <!-- 상품 3: 지방깻잎 -->
                 <div 
                     onclick="handleLink('https://orderz.kr/shop/item.php?it_id=104510132')"
                     class="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-main transition cursor-pointer bg-white group hover:shadow-md"
@@ -156,7 +157,7 @@
             </div>
         </section>
 
-        <!-- 유통 과정 타임라인 (후기 위 배치) -->
+        <!-- 유통 과정 타임라인 -->
         <section id="timeline-section" class="py-12 px-6 bg-gray-100 border-t border-gray-100">
             <h3 class="text-lg font-bold text-gray-900 mb-8 text-center leading-tight">
                 "오더즈는 왜 이렇게 쌀까요?"<br/>
@@ -173,6 +174,8 @@
                         <span class="font-bold text-[10px]">20:00</span>
                     </div>
                     <p id="step1-text" class="text-xs text-gray-400 font-bold transition-text">가락시장</p>
+                    <!-- 문구 유지됨 -->
+                    <p class="text-[10px] text-gray-500 mt-1">경매 낙찰</p>
                 </div>
 
                 <div class="flex flex-col items-center flex-1">
@@ -180,6 +183,8 @@
                         <span class="font-bold text-[10px]">02:00</span>
                     </div>
                     <p id="step2-text" class="text-xs text-gray-400 font-bold transition-text">창원공판장</p>
+                    <!-- 문구 유지됨 -->
+                    <p class="text-[10px] text-gray-500 mt-1">경매 낙찰</p>
                 </div>
 
                 <div class="flex flex-col items-center flex-1">
@@ -187,6 +192,8 @@
                         <span class="font-bold text-[10px]">08~12</span>
                     </div>
                     <p id="step3-text" class="text-xs text-gray-400 font-bold transition-text">가게 도착</p>
+                    <!-- 문구 유지됨 -->
+                    <p class="text-[10px] text-gray-500 mt-1">직배송</p>
                 </div>
             </div>
 
@@ -203,7 +210,7 @@
             <h3 class="text-lg font-bold text-gray-900 mb-8 text-center">실제 사장님들 후기</h3>
             
             <div class="space-y-4">
-                <!-- 후기 1: 수정된 문구 (통합 주문 강조) -->
+                <!-- 후기 1 -->
                 <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 shadow-sm">
                     <div class="flex items-center gap-0.5 mb-3">
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
