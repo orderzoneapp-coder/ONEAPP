@@ -4,33 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ORDERZ - 사장님 전용 혜택</title>
-    <!-- Tailwind CSS (별도 설치 없이 스타일 적용) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* 폰트 설정 (프리텐다드) */
         @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
         body { font-family: 'Pretendard', sans-serif; }
         
-        /* 스크롤바 숨기기 (선택사항) */
         ::-webkit-scrollbar { display: none; }
         
-        /* 애니메이션 트랜지션 클래스 */
         .transition-circle { transition: all 0.7s ease; }
         .transition-text { transition: color 0.7s ease; }
         .transition-line { transition: width 1s linear; }
+
+        /* 메인 컬러 설정: #0C5608 */
+        .text-main { color: #0C5608; }
+        .bg-main { background-color: #0C5608; }
+        .border-main { border-color: #0C5608; }
+        .hover-bg-main:hover { background-color: #083d06; }
+        
+        /* 포인트 컬러 (오더즈 트럭 강조용) */
+        .text-point { color: #DFFF00; text-shadow: 0px 2px 5px rgba(0,0,0,0.6); }
     </style>
 </head>
 <body class="bg-gray-100">
 
-    <!-- 모바일 컨테이너 (max-w-md) -->
-    <div class="min-h-screen bg-white max-w-md mx-auto shadow-2xl overflow-hidden relative pb-[140px]">
+    <div class="min-h-screen bg-white max-w-md mx-auto shadow-2xl overflow-hidden relative pb-[160px]">
         
         <!-- 상단 헤더 -->
         <header class="bg-white py-3 px-4 border-b border-gray-100 flex justify-between items-center sticky top-0 z-50">
-            <h1 class="text-xl font-extrabold text-[#00C73C] tracking-tighter cursor-pointer" onclick="handleLink('https://orderz.kr/')">ORDERZ</h1>
-            <!-- 카카오톡 문의 링크 -->
+            <h1 class="text-xl font-extrabold text-main tracking-tighter cursor-pointer" onclick="handleLink('https://orderz.kr/')">ORDERZ</h1>
             <button 
                 onclick="handleLink('http://pf.kakao.com/_PkUxgs/chat')"
                 class="text-xs font-bold text-[#371D1E] bg-[#FAE100] rounded px-3 py-1.5 flex items-center gap-1.5 hover:bg-[#FFE812] transition shadow-sm"
@@ -39,22 +43,20 @@
             </button>
         </header>
 
-        <!-- 히어로 섹션 (배경 이미지 적용) -->
+        <!-- 히어로 섹션 (오더즈 트럭 가독성 강화) -->
         <section class="relative text-white py-16 px-6 text-center overflow-hidden">
-            <!-- 배경 이미지 및 오버레이 -->
             <div class="absolute inset-0 z-0">
                 <img src="https://oneapp2.godohosting.com/%EC%95%8C%EB%A6%AC%EA%B3%A02%EC%A3%BC%EC%B0%A8/main.jpg" alt="메인 배경" class="w-full h-full object-cover">
-                <!-- 텍스트 가독성을 위한 어두운 오버레이 (투명도 조절 가능) -->
-                <div class="absolute inset-0 bg-black/60"></div>
+                <div class="absolute inset-0 bg-black/55"></div>
             </div>
             
             <div class="relative z-10">
-                <div class="inline-flex items-center gap-1 bg-[#00C73C] text-white text-xs font-bold px-2 py-1 rounded mb-4 animate-bounce shadow-md">
+                <div class="inline-flex items-center gap-1 bg-main text-white text-xs font-bold px-2 py-1 rounded mb-4 animate-bounce shadow-md">
                     <i data-lucide="map-pin" class="w-3 h-3"></i> 현재 <span id="delivery-count">312</span>곳 배송 중
                 </div>
-                <h2 class="text-2xl font-bold leading-tight mb-2 drop-shadow-md">
+                <h2 class="text-2xl font-bold leading-tight mb-2">
                     <span id="target-region">김해</span> 사장님들이<br />
-                    매일 아침 <span class="text-[#00C73C]">오더즈 트럭</span>을<br />
+                    매일 아침 <span class="text-point font-black italic tracking-tight">오더즈 트럭</span>을<br />
                     기다리는 진짜 이유
                 </h2>
                 <p class="text-gray-200 text-sm mt-3 leading-relaxed drop-shadow-sm">
@@ -77,102 +79,99 @@
             </div>
 
             <div class="space-y-4">
-                <!-- 상품 1 -->
+                <!-- 상품 1: 양배추 -->
                 <div 
-                    onclick="handleLink('https://orderz.kr/shop/listtype.php?type=1')"
-                    class="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-[#00C73C] transition cursor-pointer bg-white group hover:shadow-md"
+                    onclick="handleLink('https://orderz.kr/shop/item.php?it_id=101014120')"
+                    class="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-main transition cursor-pointer bg-white group hover:shadow-md"
                 >
-                    <div class="w-20 h-20 bg-orange-50 rounded-md flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                        🧅
+                    <div class="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-gray-50 border border-gray-100">
+                        <img src="https://oneapp2.godohosting.com/%EC%95%8C%EB%A6%AC%EA%B3%A02%EC%A3%BC%EC%B0%A8/%EC%96%91%EB%B0%B0%EC%B6%94.png" alt="양배추" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     </div>
                     <div class="flex-1 flex flex-col justify-center">
                         <div class="flex justify-between items-start mb-1">
-                            <h4 class="font-bold text-gray-800 text-base">국산 저장 양파 (15kg)</h4>
-                            <span class="text-[10px] font-bold text-[#00C73C] bg-green-50 px-1.5 py-0.5 rounded border border-green-100">오늘시세</span>
+                            <h4 class="font-bold text-gray-800 text-base">양배추(대) 1망</h4>
+                            <span class="text-[10px] font-bold text-main bg-green-50 px-1.5 py-0.5 rounded border border-main">오늘시세</span>
                         </div>
                         <div class="flex items-end gap-1 mt-1">
-                            <span class="text-2xl font-extrabold text-gray-900">14,900</span>
+                            <span class="text-2xl font-extrabold text-gray-900">5,000</span>
                             <span class="text-sm font-bold text-gray-600 mb-1">원</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 상품 2 -->
+                <!-- 상품 2: 청양고추 -->
                 <div 
-                    onclick="handleLink('https://orderz.kr/shop/listtype.php?type=1')"
-                    class="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-[#00C73C] transition cursor-pointer bg-white group hover:shadow-md"
+                    onclick="handleLink('https://orderz.kr/shop/item.php?it_id=103036112')"
+                    class="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-main transition cursor-pointer bg-white group hover:shadow-md"
                 >
-                    <div class="w-20 h-20 bg-yellow-50 rounded-md flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                        🥚
+                    <div class="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-gray-50 border border-gray-100">
+                        <img src="https://oneapp2.godohosting.com/%EC%95%8C%EB%A6%AC%EA%B3%A02%EC%A3%BC%EC%B0%A8/%EC%B2%AD%EC%96%91.png" alt="청양고추" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     </div>
                     <div class="flex-1 flex flex-col justify-center">
                         <div class="flex justify-between items-start mb-1">
-                            <h4 class="font-bold text-gray-800 text-base">대란 (30구/한판)</h4>
-                            <span class="text-[10px] font-bold text-[#00C73C] bg-green-50 px-1.5 py-0.5 rounded border border-green-100">오늘시세</span>
+                            <h4 class="font-bold text-gray-800 text-base">청양고추 1kg</h4>
+                            <span class="text-[10px] font-bold text-main bg-green-50 px-1.5 py-0.5 rounded border border-main">오늘시세</span>
                         </div>
                         <div class="flex items-end gap-1 mt-1">
-                            <span class="text-2xl font-extrabold text-gray-900">5,900</span>
+                            <span class="text-2xl font-extrabold text-gray-900">12,000</span>
                             <span class="text-sm font-bold text-gray-600 mb-1">원</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 상품 3 -->
+                <!-- 상품 3: 지방깻잎 -->
                 <div 
-                    onclick="handleLink('https://orderz.kr/shop/listtype.php?type=1')"
-                    class="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-[#00C73C] transition cursor-pointer bg-white group hover:shadow-md"
+                    onclick="handleLink('https://orderz.kr/shop/item.php?it_id=104510132')"
+                    class="flex gap-4 border border-gray-100 rounded-lg p-4 shadow-sm hover:border-main transition cursor-pointer bg-white group hover:shadow-md"
                 >
-                    <div class="w-20 h-20 bg-green-50 rounded-md flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                        🌶️
+                    <div class="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-gray-50 border border-gray-100">
+                        <img src="https://oneapp2.godohosting.com/%EC%95%8C%EB%A6%AC%EA%B3%A02%EC%A3%BC%EC%B0%A8/%EA%B9%BB%EC%9E%8E.png" alt="깻잎" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     </div>
                     <div class="flex-1 flex flex-col justify-center">
                         <div class="flex justify-between items-start mb-1">
-                            <h4 class="font-bold text-gray-800 text-base">청양고추 (10kg)</h4>
-                            <span class="text-[10px] font-bold text-[#00C73C] bg-green-50 px-1.5 py-0.5 rounded border border-green-100">오늘시세</span>
+                            <h4 class="font-bold text-gray-800 text-base">지방/깻잎</h4>
+                            <span class="text-[10px] font-bold text-main bg-green-50 px-1.5 py-0.5 rounded border border-main">오늘시세</span>
                         </div>
                         <div class="flex items-end gap-1 mt-1">
-                            <span class="text-2xl font-extrabold text-gray-900">48,900</span>
+                            <span class="text-2xl font-extrabold text-gray-900">12,000</span>
                             <span class="text-sm font-bold text-gray-600 mb-1">원</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 버튼 영역 -->
-            <div class="mt-6 flex flex-col gap-2">
-                <!-- 경매 더보기 -->
+            <!-- 버튼 영역 (겹침 해결을 위한 디자인 변경) -->
+            <div class="mt-8 flex flex-col items-center">
+                <!-- 오늘 경매 상품 더보기 (세련된 아웃라인 스타일) -->
                 <button 
                     onclick="handleLink('https://orderz.kr/shop/listtype.php?type=1')"
-                    class="w-full py-3.5 border border-gray-300 rounded-lg text-sm font-bold text-gray-600 flex items-center justify-center gap-1 hover:bg-gray-50 transition"
+                    class="w-full py-4 border-2 border-main rounded-lg text-base font-bold text-main flex items-center justify-center gap-1 hover:bg-green-50 transition active:scale-[0.98]"
                 >
-                    오늘 경매 상품 더보기 <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    오늘 경매 상품 더보기 <i data-lucide="chevron-right" class="w-5 h-5"></i>
                 </button>
                 
-                <!-- 식자재 행사 보기 -->
+                <!-- 식자재 행사 보기 (슬림한 텍스트 링크 스타일) -->
                 <button 
                     onclick="handleLink('https://orderz.kr/shop/listtype.php?type=3')"
-                    class="w-full py-3.5 bg-gray-50 rounded-lg text-sm font-bold text-gray-600 flex items-center justify-center gap-1 hover:bg-gray-100 transition"
+                    class="mt-4 text-sm font-bold text-gray-400 flex items-center gap-1 hover:text-gray-600 transition"
                 >
                     진행 중인 식자재 행사 보기 <i data-lucide="chevron-right" class="w-4 h-4"></i>
                 </button>
             </div>
         </section>
 
-        <!-- 유통 과정 타임라인 섹션 (스크롤 감지 애니메이션) -->
+        <!-- 유통 과정 타임라인 -->
         <section id="timeline-section" class="py-12 px-6 bg-gray-100 border-t border-gray-200">
             <h3 class="text-lg font-bold text-gray-900 mb-8 text-center">
                 "오더즈는 왜 이렇게 쌀까요?"<br/>
-                <span class="text-sm font-normal text-gray-500"><span class="text-[#00C73C] font-bold underline decoration-2 underline-offset-2">경매장 직거래</span>로 중간 단계를 없앴습니다</span>
+                <span class="text-sm font-normal text-gray-500"><span class="text-main font-bold underline decoration-2 underline-offset-2">경매장 직거래</span>로 중간 단계를 없앴습니다</span>
             </h3>
             
             <div class="flex justify-between items-start text-center relative px-2">
-                <!-- 연결선 배경 -->
                 <div class="absolute top-5 left-2 right-2 h-0.5 bg-gray-300 -z-10">
-                    <!-- 채워지는 초록색 선 -->
-                    <div id="progress-line" class="h-full bg-[#00C73C] w-0 transition-line"></div>
+                    <div id="progress-line" class="h-full bg-main w-0 transition-line"></div>
                 </div>
 
-                <!-- Step 1 -->
                 <div class="flex flex-col items-center flex-1">
                     <div id="step1-circle" class="w-10 h-10 rounded-full flex items-center justify-center mb-3 border-4 border-gray-100 bg-gray-200 text-gray-400 shadow-sm transition-circle scale-100">
                         <span class="font-bold text-[10px]">20:00</span>
@@ -181,7 +180,6 @@
                     <p class="text-[10px] text-gray-500 mt-1">경매 낙찰</p>
                 </div>
 
-                <!-- Step 2 -->
                 <div class="flex flex-col items-center flex-1">
                     <div id="step2-circle" class="w-10 h-10 rounded-full flex items-center justify-center mb-3 border-4 border-gray-100 bg-gray-200 text-gray-400 shadow-sm transition-circle scale-100">
                         <span class="font-bold text-[10px]">02:00</span>
@@ -190,7 +188,6 @@
                     <p class="text-[10px] text-gray-500 mt-1">경매 낙찰</p>
                 </div>
 
-                <!-- Step 3 -->
                 <div class="flex flex-col items-center flex-1">
                     <div id="step3-circle" class="w-10 h-10 rounded-full flex items-center justify-center mb-3 border-4 border-gray-100 bg-gray-200 text-gray-400 shadow-sm transition-circle scale-100">
                         <span class="font-bold text-[10px]">08~12</span>
@@ -200,7 +197,6 @@
                 </div>
             </div>
 
-            <!-- 설명 박스 -->
             <div class="mt-8 bg-white p-4 rounded-xl text-center shadow-md border border-gray-200">
                 <p class="text-xs text-gray-700">
                     <span class="font-bold text-red-500">중간 도매상 ❌ 대리점 ❌</span><br/>
@@ -213,10 +209,10 @@
         <section class="py-12 px-6 bg-white border-t border-gray-100">
             <h3 class="text-lg font-bold text-gray-900 mb-6 text-center">
                 "<span id="region-name-2">김해</span> 지역 <span id="count-2">312</span>곳의 식당이<br/>
-                <span class="text-[#00C73C]">오더즈</span>를 선택한 이유"
+                <span class="text-main">오더즈</span>를 선택한 이유"
             </h3>
             
-            <div class="bg-white p-5 rounded-xl shadow-md border border-gray-100 relative overflow-hidden group hover:border-[#00C73C] transition-colors">
+            <div class="bg-white p-5 rounded-xl shadow-md border border-gray-100 relative overflow-hidden group hover:border-main transition-colors">
                 <div class="space-y-6 relative z-10">
                     <div class="flex items-start gap-3">
                         <div class="mt-1 min-w-[24px] text-yellow-400">
@@ -255,16 +251,16 @@
             </button>
         </section>
 
-        <!-- 하단 고정 CTA -->
+        <!-- 하단 고정 CTA (여백 확장) -->
         <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50">
             <div class="bg-white text-gray-500 text-xs py-2 text-center border-t border-gray-200">
-                첫 거래 사장님 <span class="text-[#00C73C] font-bold ml-1">식자재 1.5만원 쿠폰 + 무료배송</span>
+                첫 거래 사장님 <span class="text-main font-bold ml-1">식자재 1.5만원 쿠폰 + 무료배송</span>
             </div>
             
-            <div class="bg-white p-4 pt-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)]">
+            <div class="bg-white p-4 pt-0 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)]">
                 <button 
                     onclick="handleLink('https://orderz.kr/bbs/login.php?url=https://orderz.kr/?device=mobile')"
-                    class="w-full bg-[#00C73C] text-white font-bold py-3.5 rounded-lg text-lg flex items-center justify-center gap-2 shadow-lg hover:bg-green-600 transition active:scale-[0.98]"
+                    class="w-full bg-main text-white font-bold py-4 rounded-lg text-lg flex items-center justify-center gap-2 shadow-lg hover-bg-main transition active:scale-[0.98]"
                 >
                     1.5만원 쿠폰 + 무료배송 받기 <i data-lucide="arrow-right" class="w-5 h-5"></i>
                 </button>
@@ -273,13 +269,10 @@
 
     </div>
 
-    <!-- 로직 스크립트 -->
     <script>
-        // 1. 아이콘 초기화
         lucide.createIcons();
 
-        // 2. 지역 데이터 및 초기화
-        const targetRegion = '김해'; // '창원' 또는 '김해'로 변경 가능
+        const targetRegion = '김해'; 
         const regionData = {
             '창원': { subRegion: '창원 상남동', saladRegion: '용호동', count: '524' },
             '김해': { subRegion: '김해 내동', saladRegion: '장유', count: '312' }
@@ -287,7 +280,6 @@
 
         const currentData = regionData[targetRegion] || regionData['창원'];
 
-        // 데이터 렌더링
         document.getElementById('target-region').textContent = targetRegion;
         document.getElementById('region-name-2').textContent = targetRegion;
         document.getElementById('region-name-3').textContent = targetRegion;
@@ -296,32 +288,24 @@
         document.getElementById('subregion-1').textContent = currentData.subRegion;
         document.getElementById('salad-region').textContent = currentData.saladRegion;
 
-        // 3. 링크 이동 함수
         function handleLink(url) {
             window.location.href = url;
         }
 
-        // 4. 스크롤 애니메이션 로직 (Intersection Observer)
         const timelineSection = document.getElementById('timeline-section');
         const progressLine = document.getElementById('progress-line');
-        
         const steps = [
             { circle: 'step1-circle', text: 'step1-text' },
             { circle: 'step2-circle', text: 'step2-text' },
             { circle: 'step3-circle', text: 'step3-text' }
         ];
 
-        // 활성화 스타일 적용 함수
         const activateStep = (index) => {
             const step = steps[index];
             const circle = document.getElementById(step.circle);
             const text = document.getElementById(step.text);
-
-            // Circle 스타일 변경
             circle.classList.remove('bg-gray-200', 'text-gray-400', 'scale-100');
-            circle.classList.add('bg-[#00C73C]', 'text-white', 'scale-110', 'shadow-lg');
-
-            // Text 스타일 변경
+            circle.classList.add('bg-main', 'text-white', 'scale-110', 'shadow-lg');
             text.classList.remove('text-gray-400');
             text.classList.add('text-gray-900', 'font-extrabold');
         };
@@ -332,33 +316,14 @@
 
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
-                // 애니메이션 시작
-                
-                // Step 1: 0.5초 후
-                setTimeout(() => {
-                    activateStep(0);
-                    updateProgress('33%');
-                }, 500);
-
-                // Step 2: 1.5초 후
-                setTimeout(() => {
-                    activateStep(1);
-                    updateProgress('66%');
-                }, 1500);
-
-                // Step 3: 2.5초 후
-                setTimeout(() => {
-                    activateStep(2);
-                    updateProgress('100%');
-                }, 2500);
-
-                observer.disconnect(); // 한 번만 실행
+                setTimeout(() => { activateStep(0); updateProgress('33%'); }, 500);
+                setTimeout(() => { activateStep(1); updateProgress('66%'); }, 1500);
+                setTimeout(() => { activateStep(2); updateProgress('100%'); }, 2500);
+                observer.disconnect();
             }
         }, { threshold: 0.2 });
 
-        if (timelineSection) {
-            observer.observe(timelineSection);
-        }
+        if (timelineSection) observer.observe(timelineSection);
     </script>
 </body>
 </html>
