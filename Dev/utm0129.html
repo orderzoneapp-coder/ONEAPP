@@ -3,25 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>오더즈 마케팅 링크 관리자 (Final Text Update)</title>
+    <title>오더즈 마케팅 링크 관리자</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
         body { font-family: 'Noto Sans KR', sans-serif; background-color: #f2f5f9; }
         
-        /* 테이블 스타일 정밀 조정 */
+        /* 입력폼 테이블 스타일 - 균형 잡힌 레이아웃 */
         .tbl_frm { border-collapse: collapse; width: 100%; }
-        .tbl_frm th { background-color: #f8fafc; padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #e2e8f0; color: #334155; width: 150px; border-right: 1px solid #f1f5f9; }
-        .tbl_frm td { padding: 14px 16px; border-bottom: 1px solid #e2e8f0; background-color: #fff; }
-        
-        /* 마지막 줄 테두리 처리 */
-        .tbl_frm tr:last-child th, 
-        .tbl_frm tr:last-child td { border-bottom: 0; }
+        .tbl_frm th { 
+            background-color: #f8fafc; 
+            padding: 20px 20px; 
+            text-align: left; 
+            font-weight: 600; 
+            border-bottom: 1px solid #e2e8f0; 
+            color: #334155; 
+            width: 170px; 
+            border-right: 1px solid #f1f5f9; 
+            vertical-align: top; 
+        }
+        .tbl_frm td { 
+            padding: 20px 20px; 
+            border-bottom: 1px solid #e2e8f0; 
+            background-color: #fff; 
+            vertical-align: top; 
+        }
+        .tbl_frm tr:last-child th, .tbl_frm tr:last-child td { border-bottom: 0; }
 
-        /* 목록 테이블 */
-        .tbl_head th { background-color: #f1f5f9; padding: 12px 16px; font-weight: 600; font-size: 13px; border-bottom: 2px solid #e2e8f0; color: #475569; text-align: left; text-transform: uppercase; letter-spacing: 0.05em; }
-        .tbl_head td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #334155; vertical-align: middle; }
+        /* 목록 테이블 - 제목과 내용 라인 일치화 */
+        .tbl_head_container { background-color: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #e2e8f0; }
+        .tbl_head { border-collapse: collapse; width: 100%; table-layout: fixed; }
+        
+        .tbl_head th { 
+            background-color: #f1f5f9; 
+            padding: 14px 16px; 
+            font-weight: 700; 
+            font-size: 13px; 
+            border-bottom: 2px solid #e2e8f0; 
+            color: #475569; 
+            text-align: left; 
+            vertical-align: middle;
+        }
+        .tbl_head td { 
+            padding: 14px 16px; 
+            border-bottom: 1px solid #f1f5f9; 
+            font-size: 14px; 
+            color: #334155; 
+            vertical-align: middle; 
+            word-break: break-all;
+        }
+        
+        .tbl_head .text-center { text-align: center; }
         .tbl_head tr:last-child td { border-bottom: 0; }
         .tbl_head tr:hover td { background-color: #f8fafc; transition: background-color 0.2s; }
 
@@ -34,12 +67,9 @@
     <!-- 상단 헤더 -->
     <header class="bg-white border-b border-slate-200 px-8 py-4 mb-6 shadow-sm sticky top-0 z-50">
         <div class="flex justify-between items-center max-w-7xl mx-auto w-full">
-            <div>
-                <h1 class="text-xl font-bold text-slate-800"><i class="fas fa-link text-blue-600 mr-2"></i>마케팅 링크 빌더</h1>
-                <p class="text-xs text-slate-500 mt-1">원링크 + UTM 파라미터 조합 및 단축 (UI 최종 정리)</p>
-            </div>
+            <h1 class="text-xl font-bold text-slate-800"><i class="fas fa-link text-blue-600 mr-2"></i>마케팅 링크 빌더</h1>
             <div class="text-right">
-                <span class="text-xs bg-slate-800 text-white px-2 py-1 rounded font-bold">Ver 24.2 (Label Color)</span>
+                <span class="text-xs bg-slate-800 text-white px-2 py-1 rounded font-bold">Ver 25.4</span>
             </div>
         </div>
     </header>
@@ -49,7 +79,7 @@
         <!-- 링크 빌더 폼 -->
         <section class="mb-10">
             <div class="flex items-center gap-2 mb-3 border-l-4 border-blue-600 pl-3">
-                <h2 class="text-base font-bold text-slate-700">신규 캠페인 기획 및 생성</h2>
+                <h2 class="text-base font-bold text-slate-700">신규 캠페인 생성</h2>
             </div>
             
             <div class="bg-white border border-slate-300 rounded-sm shadow-sm overflow-hidden">
@@ -58,36 +88,26 @@
                         <!-- STEP 1: 캠페인 정보 -->
                         <tr>
                             <th>
-                                <span class="bg-blue-600 text-white w-5 h-5 inline-flex items-center justify-center rounded-full text-[10px] mr-1">1</span>
-                                캠페인 정보 <span class="text-red-500">*</span><br>
-                                <span class="text-[10px] font-normal text-slate-400">(운영자)</span>
+                                <div class="flex flex-col gap-1">
+                                    <span class="bg-blue-600 text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] mb-1">1</span>
+                                    <span>캠페인 정보 <span class="text-red-500">*</span></span>
+                                </div>
                             </th>
                             <td colspan="3">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <!-- 목적 -->
                                     <div>
-                                        <label class="block text-xs font-bold text-blue-800 mb-1">
-                                            캠페인 명 <span class="text-red-500">*</span>
-                                        </label>
-                                        <input type="text" id="inputMemo" class="w-full border border-blue-200 bg-blue-50 px-3 py-2.5 rounded focus:border-blue-500 outline-none text-sm font-bold text-slate-700 transition" 
-                                            placeholder="예: 24년 여름 정기 세일" oninput="updatePreview()">
-                                        <p class="text-[10px] text-slate-400 mt-1">
-                                            * 관리자 목록 식별용 명칭입니다.
-                                        </p>
-                                    </div>
-                                    <!-- 주체 -->
-                                    <div>
-                                        <div class="flex justify-between items-center mb-1">
-                                            <label class="block text-xs font-bold text-slate-600">
-                                                담당 유통사
-                                            </label>
-                                            <span class="text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">(미입력 시 '본사')</span>
+                                        <div class="flex justify-between items-end mb-1 h-6">
+                                            <label class="block text-xs font-bold text-blue-800">캠페인 명 <span class="text-red-500">*</span></label>
                                         </div>
-                                        <input type="text" id="inputYt" class="w-full border border-slate-300 px-3 py-2.5 rounded focus:border-blue-500 outline-none text-sm transition" 
-                                            placeholder="예: ABC001" oninput="updatePreview()">
-                                        <p class="text-[10px] text-slate-400 mt-1">
-                                            * 유통사 입력 시 가입 회원은 유통사의 전용회원으로 등록됩니다.
-                                        </p>
+                                        <input type="text" id="inputMemo" class="w-full border border-blue-200 bg-blue-50 px-3 py-2.5 rounded focus:border-blue-500 outline-none text-sm font-bold text-slate-700 transition" placeholder="예: 24년 여름 정기 세일" oninput="updatePreview()">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-end mb-1 h-6">
+                                            <label class="block text-xs font-bold text-slate-600">담당 유통사</label>
+                                            <span class="text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 leading-none">미입력 시 '본사'</span>
+                                        </div>
+                                        <input type="text" id="inputYt" class="w-full border border-slate-300 px-3 py-2.5 rounded focus:border-blue-500 outline-none text-sm transition" placeholder="예: ABC001" oninput="updatePreview()">
+                                        <p class="text-[10px] text-slate-400 mt-1">* 유통사 입력 시 가입 회원은 유통사의 전용회원으로 등록됩니다.</p>
                                     </div>
                                 </div>
                             </td>
@@ -96,17 +116,15 @@
                         <!-- STEP 2: 연결 설정 -->
                         <tr>
                             <th>
-                                <span class="bg-slate-500 text-white w-5 h-5 inline-flex items-center justify-center rounded-full text-[10px] mr-1">2</span>
-                                연결 설정 <span class="text-red-500">*</span><br>
-                                <span class="text-[10px] font-normal text-slate-400">(채널 & 랜딩페이지)</span>
+                                <div class="flex flex-col gap-1">
+                                    <span class="bg-slate-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] mb-1">2</span>
+                                    <span>연결 설정 <span class="text-red-500">*</span></span>
+                                </div>
                             </th>
                             <td colspan="3">
                                 <div class="flex flex-col gap-4">
-                                    <!-- 유입 채널 (먼저) -->
                                     <div>
-                                        <label class="block text-xs font-bold text-slate-600 mb-1">
-                                            광고/홍보 채널 <span class="text-blue-600 font-normal">(GA4 source / medium)</span>
-                                        </label>
+                                        <label class="block text-xs font-bold text-slate-600 mb-1">광고/홍보 채널 <span class="text-blue-600 font-normal ml-1">(GA4 source/medium)</span></label>
                                         <select id="inputSrc" class="w-full md:w-1/2 border border-slate-300 px-2 py-2 rounded focus:border-blue-500 outline-none text-sm transition" onchange="updatePreview()">
                                             <option value="referral" data-source="homepage" data-medium="referral">기본 (웹사이트/블로그)</option>
                                             <optgroup label="광고 (Paid)">
@@ -124,51 +142,39 @@
                                             </optgroup>
                                         </select>
                                     </div>
-                                    
-                                    <!-- 원링크 (나중) -->
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">랜딩페이지 (원본 URL)</label>
-                                        <input type="text" id="inputBaseUrl" 
-                                            class="w-full border border-blue-300 px-3 py-2.5 rounded text-slate-700 focus:border-blue-500 outline-none shadow-sm font-medium transition" 
-                                            placeholder="https://orderz.kr/member/join.php"
-                                            oninput="updatePreview()">
+                                        <input type="text" id="inputBaseUrl" class="w-full border border-blue-300 px-3 py-2.5 rounded text-slate-700 focus:border-blue-500 outline-none shadow-sm font-medium transition" placeholder="https://orderz.kr/member/join.php" oninput="updatePreview()">
                                     </div>
                                 </div>
                             </td>
                         </tr>
 
-                        <!-- STEP 3: 회원가입 리다이렉트 설정 -->
+                        <!-- STEP 3: 회원가입 후 이동 (좌측 쏠림 개선 및 정렬) -->
                         <tr class="border-t border-slate-200">
                             <th>
-                                <span class="bg-slate-400 text-white w-5 h-5 inline-flex items-center justify-center rounded-full text-[10px] mr-1">3</span>
-                                회원가입 후 이동<br>
-                                <span class="text-[10px] font-normal text-slate-400 block mt-1">신규/기존 (휴대폰 검증)</span>
+                                <div class="flex flex-col gap-1">
+                                    <span class="bg-slate-400 text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] mb-1">3</span>
+                                    <span>회원가입 후 이동</span>
+                                </div>
                             </th>
                             <td colspan="3">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <!-- 신규 -->
-                                    <div class="space-y-1">
-                                        <label class="block text-xs font-bold text-slate-700">
-                                            <i class="fas fa-arrow-right mr-1 text-blue-500"></i>신규 회원 (Next URL)
-                                        </label>
-                                        <input type="text" id="inputNext" 
-                                            class="w-full border border-slate-300 px-3 py-2 rounded text-slate-600 focus:border-slate-500 outline-none text-xs bg-slate-50 focus:bg-white transition" 
-                                            placeholder="예: /event/coupon.php"
-                                            oninput="updatePreview()">
+                                    <div>
+                                        <div class="flex justify-between items-end mb-1 h-6">
+                                            <label class="block text-xs font-bold text-slate-700">신규 회원 (Next URL)</label>
+                                        </div>
+                                        <input type="text" id="inputNext" class="w-full border border-slate-300 px-3 py-2 rounded text-slate-600 focus:border-slate-500 outline-none text-xs bg-slate-50 focus:bg-white transition" placeholder="예: /event/coupon.php" oninput="updatePreview()">
                                     </div>
-                                    <!-- 기존 -->
-                                    <div class="space-y-1">
-                                        <label class="block text-xs font-bold text-slate-600">
-                                            <i class="fas fa-history mr-1 text-orange-500"></i>기존 회원 / 휴대폰 중복 (Fallback)
-                                        </label>
-                                        <input type="text" id="inputNextExist" 
-                                            class="w-full border border-slate-300 px-3 py-2 rounded text-slate-600 focus:border-slate-500 outline-none text-xs bg-slate-50 focus:bg-white transition" 
-                                            placeholder="예: /index.php"
-                                            oninput="updatePreview()">
+                                    <div>
+                                        <div class="flex justify-between items-end mb-1 h-6">
+                                            <label class="block text-xs font-bold text-slate-600">기존 회원 / 중복 (Fallback)</label>
+                                        </div>
+                                        <input type="text" id="inputNextExist" class="w-full border border-slate-300 px-3 py-2 rounded text-slate-600 focus:border-slate-500 outline-none text-xs bg-slate-50 focus:bg-white transition" placeholder="예: /index.php" oninput="updatePreview()">
                                     </div>
                                 </div>
                                 <p class="text-[10px] text-red-500 mt-2 font-bold flex items-center">
-                                    <i class="fas fa-shield-alt mr-1"></i> ※보안: https://orderz.kr 뒤에 붙는 경로만 입력하세요. 예) / , /shop , /event/coupon.php
+                                    <i class="fas fa-shield-alt mr-1"></i> 보안: https://orderz.kr 뒤에 붙는 내부 경로만 입력하세요. (예: / , /shop)
                                 </p>
                             </td>
                         </tr>
@@ -180,47 +186,50 @@
                             </th>
                             <td colspan="3">
                                 <div class="flex flex-col gap-1">
-                                    <span class="text-xs text-slate-500 font-bold">🔻 자동 조합된 연결 주소 (UTM + 리다이렉트 포함)</span>
+                                    <span class="text-xs text-slate-500 font-bold">🔻 자동 조합된 연결 주소</span>
                                     <div id="previewUrl" class="font-mono text-xs text-blue-600 break-all bg-white border border-blue-200 p-3 rounded select-all shadow-sm">
                                         https://orderz.kr/member/join.php?utm_source=homepage&utm_medium=referral
                                     </div>
                                     <div class="text-[10px] text-slate-500 mt-1 space-x-3">
-                                        <span><i class="fas fa-tag text-slate-400"></i> 메모(내부용): <span class="font-bold text-slate-700" id="previewMemo">-</span></span>
-                                        <span><i class="fas fa-user text-slate-400"></i> 주체: <span class="font-bold text-slate-700" id="previewYt">-</span></span>
+                                        <span>메모: <span class="font-bold text-slate-700" id="previewMemo">-</span></span>
+                                        <span>주체: <span class="font-bold text-slate-700" id="previewYt">본사</span></span>
                                     </div>
                                 </div>
                             </td>
                         </tr>
 
-                        <!-- STEP 4: 링크 생성 -->
+                        <!-- STEP 4: 링크 생성 (버튼 크기 축소 및 라인 정렬) -->
                         <tr class="bg-blue-50 border-t border-blue-100">
-                            <th class="align-middle">
-                                <span class="bg-blue-600 text-white w-5 h-5 inline-flex items-center justify-center rounded-full text-[10px] mr-1">4</span>
-                                링크 생성 <span class="text-red-500">*</span><br>
-                                <span class="text-[10px] font-normal text-slate-400">(Action)</span>
+                            <th>
+                                <div class="flex flex-col gap-1">
+                                    <span class="bg-blue-600 text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] mb-1">4</span>
+                                    <span>링크 생성 <span class="text-red-500">*</span></span>
+                                </div>
                             </th>
                             <td colspan="3">
-                                <div class="flex flex-col md:flex-row gap-4 items-end">
-                                    <!-- 입력창 (50%) -->
-                                    <div class="w-full md:w-1/2">
-                                        <label class="block text-xs font-bold text-slate-700 mb-1">
-                                            단축 코드 (Short Code) <span class="text-[10px] text-blue-600 font-normal ml-2">* GA4 캠페인 키(utm_campaign)</span>
-                                        </label>
-                                        <div class="flex items-center">
-                                            <span class="inline-flex items-center px-3 h-11 rounded-l-lg border border-r-0 border-slate-300 bg-white text-slate-500 text-sm font-mono font-bold">orderz.kr/l/</span>
-                                            <input type="text" id="inputCode" placeholder="summer_2024" 
-                                                class="flex-1 h-11 border border-slate-300 px-3 rounded-r-lg focus:border-blue-500 outline-none font-bold text-lg text-slate-800 shadow-sm transition"
-                                                oninput="updatePreview()">
+                                <div class="flex flex-col gap-1">
+                                    <div class="flex items-end mb-1 h-6">
+                                        <div class="flex items-center gap-2">
+                                            <label class="block text-xs font-bold text-slate-700">단축 코드 (Short Code)</label>
+                                            <span class="text-[10px] text-blue-600 font-normal leading-none">* GA4 캠페인 키(utm_campaign)</span>
                                         </div>
-                                        <p class="text-[10px] text-slate-400 mt-1">
-                                            * 영문, 숫자, 언더바(_)만 사용. <span class="text-red-500 ml-1 font-bold">* 운영중인 단축 코드는 생성할 수 없습니다.</span>
-                                        </p>
                                     </div>
                                     
-                                    <!-- 버튼 (나머지 채움) -->
-                                    <button onclick="createLink()" class="flex-1 w-full h-11 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 hover:shadow-lg transition text-sm font-bold flex items-center justify-center gap-2 whitespace-nowrap mb-0.5 shadow-md transform active:scale-95">
-                                        <i class="fas fa-magic"></i> 링크 생성 및 활성화
-                                    </button>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center flex-1 max-w-[450px]">
+                                            <span class="inline-flex items-center px-3 h-11 rounded-l-lg border border-r-0 border-slate-300 bg-white text-slate-500 text-sm font-mono font-bold">orderz.kr/l/</span>
+                                            <input type="text" id="inputCode" placeholder="summer_2024" class="flex-1 h-11 border border-slate-300 px-3 rounded-r-lg focus:border-blue-500 outline-none font-bold text-lg text-slate-800 shadow-sm transition" oninput="updatePreview()">
+                                        </div>
+                                        
+                                        <!-- 버튼 크기 축소 및 수평 라인 맞춤 -->
+                                        <button onclick="createLink()" class="px-5 h-11 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-bold flex items-center justify-center gap-2 whitespace-nowrap shadow-md transform active:scale-95">
+                                            <i class="fas fa-magic"></i> 링크 생성 및 활성화
+                                        </button>
+                                    </div>
+                                    
+                                    <p class="text-[10px] text-slate-400 mt-1">
+                                        * 영문, 숫자, 언더바(_)만 사용. <span class="text-red-500 ml-1 font-bold">* 운영중인 코드는 생성할 수 없습니다.</span>
+                                    </p>
                                 </div>
                             </td>
                         </tr>
@@ -229,24 +238,24 @@
             </div>
         </section>
 
-        <!-- 관리 목록 -->
+        <!-- 생성 목록 -->
         <section>
             <div class="flex justify-between items-end mb-3">
                 <h2 class="text-base font-bold text-slate-700 border-l-4 border-slate-600 pl-3">생성 목록 <span id="totalCount" class="text-xs font-normal text-slate-500 ml-1">(0개)</span></h2>
                 <div class="flex gap-2">
-                    <input type="text" id="searchInput" placeholder="캠페인 메모, 코드 검색" class="border border-slate-300 px-3 py-1.5 text-sm rounded w-64 outline-none focus:border-blue-500 transition" onkeyup="filterList()">
+                    <input type="text" id="searchInput" placeholder="캠페인 명, 코드 검색" class="border border-slate-300 px-3 py-1.5 text-sm rounded w-64 outline-none focus:border-blue-500 transition" onkeyup="filterList()">
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-300 rounded-lg shadow-sm overflow-hidden">
-                <table class="w-full text-left tbl_head">
+            <div class="tbl_head_container">
+                <table class="tbl_head">
                     <thead>
                         <tr>
-                            <th class="w-16 text-center">상태</th>
-                            <th class="w-1/4">캠페인 명 / 담당 유통사</th>
-                            <th class="w-1/3">연결 링크 / 단축 링크</th>
-                            <th class="text-center">채널 / 유입</th>
-                            <th class="w-24 text-center">생성일</th>
+                            <th style="width: 80px;" class="text-center">상태</th>
+                            <th style="width: 25%;">캠페인 명 / 담당 유통사</th>
+                            <th style="width: 40%;">연결 링크 / 단축 링크</th>
+                            <th style="width: 15%;" class="text-center">채널 / 성과</th>
+                            <th style="width: 120px;" class="text-center">생성일</th>
                         </tr>
                     </thead>
                     <tbody id="linkListBody">
@@ -263,44 +272,10 @@
     </div>
 
     <script>
-        // 초기 데이터 (Mock)
         let linkData = [
-            { 
-                id: 101, 
-                code: "summer_2024", 
-                full_url: "https://orderz.kr/event/summer.php?utm_source=instagram&utm_medium=paidsocial&utm_campaign=summer_2024&yt_code=OFF001",
-                base_url: "https://orderz.kr/event/summer.php",
-                memo: "여름 가입 이벤트 (인스타)", 
-                yt: "OFF001",
-                active: false, 
-                hits: 50, 
-                channel: "paid_social",
-                created_at: "2023-10-30" 
-            },
-            { 
-                id: 102, 
-                code: "summer_2024", 
-                full_url: "https://orderz.kr/member/join.php?utm_source=instagram&utm_medium=paidsocial&utm_campaign=summer_2024&yt_code=OFF001",
-                base_url: "https://orderz.kr/member/join.php",
-                memo: "여름 세일 수정 (신버전)",
-                yt: "OFF001", 
-                active: true, 
-                hits: 1520, 
-                channel: "paid_social",
-                created_at: "2023-11-01" 
-            },
-            { 
-                id: 2, 
-                code: "main_home", 
-                full_url: "https://orderz.kr/?utm_source=homepage&utm_medium=referral",
-                base_url: "https://orderz.kr/",
-                memo: "메인 홈페이지 (기본)",
-                yt: "-", 
-                active: true, 
-                hits: 3400, 
-                channel: "referral",
-                created_at: "2023-10-20" 
-            }
+            { id: 101, code: "summer_2024", full_url: "https://orderz.kr/event/summer.php?utm_source=instagram&utm_medium=paidsocial&utm_campaign=summer_2024&yt_code=OFF001", base_url: "https://orderz.kr/event/summer.php", memo: "여름 가입 이벤트", yt: "OFF001", active: false, hits: 50, channel: "paid_social", created_at: "2023-10-30" },
+            { id: 102, code: "summer_2024", full_url: "https://orderz.kr/member/join.php?utm_source=instagram&utm_medium=paidsocial&utm_campaign=summer_2024&yt_code=OFF001", base_url: "https://orderz.kr/member/join.php", memo: "여름 세일 수정본", yt: "OFF001", active: true, hits: 1520, channel: "paid_social", created_at: "2023-11-01" },
+            { id: 2, code: "main_home", full_url: "https://orderz.kr/?utm_source=homepage&utm_medium=referral&utm_campaign=main_home", base_url: "https://orderz.kr/", memo: "홈페이지 기본 유입", yt: "-", active: true, hits: 3400, channel: "referral", created_at: "2023-10-20" }
         ];
 
         const DOM = {
@@ -318,48 +293,35 @@
             totalCount: document.getElementById('totalCount')
         };
 
-        // 1. 실시간 미리보기 (데이터 표준화 로직 적용)
         function updatePreview() {
             const baseUrl = DOM.inputBaseUrl.value.trim() || 'https://orderz.kr/member/join.php';
             const selectedOption = DOM.inputSrc.options[DOM.inputSrc.selectedIndex];
+            const campaignKey = DOM.inputCode.value.trim();
+            const memo = DOM.inputMemo.value.trim();
+            const ytCode = DOM.inputYt.value.trim();
+            const next = DOM.inputNext.value.trim();
+            const nextExist = DOM.inputNextExist.value.trim();
             
             let params = [];
-            
-            // 1. UTM Standardized Logic
             if (selectedOption.dataset.source) params.push(`utm_source=${selectedOption.dataset.source}`);
             if (selectedOption.dataset.medium) params.push(`utm_medium=${selectedOption.dataset.medium}`);
-            const campaignKey = DOM.inputCode.value.trim();
             if (campaignKey) params.push(`utm_campaign=${campaignKey}`);
-            
-            // Memo는 더이상 utm_content로 보내지 않음 (내부용)
-            
-            const ytCode = DOM.inputYt.value.trim();
             if (ytCode) params.push(`yt_code=${encodeURIComponent(ytCode)}`);
-
-            // 2. Redirect Parameters
-            const next = DOM.inputNext.value.trim();
             if (next) params.push(`next=${encodeURIComponent(next)}`);
-            const nextExist = DOM.inputNextExist.value.trim();
             if (nextExist) params.push(`next_exist=${encodeURIComponent(nextExist)}`);
 
-            // Combine
             const separator = baseUrl.includes('?') ? '&' : '?';
             const finalUrl = params.length > 0 ? `${baseUrl}${separator}${params.join('&')}` : baseUrl;
             
             DOM.previewUrl.textContent = finalUrl;
-            
-            // 프리뷰용 추가 정보 표시
-            DOM.previewMemo.textContent = DOM.inputMemo.value.trim() || '-';
+            DOM.previewMemo.textContent = memo || '-';
             DOM.previewYt.textContent = ytCode || '본사';
-
             return finalUrl;
         }
 
-        // 2. 리스트 렌더링
         function renderList(data = linkData) {
             DOM.listBody.innerHTML = "";
             DOM.totalCount.textContent = `(${data.length}개)`;
-
             const sortedData = [...data].sort((a, b) => b.id - a.id);
 
             if (sortedData.length === 0) {
@@ -371,68 +333,43 @@
                 const tr = document.createElement('tr');
                 tr.className = item.active ? 'hover:bg-slate-50 transition' : 'bg-slate-100 opacity-60 text-slate-400 grayscale';
 
-                const channelColors = {
-                    'paid_search': 'bg-blue-100 text-blue-800',
-                    'paid_social': 'bg-indigo-100 text-indigo-800',
-                    'referral': 'bg-slate-100 text-slate-700',
-                    'messaging': 'bg-green-100 text-green-800'
-                };
-                const badgeColor = channelColors[item.channel] || 'bg-gray-100 text-gray-600';
-                const finalBadge = item.active ? badgeColor : 'bg-gray-200 text-gray-500';
-                const ytDisplay = item.yt === '-' || !item.yt ? '본사' : item.yt;
-
-                // 생성일 포맷 (YY-MM-DD)
-                const dateParts = item.created_at.split('-');
-                const shortDate = dateParts.length === 3 ? `${dateParts[0].slice(2)}-${dateParts[1]}-${dateParts[2]}` : item.created_at;
+                const badgeColors = { 'paid_search': 'bg-blue-100 text-blue-800', 'paid_social': 'bg-indigo-100 text-indigo-800', 'referral': 'bg-slate-100 text-slate-700', 'messaging': 'bg-green-100 text-green-800' };
+                const badgeClass = item.active ? (badgeColors[item.channel] || 'bg-gray-100 text-gray-600') : 'bg-gray-200 text-gray-500';
 
                 tr.innerHTML = `
-                    <td class="text-center align-middle relative">
-                        <div class="relative inline-block w-8 mr-1 align-middle select-none">
+                    <td class="text-center relative">
+                        <div class="relative inline-block w-8 align-middle select-none">
                             <input type="checkbox" id="toggle-${item.id}" class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 transition-all duration-300 ease-in-out" ${item.active ? 'checked' : ''} onchange="toggleActive(${item.id})"/>
                             <label for="toggle-${item.id}" class="toggle-label block overflow-hidden h-4 rounded-full bg-slate-300 cursor-pointer transition-colors duration-300 ease-in-out"></label>
                         </div>
                     </td>
-                    <td class="px-4 py-4 align-top">
-                        <div class="flex flex-col gap-1.5">
-                            <div class="font-bold ${item.active ? 'text-slate-800' : 'text-slate-500'} text-sm cursor-pointer hover:text-blue-600" onclick="copyToForm(${item.id})" title="클릭 시 설정 불러오기">
-                                ${item.memo || '<span class="text-slate-300">메모 없음</span>'} <i class="fas fa-edit ml-1 text-slate-300 opacity-0 group-hover:opacity-100 text-[10px]"></i>
-                            </div>
-                            <div class="text-xs text-slate-500 flex items-center gap-1">
-                                <span class="bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-400">주체</span>
-                                <span class="font-medium ${item.active ? 'text-slate-600' : 'text-slate-400'}">${ytDisplay}</span>
-                            </div>
+                    <td>
+                        <div class="flex flex-col gap-1">
+                            <div class="font-bold ${item.active ? 'text-slate-800' : 'text-slate-500'} text-sm cursor-pointer hover:text-blue-600" onclick="copyToForm(${item.id})">${item.memo}</div>
+                            <div class="text-[11px] font-medium text-slate-400">${item.yt === '-' ? '본사 유입' : '유통사: ' + item.yt}</div>
                         </div>
                     </td>
-                    <td class="px-4 py-4 align-top">
+                    <td>
                         <div class="flex flex-col gap-2">
-                            <!-- 원본 주소 (View Only) -->
-                            <div class="text-[11px] text-slate-400 truncate max-w-sm bg-slate-50 px-2 py-1 rounded border border-slate-100 group cursor-help select-all" title="${item.full_url}">
-                                <i class="fas fa-link mr-1 opacity-50"></i> ${item.full_url}
-                            </div>
-                            <!-- 단축 링크 -->
+                            <div class="text-[11px] text-slate-400 truncate bg-slate-50 px-2 py-1 rounded border border-slate-100 select-all" title="${item.full_url}"><i class="fas fa-link mr-1 opacity-50"></i> ${item.full_url}</div>
                             <div class="flex items-center gap-2">
-                                <span class="${item.active ? 'text-blue-600' : 'text-slate-400'} font-bold text-sm font-mono cursor-pointer hover:underline" onclick="copyCode('${item.code}')">
-                                    orderz.kr/l/${item.code}
-                                </span>
-                                <button class="text-slate-300 hover:text-blue-500 transition" onclick="copyCode('${item.code}')" title="복사"><i class="far fa-copy"></i></button>
+                                <span class="${item.active ? 'text-blue-600' : 'text-slate-400'} font-bold text-sm font-mono cursor-pointer hover:underline" onclick="copyCode('${item.code}')">orderz.kr/l/${item.code}</span>
+                                <button class="text-slate-300 hover:text-blue-500 transition" onclick="copyCode('${item.code}')"><i class="far fa-copy"></i></button>
                             </div>
                         </div>
                     </td>
-                    <td class="px-4 py-4 align-middle text-center">
+                    <td class="text-center">
                         <div class="flex flex-col items-center gap-1">
-                            <span class="${finalBadge} px-2 py-0.5 rounded text-[10px] font-bold uppercase mb-1">${item.channel}</span>
+                            <span class="${badgeClass} px-2 py-0.5 rounded text-[10px] font-bold uppercase mb-1">${item.channel}</span>
                             <div class="text-sm font-mono font-bold ${item.active ? 'text-slate-700' : 'text-slate-400'}">${item.hits.toLocaleString()} <span class="text-[10px] text-slate-400 font-normal">Hits</span></div>
                         </div>
                     </td>
-                    <td class="text-center text-xs text-slate-500 font-mono align-middle">
-                        ${shortDate}
-                    </td>
+                    <td class="text-center text-xs text-slate-500 font-mono">${item.created_at}</td>
                 `;
                 DOM.listBody.append(tr);
             });
         }
 
-        // 3. 링크 생성
         function createLink() {
             const baseUrl = DOM.inputBaseUrl.value.trim();
             const code = DOM.inputCode.value.trim();
@@ -442,118 +379,62 @@
             const next = DOM.inputNext.value.trim();
             const nextExist = DOM.inputNextExist.value.trim();
 
-            if (!baseUrl) return alert("랜딩페이지(원본 URL)를 입력해주세요.");
-            if (!memo) return alert("캠페인 명을 입력해주세요.");
-            if (!code) return alert("단축 코드를 입력해주세요.");
-            
-            // 정규식: 영문 소문자, 숫자, -, _ 만 허용
-            const codeRegex = /^[a-z0-9_-]+$/;
-            if (!codeRegex.test(code)) {
-                alert("단축 코드는 '영문 소문자', '숫자', '하이픈(-)', '언더바(_)'만 사용 가능합니다.");
-                DOM.inputCode.focus();
-                return;
+            if (!baseUrl || !memo || !code) return modalAlert("필수 정보를 모두 입력해주세요.");
+            if (!/^[a-z0-9_-]+$/.test(code)) return modalAlert("단축 코드는 영문 소문자, 숫자, -, _만 가능합니다.");
+            if ((next && !next.startsWith('/')) || (nextExist && !nextExist.startsWith('/'))) return modalAlert("이동 경로는 반드시 '/'로 시작해야 합니다.");
+
+            if (linkData.find(l => l.code === code && l.active)) {
+                return modalAlert(`⚠️ [${code}] 코드는 이미 운영중입니다.<br>중복 운영할 수 없습니다.`);
             }
 
-            if (next && !next.startsWith('/')) {
-                alert("보안을 위해 신규 회원 이동 경로는 내부 경로('/')만 허용됩니다.");
-                DOM.inputNext.focus();
-                return;
-            }
-            if (nextExist && !nextExist.startsWith('/')) {
-                alert("보안을 위해 기존 회원 이동 경로는 내부 경로('/')만 허용됩니다.");
-                DOM.inputNextExist.focus();
-                return;
-            }
-
-            // [변경됨] 중복 운영 방지 로직 (Strict Mode)
-            const existingActiveLink = linkData.find(l => l.code === code && l.active);
-            if (existingActiveLink) {
-                alert(`⚠️ [${code}] 코드는 이미 '운영중'입니다.\n\n동일한 코드는 중복 운영할 수 없습니다.\n기존 캠페인을 '중지' 상태로 변경한 후 다시 시도해주세요.`);
-                return; // 생성 중단
-            }
-
-            const newLink = {
-                id: Date.now(),
-                code: code,
-                full_url: fullUrl,
-                base_url: baseUrl,
-                memo: memo,
-                yt: yt || '-',
-                active: true,
-                hits: 0,
-                channel: DOM.inputSrc.value,
-                created_at: new Date().toISOString().split('T')[0]
-            };
-
-            linkData.push(newLink);
+            linkData.push({ id: Date.now(), code, full_url: fullUrl, base_url: baseUrl, memo, yt: yt || '-', active: true, hits: 0, channel: DOM.inputSrc.value, created_at: new Date().toISOString().split('T')[0] });
             renderList();
             
-            // 입력 초기화 (Reset)
-            DOM.inputBaseUrl.value = "";
-            DOM.inputMemo.value = "";
-            DOM.inputYt.value = "";
+            DOM.inputBaseUrl.value = DOM.inputMemo.value = DOM.inputYt.value = DOM.inputCode.value = DOM.inputNext.value = DOM.inputNextExist.value = "";
             DOM.inputSrc.selectedIndex = 0;
-            DOM.inputCode.value = "";
-            DOM.inputNext.value = "";
-            DOM.inputNextExist.value = "";
-            
             updatePreview();
-
-            alert(`[${code}] 링크가 안전하게 생성되었습니다.\n(GA4 Key: ${code})`);
-        }
-
-        // 4. 정보 불러오기 (리스트 클릭 시)
-        function copyToForm(id) {
-            const item = linkData.find(l => l.id === id);
-            if(!item) return;
-
-            if(confirm("선택한 캠페인의 설정을 불러오시겠습니까?")) {
-                DOM.inputBaseUrl.value = item.base_url;
-                DOM.inputMemo.value = item.memo;
-                DOM.inputCode.value = item.code;
-                DOM.inputSrc.value = item.channel;
-                DOM.inputYt.value = item.yt !== '-' ? item.yt : '';
-                
-                updatePreview();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        function filterList() {
-            const keyword = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = linkData.filter(l => 
-                l.code.toLowerCase().includes(keyword) || 
-                l.memo.toLowerCase().includes(keyword)
-            );
-            renderList(filtered);
-        }
-
-        function copyCode(code) {
-            navigator.clipboard.writeText(`https://orderz.kr/l/${code}`);
-            alert(`[orderz.kr/l/${code}] 복사되었습니다.`);
+            modalAlert(`성공적으로 생성되었습니다.`);
         }
 
         function toggleActive(id) {
             const target = linkData.find(l => l.id === id);
-            if(!target) return;
-
-            // 켜려고 할 때 중복 체크 (Strict)
-            if (!target.active) {
-                const duplicate = linkData.find(l => l.code === target.code && l.active && l.id !== id);
-                if (duplicate) {
-                    alert(`⚠️ [${target.code}] 코드는 이미 운영중입니다.\n\n동일 코드는 하나만 활성화할 수 있습니다.\n기존 캠페인(${duplicate.memo})을 먼저 중지해주세요.`);
-                    renderList(); // UI 상태 복구 (체크박스 다시 꺼짐)
-                    return;
-                }
+            if (!target) return;
+            if (!target.active && linkData.find(l => l.code === target.code && l.active && l.id !== id)) {
+                modalAlert(`⚠️ [${target.code}] 코드는 이미 운영중입니다.<br>기존 것을 먼저 중지해주세요.`);
+                renderList();
+                return;
             }
             target.active = !target.active;
             renderList();
         }
 
-        // 초기 실행
+        function copyToForm(id) {
+            const item = linkData.find(l => l.id === id);
+            if(!item || !confirm("해당 설정을 불러오시겠습니까?")) return;
+            DOM.inputBaseUrl.value = item.base_url; DOM.inputMemo.value = item.memo; DOM.inputCode.value = item.code; DOM.inputSrc.value = item.channel; DOM.inputYt.value = item.yt !== '-' ? item.yt : '';
+            updatePreview(); window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterList() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            renderList(linkData.filter(l => l.code.toLowerCase().includes(keyword) || l.memo.toLowerCase().includes(keyword)));
+        }
+
+        function copyCode(code) {
+            const text = `https://orderz.kr/l/${code}`;
+            const textArea = document.createElement("textarea"); textArea.value = text; document.body.appendChild(textArea); textArea.select(); document.execCommand('copy'); document.body.removeChild(textArea);
+            modalAlert(`복사되었습니다:<br><b>${text}</b>`);
+        }
+
+        function modalAlert(msg) {
+            const div = document.createElement('div');
+            div.className = "fixed inset-0 flex items-center justify-center z-[100] bg-black/50 p-4";
+            div.innerHTML = `<div class="bg-white rounded-lg p-6 max-w-sm w-full shadow-2xl"><p class="text-sm text-slate-700 mb-6 leading-relaxed text-center">${msg}</p><button onclick="this.parentElement.parentElement.remove()" class="w-full bg-slate-800 text-white py-2 rounded text-sm font-bold">확인</button></div>`;
+            document.body.appendChild(div);
+        }
+
         updatePreview();
         renderList();
-
     </script>
 </body>
 </html>
