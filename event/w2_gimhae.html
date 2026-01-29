@@ -24,7 +24,7 @@
         .border-main { border-color: #0C5608; }
         .hover-bg-main:hover { background-color: #083d06; }
         
-        /* 포인트 컬러 (오더즈 트럭 강조용) */
+        /* 포인트 컬러 (강조용) */
         .text-point { color: #DFFF00; text-shadow: 0px 2px 5px rgba(0,0,0,0.6); }
     </style>
 </head>
@@ -173,6 +173,7 @@
                         <span class="font-bold text-[10px]">20:00</span>
                     </div>
                     <p id="step1-text" class="text-xs text-gray-400 font-bold transition-text">가락시장</p>
+                    <p class="text-[10px] text-gray-500 mt-1">경매 낙찰</p>
                 </div>
 
                 <div class="flex flex-col items-center flex-1">
@@ -180,6 +181,7 @@
                         <span class="font-bold text-[10px]">02:00</span>
                     </div>
                     <p id="step2-text" class="text-xs text-gray-400 font-bold transition-text">창원공판장</p>
+                    <p class="text-[10px] text-gray-500 mt-1">경매 낙찰</p>
                 </div>
 
                 <div class="flex flex-col items-center flex-1">
@@ -187,6 +189,7 @@
                         <span class="font-bold text-[10px]">08~12</span>
                     </div>
                     <p id="step3-text" class="text-xs text-gray-400 font-bold transition-text">가게 도착</p>
+                    <p class="text-[10px] text-gray-500 mt-1">직배송</p>
                 </div>
             </div>
 
@@ -203,7 +206,7 @@
             <h3 class="text-lg font-bold text-gray-900 mb-8 text-center">실제 사장님들 후기</h3>
             
             <div class="space-y-4">
-                <!-- 후기 1: 김해 데이터 반영 -->
+                <!-- 후기 1 -->
                 <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 shadow-sm">
                     <div class="flex items-center gap-0.5 mb-3">
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
@@ -220,7 +223,7 @@
                     </div>
                 </div>
 
-                <!-- 후기 2: 김해 데이터 반영 -->
+                <!-- 후기 2 -->
                 <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 shadow-sm">
                     <div class="flex items-center gap-0.5 mb-3">
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
@@ -249,9 +252,8 @@
             </button>
         </section>
 
-        <!-- 하단 고정 CTA -->
+        <!-- 하단 고정 CTA (김해 버전으로 수정) -->
         <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50">
-            <!-- 김해로 지역명 수정 -->
             <div class="bg-white text-main text-[13px] py-2.5 text-center font-medium border-t border-gray-100 shadow-[0_-5px_10px_rgba(0,0,0,0.02)] tracking-tight">
                 🚚 현재 김해 지역 첫 거래 한정 혜택 진행 중
             </div>
@@ -271,7 +273,7 @@
     <script>
         lucide.createIcons();
 
-        // 김해 버전으로 변수 설정
+        // 김해 버전으로 활성화
         const targetRegion = '김해'; 
         const regionData = {
             '창원': { subRegion: '창원 상남동', saladRegion: '용호동', count: '524' },
