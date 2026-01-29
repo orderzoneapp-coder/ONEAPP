@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>오더즈 마케팅 링크 관리자 Ver 28.2</title>
+    <title>오더즈 마케팅 링크 관리자 Ver 3.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -119,7 +119,7 @@
         <div class="flex justify-between items-center max-w-7xl mx-auto w-full">
             <h1 class="text-xl font-bold text-slate-800"><i class="fas fa-link text-blue-600 mr-2"></i>마케팅 링크 빌더</h1>
             <div class="text-right">
-                <span class="text-xs bg-slate-800 text-white px-2 py-1 rounded font-bold uppercase tracking-wider">Ver 28.2</span>
+                <span class="text-xs bg-slate-800 text-white px-2 py-1 rounded font-bold uppercase tracking-wider">Ver 3.0</span>
             </div>
         </div>
     </header>
@@ -300,7 +300,6 @@
     <script>
         const TODAY = "2026-01-30";
 
-        // 초기 데이터 (ID 내림차순 정렬되어 노출됨)
         let linkData = [
             { id: 104, code: "feb_event", full_url: "https://orderz.kr/join?utm_campaign=feb_event", base_url: "https://orderz.kr/join", memo: "2월 설날 대박 기획전", yt: "-", active: true, hits: 0, channel: "messaging", start_date: "2026-02-01", end_date: "2026-02-28" },
             { id: 103, code: "jan_sale", full_url: "https://orderz.kr/join?utm_campaign=jan_sale", base_url: "https://orderz.kr/join", memo: "1월 시즌오프 세일", yt: "OFF001", active: true, hits: 1450, channel: "paid_social", start_date: "2026-01-01", end_date: "2026-02-15" },
@@ -346,7 +345,6 @@
             return { label: '정지중', class: 'badge-stopped' };
         }
 
-        // 6-2 검증: 쉼표 다중 검색 OR 조건 로직
         function renderList(data = linkData) {
             DOM.listBody.innerHTML = "";
             const sortedData = [...data].sort((a, b) => b.id - a.id);
@@ -407,11 +405,9 @@
             });
         }
 
-        // 6-1, 6-2 검증: 다중 필드 OR 검색 로직
         function filterList() {
             const input = document.getElementById('searchInput').value.toLowerCase();
             if (!input.trim()) { renderList(linkData); return; }
-            
             const keywords = input.split(',').map(k => k.trim()).filter(k => k !== "");
             const filtered = linkData.filter(item => {
                 return keywords.some(kw => {
@@ -438,7 +434,6 @@
             renderList();
         }
 
-        // 1-1, 1-4 검증: 기본 입력 및 보안 경로 검증
         function createLink() {
             const memo = DOM.inputMemo.value.trim();
             const code = DOM.inputCode.value.trim();
@@ -449,7 +444,6 @@
             if (!/^[a-z0-9_-]+$/.test(code)) return modalAlert("단축 코드는 영문 소문자, 숫자, 언더바(_)만 허용됩니다.");
             if (next && !next.startsWith('/')) return modalAlert("보안상 이동 목적지 경로는 반드시 '/'로 시작해야 합니다.");
             
-            // 1-2 검증: 운영중인 중복 코드 차단
             if (linkData.find(l => l.code === code && l.active)) {
                 return modalAlert(`⚠️ [${code}]는 현재 운영 중인 캠페인이 있습니다.<br>기존 캠페인을 먼저 정지해주세요.`);
             }
@@ -461,7 +455,7 @@
                 base_url: baseUrl, 
                 memo, 
                 yt: DOM.inputYt.value.trim() || '-', 
-                active: false, // 4-3 검증: 생성 직후엔 OFF 상태 (운영자가 직접 확인 후 활성화 유도)
+                active: false, 
                 hits: 0, 
                 channel: DOM.inputSrc.value, 
                 start_date: TODAY, 
@@ -469,24 +463,19 @@
             });
             
             renderList();
-            modalAlert(`단축 링크가 생성되었습니다.<br>하단 목록에서 <b>ON 활성화</b> 및 <b>운영 기간</b> 설정을 완료해 주세요.`);
+            modalAlert(`단축 링크가 성공적으로 생성되었습니다.<br>하단 목록에서 <b>활성화(ON)</b> 및 <b>운영 기간</b> 설정을 완료해 주세요.`);
             DOM.inputMemo.value = DOM.inputYt.value = DOM.inputCode.value = DOM.inputNext.value = "";
             updatePreview();
         }
 
-        // 4-3 검증: 배타적 활성화 로직
         function toggleActive(id) {
             const target = linkData.find(l => l.id === id);
             if (!target) return;
-            
-            // 켜기 시도 시 중복 운영 체크
             if (!target.active && linkData.find(l => l.code === target.code && l.active && l.id !== id)) {
-                modalAlert(`⚠️ 동일 코드가 이미 운영 중입니다.<br>기존 코드를 끄고 활성화해 주세요.`);
+                modalAlert(`⚠️ 동일 코드가 이미 운영 중입니다.`);
                 renderList();
                 return;
             }
-            
-            // 운영 중 캠페인 OFF 시 간단 확인 (UI상 체크박스 해제로 처리)
             target.active = !target.active;
             renderList();
         }
