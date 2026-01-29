@@ -35,6 +35,10 @@
         }
         
         ::-webkit-scrollbar { display: none; }
+
+        /* 가로 스크롤 시 스크롤바 숨기기 */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         .transition-circle { transition: all 0.7s ease; }
         .transition-text { transition: color 0.7s ease; }
@@ -48,7 +52,7 @@
 </head>
 <body class="bg-gray-100 antialiased">
 
-    <div class="min-h-screen bg-white max-w-[480px] mx-auto shadow-2xl overflow-hidden relative pb-[160px]">
+    <div class="min-h-screen bg-white max-w-[480px] mx-auto shadow-2xl overflow-hidden relative pb-[150px]">
         
         <!-- 상단 헤더 -->
         <header class="bg-white h-14 px-5 border-b border-gray-100 flex justify-between items-center sticky top-0 z-[60]">
@@ -156,7 +160,7 @@
             </div>
         </section>
 
-        <!-- 오더즈는 왜 이렇게 쌀까요? (수정됨: 배색 적용) -->
+        <!-- 오더즈는 왜 이렇게 쌀까요? -->
         <section id="timeline-section" class="py-12 px-5 bg-[#F1F6F2] border-y border-[#E2EAE3]">
             <h3 class="text-[18px] font-bold text-gray-900 mb-10 text-center leading-tight">
                 "오더즈는 왜 이렇게 쌀까요?"<br/>
@@ -201,12 +205,16 @@
             </div>
         </section>
 
-        <!-- 후기 섹션 -->
-        <section class="py-14 px-5 bg-white">
-            <h3 class="text-[18px] font-bold text-gray-900 mb-8 text-center tracking-tight">실제 사장님들 후기</h3>
+        <!-- 후기 섹션 (가로 롤링) -->
+        <section class="py-14 bg-white">
+            <h3 class="text-[18px] font-bold text-gray-900 mb-8 text-center tracking-tight italic text-main px-5">
+                실제 사장님의 후기
+            </h3>
             
-            <div class="space-y-4">
-                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm">
+            <div id="review-container" class="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory px-5 pb-4 scroll-smooth">
+                
+                <!-- 후기 1 -->
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm w-[85vw] max-w-[320px] flex-shrink-0 snap-center">
                     <div class="flex items-center gap-0.5 mb-3">
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
@@ -217,10 +225,11 @@
                     <p class="text-[16px] text-gray-800 font-extrabold leading-snug mb-3">
                         “평소 쓰던 식자재 다 구해주니 오더즈에서 주문 한 번에 끝내요.”
                     </p>
-                    <span class="text-[12px] text-gray-400 font-medium"><span id="subregion-1">김해 내동</span> 고깃집 사장님</span>
+                    <span class="text-[12px] text-gray-400 font-medium"><span id="subregion-1">창원 상남동</span> 고깃집 사장님</span>
                 </div>
 
-                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm">
+                <!-- 후기 2 -->
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm w-[85vw] max-w-[320px] flex-shrink-0 snap-center">
                     <div class="flex items-center gap-0.5 mb-3">
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
                         <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
@@ -231,8 +240,29 @@
                     <p class="text-[16px] text-gray-800 font-extrabold leading-snug mb-3">
                         “야채 신선도가 확실히 달라요. 손님들이 먼저 압니다.”
                     </p>
-                    <span class="text-[12px] text-gray-400 font-medium"><span id="region-name-2">김해</span> <span id="salad-region">장유</span> 샐러드집 사장님</span>
+                    <span class="text-[12px] text-gray-400 font-medium"><span id="region-name-2">창원</span> <span id="salad-region">용호동</span> 샐러드집 사장님</span>
                 </div>
+                
+                <!-- 후기 3 (수정됨) -->
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm w-[85vw] max-w-[320px] flex-shrink-0 snap-center">
+                    <div class="flex items-center gap-0.5 mb-3">
+                        <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                    </div>
+                    <p class="text-[16px] text-gray-800 font-extrabold leading-snug mb-3">
+                        “아침에 문 열면 가게 앞에 도착해 있으니 장사 준비 시간이 확 줄었어요.”
+                    </p>
+                    <span class="text-[12px] text-gray-400 font-medium"><span id="region-name-4">창원</span> <span id="korean-food-region">소답동</span> 한식당 사장님</span>
+                </div>
+            </div>
+            
+            <div class="flex justify-center gap-1 mt-3" id="scroll-dots">
+                <div class="w-1.5 h-1.5 rounded-full bg-main transition-colors"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-gray-200 transition-colors"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-gray-200 transition-colors"></div>
             </div>
         </section>
 
@@ -245,11 +275,11 @@
 
         <!-- 하단 고정 CTA -->
         <div class="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-[100]">
-            <div class="bg-white text-main text-[13px] py-2.5 text-center font-medium border-t border-gray-100 shadow-[0_-5px_10px_rgba(0,0,0,0.02)] tracking-tight px-5">
-                🚚 현재 <span id="region-name-3">김해</span> 지역 첫 거래 한정 혜택 진행 중
+            <div class="bg-white text-main text-[13px] py-2.5 text-center font-medium border-t border-gray-100 shadow-[0_-5px_10px_rgba(0,0,0,0.02)] tracking-tight px-5 opacity-95">
+                🚚 현재 <span id="region-name-3">창원</span> 지역 첫 거래 한정 혜택 진행 중
             </div>
             
-            <div class="bg-white p-5 pt-1 shadow-[0_-20px_40px_-10px_rgba(0,0,0,0.1)]">
+            <div class="bg-white p-5 pt-1 shadow-[0_-20px_40px_-10px_rgba(0,0,0,0.08)]">
                 <button onclick="handleLink('https://orderz.kr/bbs/login.php?url=https://orderz.kr/?device=mobile')" class="w-full bg-main text-white font-extrabold py-4 rounded-2xl text-[18px] flex items-center justify-center gap-2 shadow-lg hover:brightness-110 active:scale-[0.97] transition-all">
                     1.5만원 쿠폰 + 무료배송 받기 <i data-lucide="arrow-right" class="w-6 h-6"></i>
                 </button>
@@ -261,10 +291,11 @@
     <script>
         lucide.createIcons();
 
+        // 김해 버전으로 활성화
         const targetRegion = '김해'; 
         const regionData = {
-            '창원': { subRegion: '창원 상남동', saladRegion: '용호동', count: '524' },
-            '김해': { subRegion: '김해 내동', saladRegion: '장유', count: '312' }
+            '창원': { subRegion: '창원 상남동', saladRegion: '용호동', koreanFoodRegion: '소답동', count: '524' },
+            '김해': { subRegion: '김해 내동', saladRegion: '장유', koreanFoodRegion: '진영', count: '312' }
         };
 
         const currentData = regionData[targetRegion] || regionData['창원'];
@@ -273,13 +304,16 @@
         document.getElementById('delivery-count').textContent = currentData.count;
         document.getElementById('subregion-1').textContent = currentData.subRegion;
         document.getElementById('salad-region').textContent = currentData.saladRegion;
+        document.getElementById('korean-food-region').textContent = currentData.koreanFoodRegion;
         document.getElementById('region-name-2').textContent = targetRegion;
         document.getElementById('region-name-3').textContent = targetRegion;
+        document.getElementById('region-name-4').textContent = targetRegion;
 
         function handleLink(url) {
             window.location.href = url;
         }
 
+        // 타임라인 애니메이션
         const timelineSection = document.getElementById('timeline-section');
         const progressLine = document.getElementById('progress-line');
         const steps = [
@@ -309,6 +343,47 @@
         }, { threshold: 0.2 });
 
         if (timelineSection) observer.observe(timelineSection);
+
+        // 후기 자동 롤링 (Carousel)
+        const reviewContainer = document.getElementById('review-container');
+        const dots = document.getElementById('scroll-dots').children;
+        let isUserInteracting = false;
+
+        reviewContainer.addEventListener('touchstart', () => { isUserInteracting = true; });
+        reviewContainer.addEventListener('touchend', () => { setTimeout(() => isUserInteracting = false, 3000); });
+
+        setInterval(() => {
+            if (isUserInteracting) return;
+
+            const firstCard = reviewContainer.querySelector('div');
+            if (!firstCard) return;
+            
+            const scrollAmount = firstCard.offsetWidth + 16; 
+            
+            const maxScroll = reviewContainer.scrollWidth - reviewContainer.clientWidth;
+            let nextScrollLeft = reviewContainer.scrollLeft + scrollAmount;
+            
+            if (reviewContainer.scrollLeft >= maxScroll - 10) {
+                nextScrollLeft = 0;
+            }
+
+            reviewContainer.scrollTo({
+                left: nextScrollLeft,
+                behavior: 'smooth'
+            });
+
+            const currentIndex = Math.round(nextScrollLeft / scrollAmount);
+            for(let i=0; i<dots.length; i++) {
+                dots[i].classList.remove('bg-main');
+                dots[i].classList.add('bg-gray-200');
+            }
+            const dotIndex = (currentIndex >= dots.length) ? 0 : currentIndex;
+            if(dots[dotIndex]) {
+                dots[dotIndex].classList.remove('bg-gray-200');
+                dots[dotIndex].classList.add('bg-main');
+            }
+
+        }, 3000);
     </script>
 </body>
 </html>
