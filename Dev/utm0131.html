@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>오더즈 마케팅 링크 관리자 Ver 3.19</title>
+    <title>오더즈 마케팅 링크 관리자 (개발 명세용 프로토타입)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
         body { font-family: 'Noto Sans KR', sans-serif; background-color: #f4f7fa; color: #334155; }
         
-        /* 테이블 공통 */
+        /* [테이블 공통 스타일] */
         .tbl_frm { border-collapse: collapse; width: 100%; }
         .tbl_frm th { 
             background-color: #f8fafc; 
@@ -39,21 +39,21 @@
         }
         .tbl_head td { padding: 14px 10px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; vertical-align: middle; }
         
-        /* 상태 뱃지 */
+        /* [상태 배지 스타일] */
         .badge { padding: 2px 0; border-radius: 4px; font-size: 10px; font-weight: 800; display: block; width: 60px; text-align: center; margin-bottom: 2px; }
         .badge-running { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; } /* 운영중 */
         .badge-waiting { background-color: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; } /* 예약중 */
         .badge-stopped { background-color: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; } /* 정지중 */
         .badge-expired { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; } /* 만료됨 */
 
-        /* 토글 스위치 */
+        /* [토글 스위치] */
         .toggle-checkbox:checked { right: 0; border-color: #3b82f6; }
         .toggle-checkbox:checked + .toggle-label { background-color: #3b82f6; }
 
-        /* 필수 항목 */
+        /* [필수 항목 강조] */
         .input-required { background-color: #eff6ff !important; border-color: #bfdbfe !important; }
         
-        /* 날짜 입력 필드 스타일 */
+        /* [날짜 입력 필드 커스텀 디자인] */
         .list-date-input { 
             border: 1px solid #cbd5e1;
             border-radius: 4px; 
@@ -70,7 +70,7 @@
             transition: all 0.2s;
             position: relative;
             
-            /* 배경 아이콘 */
+            /* 달력 아이콘 배경 처리 */
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5' /%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 6px center;
@@ -81,7 +81,7 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1); 
         }
 
-        /* 비활성화(ON 상태) 스타일 */
+        /* 비활성화(ON 상태) 스타일 - 수정 불가 표시 */
         .list-date-input:disabled {
             background-color: #f8fafc;
             color: #94a3b8;
@@ -91,10 +91,9 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z' /%3E%3C/svg%3E");
         }
 
-        /* 값이 없을 때 텍스트 숨김 */
+        /* 값이 없을 때 텍스트 숨김 (투명 처리) 후 가상요소로 텍스트 대체 */
         .list-date-input.is-empty { color: transparent; }
         
-        /* [강조] 값이 없을 때 플레이스홀더 노출 */
         .list-date-input.is-empty::before {
             content: attr(data-placeholder);
             color: #2563eb; 
@@ -123,7 +122,7 @@
             box-shadow: none;
         }
 
-        /* 시작일 미설정은 회색 처리 */
+        /* 시작일 미설정은 회색 처리 (덜 강조) */
         .list-date-input.is-empty[data-placeholder="시작일 설정"]::before {
             color: #94a3b8;
             background-color: transparent;
@@ -132,7 +131,7 @@
             font-weight: 500;
         }
 
-        /* 스핀 버튼 및 기본 아이콘 완벽 숨김 */
+        /* 브라우저 기본 UI 요소(스핀 버튼, X 버튼) 숨김 */
         .list-date-input::-webkit-inner-spin-button,
         .list-date-input::-webkit-outer-spin-button,
         .list-date-input::-webkit-clear-button {
@@ -141,7 +140,7 @@
             display: none;
         }
 
-        /* 전체 영역을 달력 트리거로 사용 */
+        /* 전체 영역을 달력 트리거로 사용 (Overlay) */
         .list-date-input::-webkit-calendar-picker-indicator {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -171,9 +170,9 @@
 
     <header class="bg-white border-b border-slate-200 px-8 py-4 mb-6 shadow-sm sticky top-0 z-50">
         <div class="flex justify-between items-center max-w-7xl mx-auto w-full">
-            <h1 class="text-xl font-bold text-slate-800"><i class="fas fa-link text-blue-600 mr-2"></i>마케팅 링크 빌더</h1>
+            <h1 class="text-xl font-bold text-slate-800"><i class="fas fa-link text-blue-600 mr-2"></i>마케팅 링크 빌더 (관리자용)</h1>
             <div class="text-right">
-                <span class="text-xs bg-slate-800 text-white px-2 py-1 rounded font-bold uppercase tracking-wider">Ver 3.19</span>
+                <span class="text-xs bg-slate-800 text-white px-2 py-1 rounded font-bold uppercase tracking-wider">Prototype Ver 3.19</span>
             </div>
         </div>
     </header>
@@ -322,7 +321,7 @@
                 <table class="tbl_head">
                     <thead>
                         <tr>
-                            <!-- [Ver 3.19] 레이아웃 밸런스 조정 -->
+                            <!-- [Ver 3.19] 레이아웃 밸런스 조정: 캠페인 20% / 링크정보 확장 -->
                             <th style="width: 20%;">캠페인 정보 / 유통사</th>
                             <th style="width: 310px;" class="text-center">운영 설정 (ON/OFF + 기간)</th>
                             <th style="width: 90px;" class="text-center">현재 상태</th>
@@ -337,7 +336,11 @@
     </div>
 
     <script>
+        // [시뮬레이션 환경] 오늘 날짜 기준
         const TODAY = "2026-01-30";
+        
+        // 초기 데이터 (시뮬레이터용)
+        // [개발자 참조] 실제 구현 시 DB에서 이 구조의 배열을 JSON으로 받아와 렌더링해야 함.
         let linkData = [
             { id: 104, code: "feb_event", full_url: "https://orderz.kr/join?utm_campaign=feb_event", memo: "2월 설날 감사 이벤트", yt: "-", active: false, hits: 154, last_hit_at: "2026-01-29 14:30:00", channel: "messaging", start_date: "2026-02-01", end_date: "2026-02-28" },
             { id: 103, code: "jan_sale", full_url: "https://orderz.kr/join?utm_campaign=jan_sale", memo: "1월 시즌오프 세일", yt: "OFF001", active: true, hits: 1450, last_hit_at: "2026-01-30 10:20:11", channel: "paid_social", start_date: "2026-01-01", end_date: "2026-02-15" }
@@ -354,23 +357,25 @@
             previewUrl: document.getElementById('previewUrl')
         };
 
+        // Next URL 검증 (보안)
         function normalizeNext(raw) {
             const v = (raw || '').trim();
             if (!v) return ''; 
             if (!v.startsWith('/')) return '__INVALID__'; 
-            if (v.startsWith('//')) return '__INVALID__'; 
-            if (v.includes('://')) return '__INVALID__'; 
-            if (v.includes('\\')) return '__INVALID__'; 
+            if (v.startsWith('//')) return '__INVALID__'; // 프로토콜 상대 경로 차단
+            if (v.includes('://')) return '__INVALID__'; // 절대 경로 차단
+            if (v.includes('\\')) return '__INVALID__'; // 역슬래시 변종 차단
             return v;
         }
 
-        // 스크롤 휠 날짜 변경 방지
+        // 스크롤 휠 날짜 변경 방지 (UX)
         document.addEventListener('wheel', (e) => {
             if (document.activeElement && document.activeElement.type === 'date') {
                 e.preventDefault();
             }
         }, { passive: false });
 
+        // 미리보기 업데이트
         function updatePreview() {
             const baseUrl = DOM.inputBaseUrl.value.trim() || ''; 
             const campaignKey = DOM.inputCode.value.trim();
@@ -419,7 +424,7 @@
             return finalUrl;
         }
 
-        // 상태 로직
+        // 상태 로직 (Primary / Secondary)
         function getStatusInfo(item) {
             let primary = { label: '운영중', class: 'badge-running' };
             let isExpired = false;
@@ -439,6 +444,7 @@
             return { primary, isExpired };
         }
 
+        // 전체 목록 렌더링
         function renderList(data = linkData) {
             DOM.listBody.innerHTML = "";
             const sortedData = [...data].sort((a, b) => b.id - a.id);
@@ -500,6 +506,7 @@
             });
         }
 
+        // 부분 업데이트 (DOM 보존)
         function updateRowUI(id) {
             const item = linkData.find(l => l.id === id);
             if (!item) return;
@@ -537,6 +544,7 @@
             const longUrl = updatePreview();
             if (!longUrl) return alert("랜딩페이지(원본 URL)를 입력해 주세요.");
 
+            // 신규 데이터 추가 (NULL 정책 준수)
             linkData.push({ 
                 id: Date.now(), code, full_url: longUrl, memo, 
                 yt: DOM.inputYt.value.trim() || '-', 
@@ -552,10 +560,12 @@
             updatePreview();
         }
 
+        // 토글 동작 (중복 및 날짜 검증)
         function toggleActive(id) {
             const target = linkData.find(l => l.id === id);
             if (!target) return;
             
+            // OFF -> ON 시도 시 (검증)
             if (!target.active) {
                 const isDuplicated = linkData.some(l => l.code === target.code && l.active && l.id !== id);
                 if (isDuplicated) {
@@ -570,7 +580,7 @@
             }
             
             target.active = !target.active;
-            renderList();
+            renderList(); // 전체 렌더링 (disabled 속성 변경을 위해)
         }
 
         function copyCode(code) {
@@ -579,12 +589,15 @@
             alert(`복사되었습니다: ${text}`);
         }
 
+        // 날짜 업데이트 (ON 상태 수정 차단 확인)
         function updateDate(id, type, value) {
             const item = linkData.find(l => l.id === id);
             if (!item) return;
 
+            // HTML에서 disabled 처리되어 있지만, 이중 방어
             if (item.active) return; 
 
+            // 빈값 -> NULL 처리
             const v = value === "" ? null : value;
             
             if (type === 'start') item.start_date = v;
