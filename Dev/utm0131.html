@@ -151,6 +151,33 @@
             display: none;
         }
 
+        /* [복사 버튼 커스텀 스타일] */
+        .btn-copy {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background-color: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .btn-copy:hover {
+            border-color: #3b82f6;
+            color: #2563eb;
+            background-color: #eff6ff;
+            transform: translateY(-1px);
+        }
+        .btn-copy:active {
+            transform: translateY(0);
+        }
+
         /* 미리보기 박스 */
         .step4-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; }
         .result-box {
@@ -172,7 +199,7 @@
         <div class="flex justify-between items-center max-w-7xl mx-auto w-full">
             <h1 class="text-xl font-bold text-slate-800"><i class="fas fa-link text-blue-600 mr-2"></i>마케팅 링크 빌더 (관리자용)</h1>
             <div class="text-right">
-                <span class="text-xs bg-slate-800 text-white px-2 py-1 rounded font-bold uppercase tracking-wider">Prototype Ver 3.19</span>
+                <span class="text-xs bg-slate-800 text-white px-2 py-1 rounded font-bold uppercase tracking-wider">Prototype Ver 3.20</span>
             </div>
         </div>
     </header>
@@ -321,7 +348,6 @@
                 <table class="tbl_head">
                     <thead>
                         <tr>
-                            <!-- [Ver 3.19] 레이아웃 밸런스 조정: 캠페인 20% / 링크정보 확장 -->
                             <th style="width: 20%;">캠페인 정보 / 유통사</th>
                             <th style="width: 310px;" class="text-center">운영 설정 (ON/OFF + 기간)</th>
                             <th style="width: 90px;" class="text-center">현재 상태</th>
@@ -339,8 +365,6 @@
         // [시뮬레이션 환경] 오늘 날짜 기준
         const TODAY = "2026-01-30";
         
-        // 초기 데이터 (시뮬레이터용)
-        // [개발자 참조] 실제 구현 시 DB에서 이 구조의 배열을 JSON으로 받아와 렌더링해야 함.
         let linkData = [
             { id: 104, code: "feb_event", full_url: "https://orderz.kr/join?utm_campaign=feb_event", memo: "2월 설날 감사 이벤트", yt: "-", active: false, hits: 154, last_hit_at: "2026-01-29 14:30:00", channel: "messaging", start_date: "2026-02-01", end_date: "2026-02-28" },
             { id: 103, code: "jan_sale", full_url: "https://orderz.kr/join?utm_campaign=jan_sale", memo: "1월 시즌오프 세일", yt: "OFF001", active: true, hits: 1450, last_hit_at: "2026-01-30 10:20:11", channel: "paid_social", start_date: "2026-01-01", end_date: "2026-02-15" }
@@ -357,25 +381,22 @@
             previewUrl: document.getElementById('previewUrl')
         };
 
-        // Next URL 검증 (보안)
         function normalizeNext(raw) {
             const v = (raw || '').trim();
             if (!v) return ''; 
             if (!v.startsWith('/')) return '__INVALID__'; 
-            if (v.startsWith('//')) return '__INVALID__'; // 프로토콜 상대 경로 차단
-            if (v.includes('://')) return '__INVALID__'; // 절대 경로 차단
-            if (v.includes('\\')) return '__INVALID__'; // 역슬래시 변종 차단
+            if (v.startsWith('//')) return '__INVALID__'; 
+            if (v.includes('://')) return '__INVALID__'; 
+            if (v.includes('\\')) return '__INVALID__'; 
             return v;
         }
 
-        // 스크롤 휠 날짜 변경 방지 (UX)
         document.addEventListener('wheel', (e) => {
             if (document.activeElement && document.activeElement.type === 'date') {
                 e.preventDefault();
             }
         }, { passive: false });
 
-        // 미리보기 업데이트
         function updatePreview() {
             const baseUrl = DOM.inputBaseUrl.value.trim() || ''; 
             const campaignKey = DOM.inputCode.value.trim();
@@ -424,7 +445,6 @@
             return finalUrl;
         }
 
-        // 상태 로직 (Primary / Secondary)
         function getStatusInfo(item) {
             let primary = { label: '운영중', class: 'badge-running' };
             let isExpired = false;
@@ -444,7 +464,6 @@
             return { primary, isExpired };
         }
 
-        // 전체 목록 렌더링
         function renderList(data = linkData) {
             DOM.listBody.innerHTML = "";
             const sortedData = [...data].sort((a, b) => b.id - a.id);
@@ -497,8 +516,12 @@
                     </td>
                     <td class="bg-slate-50/40">
                         <div class="text-[10px] text-slate-400 truncate opacity-60 font-mono mb-1">${item.full_url}</div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-blue-600 font-bold text-[14px] font-mono cursor-pointer hover:underline" onclick="copyCode('${item.code}')">orderz.kr/l/${item.code}</span>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-blue-600 font-bold text-[13px] font-mono truncate">orderz.kr/l/${item.code}</span>
+                            <!-- [Ver 3.20] 복사 버튼 명확화 -->
+                            <button onclick="copyCode('${item.code}')" class="btn-copy" title="단축 링크 복사">
+                                <i class="fas fa-copy"></i> 복사
+                            </button>
                         </div>
                     </td>
                 `;
@@ -506,7 +529,6 @@
             });
         }
 
-        // 부분 업데이트 (DOM 보존)
         function updateRowUI(id) {
             const item = linkData.find(l => l.id === id);
             if (!item) return;
@@ -544,7 +566,6 @@
             const longUrl = updatePreview();
             if (!longUrl) return alert("랜딩페이지(원본 URL)를 입력해 주세요.");
 
-            // 신규 데이터 추가 (NULL 정책 준수)
             linkData.push({ 
                 id: Date.now(), code, full_url: longUrl, memo, 
                 yt: DOM.inputYt.value.trim() || '-', 
@@ -560,12 +581,10 @@
             updatePreview();
         }
 
-        // 토글 동작 (중복 및 날짜 검증)
         function toggleActive(id) {
             const target = linkData.find(l => l.id === id);
             if (!target) return;
             
-            // OFF -> ON 시도 시 (검증)
             if (!target.active) {
                 const isDuplicated = linkData.some(l => l.code === target.code && l.active && l.id !== id);
                 if (isDuplicated) {
@@ -580,24 +599,22 @@
             }
             
             target.active = !target.active;
-            renderList(); // 전체 렌더링 (disabled 속성 변경을 위해)
+            renderList();
         }
 
         function copyCode(code) {
             const text = `https://orderz.kr/l/${code}`;
             const t = document.createElement("textarea"); document.body.appendChild(t); t.value = text; t.select(); document.execCommand('copy'); document.body.removeChild(t);
-            alert(`복사되었습니다: ${text}`);
+            // alert(`복사되었습니다: ${text}`); 
+            // 사용자 경험을 위해 alert 대신 버튼 텍스트 변경 등으로 처리 가능하나 명세상 copy를 우선 구현
         }
 
-        // 날짜 업데이트 (ON 상태 수정 차단 확인)
         function updateDate(id, type, value) {
             const item = linkData.find(l => l.id === id);
             if (!item) return;
 
-            // HTML에서 disabled 처리되어 있지만, 이중 방어
             if (item.active) return; 
 
-            // 빈값 -> NULL 처리
             const v = value === "" ? null : value;
             
             if (type === 'start') item.start_date = v;
